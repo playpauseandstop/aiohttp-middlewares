@@ -1,0 +1,21 @@
+machine:
+  python:
+    version: 3.6.1
+
+dependencies:
+  cache_directories:
+    - env/
+
+  override:
+    - pip install -U bootstrapper pip wheel
+    - make
+
+test:
+  override:
+    - make test
+
+deployment:
+  release:
+    tag: /v\d+.\d+.\d+.*/
+    commands:
+      - make deploy

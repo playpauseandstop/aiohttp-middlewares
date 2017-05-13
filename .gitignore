@@ -1,0 +1,14 @@
+*.egg
+*.egg-info
+*.py[co]
+
+.coverage
+.install
+.python-version
+
+.*cache/
+__pycache__/
+build/
+dist/
+env/
+.tox/
