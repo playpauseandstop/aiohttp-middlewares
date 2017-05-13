@@ -36,19 +36,19 @@ Usage
 
 import logging
 
-from typing import Collection, Union
+from typing import Union
 
 from aiohttp import web
 from async_timeout import timeout
 
-from .types import Handler, Middleware
+from .types import Handler, Middleware, StrCollection
 
 
 logger = logging.getLogger(__name__)
 
 
 def timeout_middleware_factory(seconds: Union[int, float],
-                               ignore: Collection[str]=None) -> Middleware:
+                               ignore: StrCollection=None) -> Middleware:
     """Ensure that request handling does not exceed X seconds.
 
     This is helpful when aiohttp application served behind nginx or other
@@ -93,7 +93,8 @@ def timeout_middleware_factory(seconds: Union[int, float],
             request_path = request.rel_url.path
 
             if request_path in (ignore or set()):
-                logger.debug(f'Ignore {request_path} from timeout handling')
+                logger.debug(
+                    'Ignore {0} from timeout handling'.format(request_path))
                 actual_seconds = .0
 
             with timeout(actual_seconds):

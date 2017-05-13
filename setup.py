@@ -17,7 +17,7 @@ VERSION = re.findall("__version__ = '([^']+)'", INIT_PY)[0]
 
 
 setup(
-    name='rororo',
+    name='aiohttp_middlewares',
     version=VERSION,
     description='Collection useful middleware for aiohttp appliactions.',
     long_description=README,

@@ -9,6 +9,7 @@ dependencies:
   override:
     - pip install -U bootstrapper pip wheel
     - make
+    - make setup-pyenv
 
 test:
   override:
