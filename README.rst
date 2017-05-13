@@ -6,6 +6,18 @@ aiohttp-middlewares
     :target: https://circleci.com/gh/playpauseandstop/aiohttp-middlewares
     :alt: CircleCI
 
+.. image:: https://img.shields.io/pypi/v/aiohttp-middlewares.svg
+    :target: https://pypi.org/project/aiohttp-middlewares/
+    :alt: Latest Version
+
+.. image:: https://img.shields.io/pypi/pyversions/aiohttp-middlewares.svg
+    :target: https://pypi.org/project/aiohttp-middlewares/
+    :alt: Python versions
+
+.. image:: https://img.shields.io/pypi/l/aiohttp-middlewares.svg
+    :target: https://github.com/playpauseandstop/aiohttp-middlewares/blob/master/LICENSE
+    :alt: BSD License
+
 .. image:: https://coveralls.io/repos/playpauseandstop/aiohttp-middlewares/badge.svg?branch=master&service=github
     :target: https://coveralls.io/github/playpauseandstop/aiohttp-middlewares
     :alt: Coverage
