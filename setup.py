@@ -19,11 +19,11 @@ VERSION = re.findall("__version__ = '([^']+)'", INIT_PY)[0]
 setup(
     name='aiohttp-middlewares',
     version=VERSION,
-    description='Collection useful middleware for aiohttp appliactions.',
+    description='Collection of useful middlewares for aiohttp appliactions',
     long_description=README,
     author='Igor Davydenko',
     author_email='playpauseandstop@gmail.com',
-    url='http://github.com/playpauseandstop/aiohttp_middlewares',
+    url='http://github.com/playpauseandstop/aiohttp-middlewares',
     packages=find_packages(),
     install_requires=[
         'aiohttp>=2.0,<3.0',
