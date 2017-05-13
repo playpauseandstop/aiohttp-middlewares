@@ -13,7 +13,12 @@ dependencies:
 
 test:
   override:
-    - make test
+    - TEST_ARGS="--junit-xml=pytest.xml --cov-report=html:$CIRCLE_ARTIFACTS/coverage" make test
+
+  post:
+    - make coveralls
+    - mkdir -p $CIRCLE_TEST_REPORTS/junit/
+    - "[ -r pytest.xml ] && mv pytest.xml $CIRCLE_TEST_REPORTS/junit/ || :"
 
 deployment:
   release:
