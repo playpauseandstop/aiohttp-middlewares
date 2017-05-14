@@ -22,21 +22,16 @@ aiohttp-middlewares
     :target: https://coveralls.io/github/playpauseandstop/aiohttp-middlewares
     :alt: Coverage
 
+.. image:: https://readthedocs.org/projects/aiohttp-middlewares/badge/?version=latest
+    :target: http://aiohttp-middlewares.readthedocs.org/en/latest/
+    :alt: Documentation
+
 Collection of useful middlewares for `aiohttp <http://aiohttp.readthedocs.org/>`_
 applications.
 
-List of middlewares
-===================
-
-Timeout
--------
-
-Do not allow request handling exceed X seconds.
-
-.. code-block:: python
-
-    from aiohttp import web
-    from aiohttp_middlewares import timeout_middleware
-
-    app = web.Application(
-        middlewares=[timeout_middleware(29.5, ignore={'/slow-url'})])
+- Works on Python 3.5+
+- BSD licensed
+- Latest documentation `on Read The Docs
+  <http://aiohttp-middlewares.readthedocs.io/>`_
+- Source, issues, and pull requests `on GitHub
+  <https://github.com/playpauseandstop/aiohttp-middlewares>`_

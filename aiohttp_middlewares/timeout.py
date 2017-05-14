@@ -77,6 +77,12 @@ def timeout_middleware(seconds: Union[int, float],
     Behind the scene, when current request path match the URL from ignore
     sequence timeout context manager will be configured to avoid break the
     execution after X seconds.
+
+    :param seconds: Max amount of seconds for each handler call.
+    :param ignore:
+        Do not limit execution for any of given URLs (paths). This is useful
+        when request handler returns ``StreamResponse`` instead of regular
+        ``Response``.
     """
     async def factory(app: web.Application, handler: Handler) -> Handler:
         """Actual timeout middleware factory."""
