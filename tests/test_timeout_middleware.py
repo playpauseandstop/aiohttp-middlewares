@@ -4,7 +4,7 @@ import pytest
 
 from aiohttp import web
 
-from aiohttp_middlewares import timeout_middleware_factory
+from aiohttp_middlewares import timeout_middleware
 
 
 HALF_A_SECOND = .5
@@ -13,7 +13,7 @@ SECOND = 1
 
 def create_app(seconds, ignore=None):
     app = web.Application(middlewares=[
-        timeout_middleware_factory(seconds, ignore)])
+        timeout_middleware(seconds, ignore=ignore)])
     app.router.add_route('GET', '/', handler)
     app.router.add_route('GET', '/slow', slow_handler)
     return app

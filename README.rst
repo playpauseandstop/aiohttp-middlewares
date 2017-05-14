@@ -36,9 +36,7 @@ Do not allow request handling exceed X seconds.
 .. code-block:: python
 
     from aiohttp import web
-    from aiohttp_middlewares import timeout_middleware_factory
+    from aiohttp_middlewares import timeout_middleware
 
     app = web.Application(
-        middlewares=[
-            timeout_middleware_factory(29.5, ignore=['/slow-url']),
-        ])
+        middlewares=[timeout_middleware(29.5, ignore={'/slow-url'})])

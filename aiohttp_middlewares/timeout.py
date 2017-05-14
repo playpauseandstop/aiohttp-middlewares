@@ -11,26 +11,20 @@ Usage
 ::
 
     from aiohttp import web
-    from aiohttp_middlewares import (
-        error_middleware_factory,
-        timeout_middleware_factory,
-    )
+    from aiohttp_middlewares import error_middleware, timeout_middleware
 
     # Basic usage
     app = web.Application(
-        middlewares=[timeout_middleware_factory(29.5)])
+        middlewares=[timeout_middleware(29.5)])
 
     # Ignore slow responses from list of urls
     slow_urls = ('/slow-url', '/very-slow-url', '/very/very/slow/url')
     app = web.Application(
-        middlewares=[timeout_middleware_factory(4.5, slow_urls)])
+        middlewares=[timeout_middleware(4.5, ignore=slow_urls)])
 
     # Handle timeout errors with error middleware
     app = web.Application(
-        middlewares=[
-            error_middleware_factory(),
-            timeout_middleware_factory(14.5),
-        ])
+        middlewares=[error_middleware(), timeout_middleware(14.5)])
 
 """
 
@@ -47,8 +41,9 @@ from .types import Handler, Middleware, StrCollection
 logger = logging.getLogger(__name__)
 
 
-def timeout_middleware_factory(seconds: Union[int, float],
-                               ignore: StrCollection=None) -> Middleware:
+def timeout_middleware(seconds: Union[int, float],
+                       *,
+                       ignore: StrCollection=None) -> Middleware:
     """Ensure that request handling does not exceed X seconds.
 
     This is helpful when aiohttp application served behind nginx or other
@@ -77,15 +72,13 @@ def timeout_middleware_factory(seconds: Union[int, float],
         from aiohttp import web
 
         app = web.Application(
-            middlewares=[timeout_middleware_factory(14.5, {'/slow-url'})],
-        )
+            middlewares=[timeout_middleware(14.5, ignore={'/slow-url'})])
 
     Behind the scene, when current request path match the URL from ignore
     sequence timeout context manager will be configured to avoid break the
     execution after X seconds.
     """
-    async def middleware_factory(app: web.Application,
-                                 handler: Handler) -> Handler:
+    async def factory(app: web.Application, handler: Handler) -> Handler:
         """Actual timeout middleware factory."""
         async def middleware(request: web.Request) -> web.Response:
             """Wrap request handler into timeout context manager."""
@@ -100,4 +93,4 @@ def timeout_middleware_factory(seconds: Union[int, float],
             with timeout(actual_seconds):
                 return await handler(request)
         return middleware
-    return middleware_factory
+    return factory
