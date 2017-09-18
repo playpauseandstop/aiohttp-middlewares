@@ -7,7 +7,7 @@ Collection of useful middlewares for aiohttp applications.
 
 """
 
-__version__ = '0.1.0a2'
+__version__ = '0.1.0a3'
 
 from .timeout import timeout_middleware
 

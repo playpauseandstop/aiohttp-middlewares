@@ -22,6 +22,16 @@ Usage
     app = web.Application(
         middlewares=[timeout_middleware(4.5, ignore=slow_urls)])
 
+    # Ignore slow responsed from dict of urls. URL to ignore is a key,
+    # value is a lone string with HTTP method or list of strings with
+    # HTTP methods to ignore. HTTP methods are case-insensitive
+    slow_urls = {
+        '/slow-url': 'POST',
+        '/very-slow-url': ('GET', 'POST'),
+    }
+    app = web.Application(
+        middlewares=[timeout_middleware(4,5, ignore=slow_urls)])
+
     # Handle timeout errors with error middleware
     app = web.Application(
         middlewares=[error_middleware(), timeout_middleware(14.5)])
@@ -35,7 +45,8 @@ from typing import Union
 from aiohttp import web
 from async_timeout import timeout
 
-from .types import Handler, Middleware, StrCollection
+from .types import Handler, Middleware, Urls
+from .utils import match_request
 
 
 logger = logging.getLogger(__name__)
@@ -43,7 +54,7 @@ logger = logging.getLogger(__name__)
 
 def timeout_middleware(seconds: Union[int, float],
                        *,
-                       ignore: StrCollection=None) -> Middleware:
+                       ignore: Urls=None) -> Middleware:
     """Ensure that request handling does not exceed X seconds.
 
     This is helpful when aiohttp application served behind nginx or other
@@ -67,22 +78,36 @@ def timeout_middleware(seconds: Union[int, float],
     properly.
 
     In case if you need to "disable" timeout middleware for given request path,
-    please supply ignore sequence as second positional argument, like::
+    please supply ignore collection as second positional argument, like::
 
         from aiohttp import web
 
         app = web.Application(
             middlewares=[timeout_middleware(14.5, ignore={'/slow-url'})])
 
+    In case if you need more flexible ignore rules you can pass ``ignore``
+    dict, where key is an URL to ignore and value is a collection of methods to
+    ignore from timeout handling for given URL.
+
+    ::
+
+        ignore = {'/slow-url': ['POST']}
+        app = web.Application(
+            middlewares=[timeout_middleware(14.5, ignore=ignore)])
+
     Behind the scene, when current request path match the URL from ignore
-    sequence timeout context manager will be configured to avoid break the
-    execution after X seconds.
+    collection or dict timeout context manager will be configured to avoid
+    break the execution after X seconds.
 
     :param seconds: Max amount of seconds for each handler call.
     :param ignore:
         Do not limit execution for any of given URLs (paths). This is useful
         when request handler returns ``StreamResponse`` instead of regular
-        ``Response``.
+        ``Response``. You also can specify URLs as dict, where key is URL to
+        ignore from wrapping into timeout context and value is list of methods
+        to ignore. This is helpful when you need ignore only POST requests of
+        slow API endpoint, but still need to have GET requests to same endpoint
+        to not exceed X seconds.
     """
     async def factory(app: web.Application, handler: Handler) -> Handler:
         """Actual timeout middleware factory."""
@@ -91,7 +116,7 @@ def timeout_middleware(seconds: Union[int, float],
             actual_seconds = seconds
             request_path = request.rel_url.path
 
-            if request_path in (ignore or set()):
+            if ignore and match_request(ignore, request.method, request_path):
                 logger.debug(
                     'Ignore {0} from timeout handling'.format(request_path))
                 actual_seconds = .0
