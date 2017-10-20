@@ -19,7 +19,7 @@ Usage
 
     # Specify custom headers to match, not `X-Forwarded-Proto: https`
     app = web.Application(
-        middlewares=https_middleware({'Forwared': 'https'}))
+        middlewares=https_middleware({'Forwarded': 'https'}))
 
 """
 
