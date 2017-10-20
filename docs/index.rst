@@ -28,6 +28,9 @@ API
 
 .. automodule:: aiohttp_middlewares
 
+.. automodule:: aiohttp_middlewares.https
+.. autofunction:: aiohttp_middlewares.https.https_middleware
+
 .. automodule:: aiohttp_middlewares.timeout
 .. autofunction:: aiohttp_middlewares.timeout.timeout_middleware
 
