@@ -1,4 +1,14 @@
+from typing import Tuple
+
+import aiohttp
+
 from .types import Urls
+
+
+def get_aiohttp_version() -> Tuple[int, int]:
+    """Return tuple of current aiohttp MAJOR.MINOR version."""
+    return tuple(  # type: ignore
+        int(item) for item in aiohttp.__version__.split('.')[:2])
 
 
 def match_request(urls: Urls, method: str, path: str) -> bool:

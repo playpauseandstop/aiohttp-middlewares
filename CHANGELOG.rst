@@ -1,9 +1,11 @@
 0.1.0 (In Development)
 ======================
 
-0.1.0a3 (In Development)
+0.1.0b1 (In Development)
 ------------------------
 
+- New ``https_middleware`` to allow use proper scheme in ``request.url``, when
+  deploying aiohttp behind reverse proxy with enabled HTTPS
 - Allow passing dict of URLs with list methods to flex process of matching
   request ignored to wrapping into timeout context manager
 

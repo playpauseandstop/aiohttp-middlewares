@@ -1,6 +1,7 @@
+import aiohttp
 import pytest
 
-from aiohttp_middlewares.utils import match_request
+from aiohttp_middlewares.utils import get_aiohttp_version, match_request
 
 
 URLS_COLLECTION = {'/slow-url', '/very-slow-url'}
@@ -8,6 +9,20 @@ URLS_DICT = {
     '/slow-url': 'POST',
     '/very-slow-url': ['get', 'post'],
 }
+
+
+@pytest.mark.parametrize('version, expected', [
+    ('2.0.7', (2, 0)),
+    ('2.1.0', (2, 1)),
+    ('2.2.5', (2, 2)),
+    ('2.3.0a4', (2, 3)),
+    ('2.3.0', (2, 3)),
+    ('2.3.1a1', (2, 3)),
+    ('2.3.1', (2, 3)),
+])
+def test_get_aiohttp_version(monkeypatch, version, expected):
+    monkeypatch.setattr(aiohttp, '__version__', version)
+    assert get_aiohttp_version() == expected
 
 
 @pytest.mark.parametrize('urls, request_method, request_path, expected', [

@@ -27,7 +27,7 @@ setup(
     packages=find_packages(),
     install_requires=[
         'aiohttp>=2.0,<3.0',
-        'async-timeout>=1.2,<2.0',
+        'async-timeout>=1.2,<3.0',
     ],
     platforms='any',
     classifiers=[

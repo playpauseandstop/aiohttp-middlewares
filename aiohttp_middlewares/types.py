@@ -13,6 +13,7 @@ from aiohttp import web
 
 
 StrCollection = Union[List[str], Set[str], Tuple[str, ...]]
+StrDict = Dict[str, str]
 Urls = Union[StrCollection, Dict[str, Union[StrCollection, str]]]
 
 Handler = Callable[[web.Request], web.Response]

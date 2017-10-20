@@ -40,7 +40,7 @@ Usage
 
 import logging
 
-from typing import Union
+from typing import Optional, Union  # noqa: F401
 
 from aiohttp import web
 from async_timeout import timeout
@@ -113,15 +113,16 @@ def timeout_middleware(seconds: Union[int, float],
         """Actual timeout middleware factory."""
         async def middleware(request: web.Request) -> web.Response:
             """Wrap request handler into timeout context manager."""
-            actual_seconds = seconds
+            request_method = request.method
             request_path = request.rel_url.path
 
-            if ignore and match_request(ignore, request.method, request_path):
+            if ignore and match_request(ignore, request_method, request_path):
                 logger.debug(
-                    'Ignore {0} from timeout handling'.format(request_path))
-                actual_seconds = .0
+                    'Ignore path from timeout handling',
+                    extra={'method': request_method, 'path': request_path})
+                return await handler(request)
 
-            with timeout(actual_seconds):
+            with timeout(seconds):
                 return await handler(request)
         return middleware
     return factory
