@@ -45,6 +45,10 @@ def https_middleware(match_headers: StrDict=None) -> Middleware:
     nginx with HTTPS enabled, after aiohttp discounted
     ``secure_proxy_ssl_header`` keyword argument in
     https://github.com/aio-libs/aiohttp/pull/2299.
+
+    :param match_headers:
+        Dict of header(s) from reverse proxy to specify that aiohttp run behind
+        HTTPS. By default: ``{'X-Forwarded-Proto': 'https'}``
     """
     async def factory(app: web.Application, handler: Handler) -> Handler:
         """Actual HTTPS middleware factory."""
