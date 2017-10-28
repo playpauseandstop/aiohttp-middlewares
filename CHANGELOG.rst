@@ -1,6 +1,12 @@
 0.1.0 (In Development)
 ======================
 
+0.1.0b2 (In Development)
+------------------------
+
+- Allow to match URL by regexp for timeout middleware (this is hidden feature
+  for now).
+
 0.1.0b1 (2017-10-20)
 --------------------
 

@@ -2,7 +2,7 @@ from typing import Tuple
 
 import aiohttp
 
-from .types import Urls
+from .types import Url, Urls
 
 
 def get_aiohttp_version() -> Tuple[int, int]:
@@ -13,7 +13,14 @@ def get_aiohttp_version() -> Tuple[int, int]:
 
 def match_request(urls: Urls, method: str, path: str) -> bool:
     """Check whether request method and path matches given URLs or not."""
-    found = [item for item in urls if item == path]
+    def match_item(item: Url, path: str) -> bool:
+        """Check whether current path is equal to given URL str or regexp."""
+        try:
+            return bool(item.match(path))  # type: ignore
+        except (AttributeError, TypeError):
+            return item == path
+
+    found = [item for item in urls if match_item(item, path)]
     if not found:
         return False
 
