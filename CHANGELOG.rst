@@ -4,8 +4,10 @@
 0.1.0b2 (In Development)
 ------------------------
 
-- Allow to match URL by regexp for timeout middleware (this is hidden feature
-  for now).
+- New ``shield_middleware`` to wrap request handler into
+  `asyncio.shield <https://docs.python.org/3/library/asyncio-task.html#asyncio.shield>`_
+  helper before execution
+- Allow to match URL by regexp for shield/timeout middleware
 
 0.1.0b1 (2017-10-20)
 --------------------

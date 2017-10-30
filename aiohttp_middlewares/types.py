@@ -7,13 +7,22 @@ Type annotation shortcuts for the project.
 
 """
 
-from typing import Awaitable, Callable, Dict, List, Set, Tuple, Union
+from typing import (
+    Awaitable,
+    Callable,
+    Dict,
+    FrozenSet,
+    List,
+    Set,
+    Tuple,
+    Union,
+)
 from typing.re import Pattern
 
 from aiohttp import web
 
 
-StrCollection = Union[List[str], Set[str], Tuple[str, ...]]
+StrCollection = Union[List[str], FrozenSet[str], Set[str], Tuple[str, ...]]
 StrDict = Dict[str, str]
 
 Url = Union[str, Pattern]
