@@ -1,5 +1,5 @@
 coveralls==1.2.0
-Sphinx==1.6.4
+Sphinx==1.6.6
 sphinx-autodoc-typehints==1.2.3
 tox==2.9.1
 tox-pyenv==1.1.0

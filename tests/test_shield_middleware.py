@@ -1,7 +1,6 @@
 import re
 
 import pytest
-
 from aiohttp import web
 
 from aiohttp_middlewares import NON_IDEMPOTENT_METHODS, shield_middleware

@@ -39,7 +39,6 @@ Usage
 """
 
 import logging
-
 from typing import Optional, Union  # noqa: F401
 
 from aiohttp import web

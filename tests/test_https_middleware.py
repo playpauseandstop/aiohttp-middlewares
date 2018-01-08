@@ -1,5 +1,4 @@
 import pytest
-
 from aiohttp import web
 
 from aiohttp_middlewares import https_middleware
