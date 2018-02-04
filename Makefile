@@ -10,14 +10,12 @@ VENV = $(shell python -c "import sys; print(int(hasattr(sys, 'real_prefix')));")
 # Python commands
 ifeq ($(VENV),1)
 	COVERALLS = coveralls
+	PYTHON = python
 	SPHINXBUILD = sphinx-build
-	TOX = tox
-	TWINE = twine
 else
 	COVERALLS = $(ENV)/bin/coveralls
+	PYTHON = $(ENV)/bin/python
 	SPHINXBUILD = `pwd`/$(ENV)/bin/sphinx-build
-	TOX = $(ENV)/bin/tox
-	TWINE = $(ENV)/bin/twine
 endif
 
 # Bootstrapper args
@@ -52,7 +50,7 @@ ifeq ($(CIRCLECI),)
 endif
 	rm -rf build/ dist/
 	python setup.py sdist bdist_wheel
-	$(TWINE) upload dist/*
+	$(PYTHON) -m twine upload dist/*
 
 distclean: clean
 	rm -rf build/ dist/ *.egg*/ $(ENV)/
@@ -62,18 +60,21 @@ docs: .install
 
 install: .install
 .install: setup.py requirements-dev.txt
-	bootstrapper -d -e $(ENV)/ $(bootstrapper_args)
+	python -m bootstrapper -r requirements-dev.txt -e $(ENV)/ $(bootstrapper_args)
 	touch $@
 
 lint:
 	TOXENV=lint $(MAKE) test
 
+list-outdated: .install
+	$(PYTHON) -m pip list -lo
+
 setup-pyenv:
 ifneq ($(CIRCLECI),)
 	pyenv local 3.5.3 3.6.2
 else
-	pyenv local 3.5.4 3.6.3
+	pyenv local 3.5.4 3.6.4
 endif
 
 test: .install clean
-	$(TOX) $(tox_args) $(TOX_ARGS) -- $(TEST_ARGS)
+	$(PYTHON) -m tox $(tox_args) $(TOX_ARGS) -- $(TEST_ARGS)
