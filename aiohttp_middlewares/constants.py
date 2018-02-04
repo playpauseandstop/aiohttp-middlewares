@@ -11,4 +11,4 @@ Collection of constants for ``aiohttp_middlewares`` project.
 IDEMPOTENT_METHODS = frozenset({'GET', 'HEAD', 'OPTIONS', 'TRACE'})
 
 #: Set of non-idempotent HTTP methods
-NON_IDEMPOTENT_METHODS = frozenset({'POST', 'PUT', 'PATCH', 'DELETE'})
+NON_IDEMPOTENT_METHODS = frozenset({'DELETE', 'PATCH', 'POST', 'PUT'})
