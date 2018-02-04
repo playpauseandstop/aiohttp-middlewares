@@ -1,7 +1,9 @@
+import asyncio
 import re
 
 import pytest
 from aiohttp import web
+from aiohttp.test_utils import make_mocked_request
 
 from aiohttp_middlewares import NON_IDEMPOTENT_METHODS, shield_middleware
 
@@ -72,3 +74,42 @@ async def test_shield_request_by_url(test_client, url, method):
     response = await client.request(method, url)
     assert response.status == 200
     assert await response.json() is True
+
+
+@pytest.mark.parametrize('method, value', [
+    ('DELETE', False),
+    ('GET', False),
+    ('POST', True),
+    ('PUT', False),
+])
+async def test_shield_middleware_funcitonal(loop, method, value):
+    flag = False
+    client_ready = asyncio.Event()
+    handler_ready = asyncio.Event()
+
+    async def handler(request):
+        handler_ready.set()
+
+        # Cancellation point.
+        # When not shielded, CancelledError will be raised here.
+        await client_ready.wait()
+
+        nonlocal flag
+        flag = True
+
+        return web.Response(status=200)
+
+    factory = shield_middleware(methods=frozenset({'POST'}))
+    wrapped_handler = await factory(web.Application(), handler)
+
+    # Run handler in a task.
+    task = loop.create_task(wrapped_handler(make_mocked_request(method, '/')))
+    await handler_ready.wait()
+
+    # Cancel the handler.
+    task.cancel()
+    client_ready.set()
+    # Wait for completion.
+    await asyncio.wait([task])
+
+    assert flag is value
