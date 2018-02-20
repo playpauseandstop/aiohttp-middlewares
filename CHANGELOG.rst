@@ -1,8 +1,11 @@
-0.1.0 (In Development)
-======================
+0.1.0 (2017-02-20)
+==================
 
-0.1.0b2 (In Development)
-------------------------
+- First non-beta release
+- Support `aiohttp` 3.0 version
+
+0.1.0b2 (2017-02-04)
+--------------------
 
 - New ``shield_middleware`` to wrap request handler into
   `asyncio.shield <https://docs.python.org/3/library/asyncio-task.html#asyncio.shield>`_
