@@ -26,7 +26,7 @@ setup(
     url='http://github.com/playpauseandstop/aiohttp-middlewares',
     packages=find_packages(),
     install_requires=[
-        'aiohttp>=2.0,<3.0',
+        'aiohttp>=2.0,<4.0',
         'async-timeout>=1.2,<3.0',
     ],
     platforms='any',
