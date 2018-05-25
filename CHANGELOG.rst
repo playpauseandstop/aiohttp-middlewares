@@ -1,10 +1,15 @@
-0.1.0 (2017-02-20)
+0.1.1 (2018-05-25)
+==================
+
+- Support `async-timeout` 3.0 version
+
+0.1.0 (2018-02-20)
 ==================
 
 - First non-beta release
 - Support `aiohttp` 3.0 version
 
-0.1.0b2 (2017-02-04)
+0.1.0b2 (2018-02-04)
 --------------------
 
 - New ``shield_middleware`` to wrap request handler into
