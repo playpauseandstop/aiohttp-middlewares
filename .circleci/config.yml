@@ -21,7 +21,7 @@ jobs:
       - checkout
       - run: *install_poetry
       - run: *update_path
-      - run: TOXENV=py35-aiohttp{30,31,32,33,34} make test
+      - run: TOXENV=py35-aiohttp30,py35-aiohttp31,py35-aiohttp32,py35-aiohttp33,py35-aiohttp34 make test
       - run: mkdir -p test-results/nosetests
       - run: "[ -r nosetests.xml ] && mv nosetests.xml test-results/nosetests/results.xml || :"
       - store_test_results:
