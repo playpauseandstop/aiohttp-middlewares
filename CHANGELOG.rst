@@ -6,7 +6,7 @@
 
 - Ensure Python 3.7 support
 - Drop aiohttp 2 support
-- Ensure support latest aiohttp version (``3.4.4``)
+- Ensure support latest aiohttp version, ``3.4.4``
 - Make library [PEP-561](https://www.python.org/dev/peps/pep-0561/) compatible
 
 0.1.1 (2018-05-25)
