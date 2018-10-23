@@ -2,7 +2,6 @@ import pytest
 from aiohttp import web
 
 from aiohttp_middlewares import https_middleware
-from aiohttp_middlewares.utils import get_aiohttp_version
 
 
 def create_app(match_headers):
