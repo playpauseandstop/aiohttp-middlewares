@@ -35,7 +35,7 @@ async def slow_handler(request):
     (SECOND - HALF_A_SECOND, ['/slow'], '/', 200),
     (SECOND - HALF_A_SECOND, ['/slow'], '/slow', 200),
 ])
-async def test_timeout_middleware(test_client, seconds, ignore, url, expected):
-    client = await test_client(create_app(seconds, ignore))
+async def test_timeout_middleware(aiohttp_client, seconds, ignore, url, expected):
+    client = await aiohttp_client(create_app(seconds, ignore))
     response = await client.get(url)
     assert response.status == expected

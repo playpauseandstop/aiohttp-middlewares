@@ -1,5 +1,4 @@
-*.egg
-*.egg-info
+*.egg*
 *.py[co]
 
 .coverage
@@ -13,3 +12,4 @@ dist/
 docs/_build/
 env/
 .tox/
+.venv/

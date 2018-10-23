@@ -27,28 +27,10 @@ async def handler(request):
     ({'Forwarded': 'https'}, {'Forwarded': 'http'}, 'http'),
     ({'Forwarded': 'https'}, {'Forwarded': 'https'}, 'https'),
 ])
-async def test_https_middleware(test_client,
+async def test_https_middleware(aiohttp_client,
                                 match_headers,
                                 request_headers,
                                 expected):
-    client = await test_client(create_app(match_headers))
+    client = await aiohttp_client(create_app(match_headers))
     response = await client.get('/', headers=request_headers)
     assert await response.json() == expected
-
-
-@pytest.mark.skipif(
-    get_aiohttp_version() != (2, 0) and get_aiohttp_version() < (2, 3),
-    reason='aiohttp 2.0 & 2.3+')
-async def test_https_middleware_aiohttp20_23_empty_match_headers(test_client):
-    client = await test_client(create_app({}))
-    response = await client.get('/', headers={'X-Forwarded-Proto': 'https'})
-    assert await response.json() == 'http'
-
-
-@pytest.mark.skipif(
-    get_aiohttp_version() not in ((2, 1), (2, 2)),
-    reason='aiohttp 2.1 & 2.2')
-async def test_https_middleware_aiohttp21_22_empty_match_headers(test_client):
-    client = await test_client(create_app({}))
-    response = await client.get('/', headers={'X-Forwarded-Proto': 'https'})
-    assert await response.json() == 'https'

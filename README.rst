@@ -2,7 +2,7 @@
 aiohttp-middlewares
 ===================
 
-.. image:: https://img.shields.io/circleci/project/playpauseandstop/aiohttp-middlewares/master.svg?maxAge=2592000
+.. image:: https://img.shields.io/circleci/project/github/playpauseandstop/aiohttp-middlewares/master.svg
     :target: https://circleci.com/gh/playpauseandstop/aiohttp-middlewares
     :alt: CircleCI
 
@@ -32,6 +32,6 @@ applications.
 - Works on Python 3.5+
 - BSD licensed
 - Latest documentation `on Read The Docs
-  <http://aiohttp-middlewares.readthedocs.io/>`_
+  <https://aiohttp-middlewares.readthedocs.io/>`_
 - Source, issues, and pull requests `on GitHub
   <https://github.com/playpauseandstop/aiohttp-middlewares>`_

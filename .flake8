@@ -1,0 +1,4 @@
+[flake8]
+application-import-names = aiohttp_middlewares
+import-order-style = smarkets
+max-complexity = 15

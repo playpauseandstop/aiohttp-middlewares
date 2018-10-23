@@ -48,9 +48,9 @@ def test_shield_middleware_mixed_urls_and_ignore():
     ('POST', '/two'),
     ('PATCH', '/three'),
 ])
-async def test_shield_request_by_method(test_client, url, method):
+async def test_shield_request_by_method(aiohttp_client, url, method):
     app = create_app(methods=NON_IDEMPOTENT_METHODS, ignore=['/three'])
-    client = await test_client(app)
+    client = await aiohttp_client(app)
 
     response = await client.request(method, url)
     assert response.status == 200
@@ -64,12 +64,12 @@ async def test_shield_request_by_method(test_client, url, method):
     ('POST', '/two'),
     ('PATCH', '/three'),
 ])
-async def test_shield_request_by_url(test_client, url, method):
+async def test_shield_request_by_url(aiohttp_client, url, method):
     app = create_app(urls={
         '/one': ['POST'],
         re.compile(r'/(two|three)'): {'post', 'patch'},
     })
-    client = await test_client(app)
+    client = await aiohttp_client(app)
 
     response = await client.request(method, url)
     assert response.status == 200
