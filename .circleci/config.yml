@@ -22,8 +22,6 @@ jobs:
       - run: *install_poetry
       - run: *update_path
       - run: TOXENV=py35-aiohttp30,py35-aiohttp31,py35-aiohttp32,py35-aiohttp33,py35-aiohttp34 make test
-      - run: mkdir -p test-results/nosetests
-      - run: "[ -r nosetests.xml ] && mv nosetests.xml test-results/nosetests/results.xml || :"
       - store_test_results:
           path: test-results
   test36:
@@ -34,8 +32,6 @@ jobs:
       - run: *install_poetry
       - run: *update_path
       - run: TOXENV=py36-aiohttp30,py36-aiohttp31,py36-aiohttp32,py36-aiohttp33,py36-aiohttp34 make test
-      - run: mkdir -p test-results/nosetests
-      - run: "[ -r nosetests.xml ] && mv nosetests.xml test-results/nosetests/results.xml || :"
       - store_test_results:
           path: test-results
   test37:
@@ -45,8 +41,6 @@ jobs:
       - run: *install_poetry
       - run: *update_path
       - run: TOXENV=py37-aiohttp30,py37-aiohttp31,py37-aiohttp32,py37-aiohttp33,py37-aiohttp34 make test
-      - run: mkdir -p test-results/nosetests
-      - run: "[ -r nosetests.xml ] && mv nosetests.xml test-results/nosetests/results.xml || :"
       - store_test_results:
           path: test-results
       - run: make coveralls
