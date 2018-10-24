@@ -1,4 +1,12 @@
-.PHONY: clean coveralls deploy distclean docs install lint test
+.PHONY: clean \
+	coveralls \
+	deploy \
+	distclean \
+	docs \
+	install \
+	lint \
+	test \
+	update-python
 
 # Project settings
 PROJECT = aiohttp_middlewares
@@ -49,8 +57,17 @@ install: .install
 lint:
 	TOXENV=lint $(MAKE) test
 
-poetry.lock:
+poetry.lock: pyproject.toml
 	$(POETRY) install
 
 test: .install clean
 	$(PYTHON) -m tox $(tox_args) $(TOX_ARGS) -- $(TEST_ARGS)
+
+update-python:
+ifeq ($(PYTHON_VERSION),)
+	# PYTHON_VERSION environment var should be supplied to update Python version to use
+else
+	rm -rf .install .venv/
+	pyenv local $(PYTHON_VERSION)
+	$(MAKE) .install
+endif

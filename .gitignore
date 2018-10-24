@@ -3,7 +3,6 @@
 
 .coverage
 .install
-.python-version
 
 .*cache/
 __pycache__/
