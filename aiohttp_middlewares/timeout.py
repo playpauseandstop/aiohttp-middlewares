@@ -44,7 +44,7 @@ from typing import Optional, Union  # noqa: F401
 from aiohttp import web
 from async_timeout import timeout
 
-from .types import Handler, Middleware, Urls
+from .annotations import Handler, Middleware, Urls
 from .utils import match_request
 
 
@@ -53,7 +53,7 @@ logger = logging.getLogger(__name__)
 
 def timeout_middleware(seconds: Union[int, float],
                        *,
-                       ignore: Urls=None) -> Middleware:
+                       ignore: Urls = None) -> Middleware:
     """Ensure that request handling does not exceed X seconds.
 
     This is helpful when aiohttp application served behind nginx or other

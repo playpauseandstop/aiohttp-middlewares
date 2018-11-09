@@ -43,7 +43,7 @@ import logging
 
 from aiohttp import web
 
-from .types import Handler, Middleware, StrCollection, Urls
+from .annotations import Handler, Middleware, StrCollection, Urls
 from .utils import match_request
 
 
@@ -51,9 +51,9 @@ logger = logging.getLogger(__name__)
 
 
 def shield_middleware(*,
-                      methods: StrCollection=None,
-                      urls: Urls=None,
-                      ignore: Urls=None) -> Middleware:
+                      methods: StrCollection = None,
+                      urls: Urls = None,
+                      ignore: Urls = None) -> Middleware:
     """Ensure that handler execution would not break on ``CancelledError``.
 
     Shielding handlers allow to avoid breaking handler execution on

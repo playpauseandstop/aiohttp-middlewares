@@ -16,11 +16,6 @@ POETRY ?= poetry
 PYTHON ?= $(POETRY) run python
 SPHINXBUILD ?= $(POETRY) run sphinx-build
 
-# Tox args
-ifneq ($(TOXENV),)
-	tox_args = -e $(TOXENV)
-endif
-
 all: install
 
 clean:
@@ -63,7 +58,7 @@ poetry.lock: pyproject.toml
 	$(POETRY) install
 
 test: .install clean
-	$(PYTHON) -m tox $(tox_args) $(TOX_ARGS) -- $(TEST_ARGS)
+	TOXENV=$(TOXENV) $(PYTHON) -m tox $(TOX_ARGS) -- $(TEST_ARGS)
 
 update-python:
 ifeq ($(PYTHON_VERSION),)

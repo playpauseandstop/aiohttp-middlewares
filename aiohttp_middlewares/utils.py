@@ -2,7 +2,7 @@ from typing import Tuple
 
 import aiohttp
 
-from .types import Url, Urls
+from .annotations import Url, Urls
 
 
 def get_aiohttp_version() -> Tuple[int, int]:

@@ -1,7 +1,7 @@
 """
-=========================
-aiohttp_middlewares.types
-=========================
+===============================
+aiohttp_middlewares.annotations
+===============================
 
 Type annotation shortcuts for the project.
 

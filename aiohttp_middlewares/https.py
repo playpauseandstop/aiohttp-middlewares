@@ -27,7 +27,7 @@ import logging
 
 from aiohttp import web
 
-from .types import Handler, Middleware, StrDict
+from .annotations import Handler, Middleware, StrDict
 from .utils import get_aiohttp_version
 
 
@@ -36,7 +36,7 @@ DEFAULT_MATCH_HEADERS = {'X-Forwarded-Proto': 'https'}
 logger = logging.getLogger(__name__)
 
 
-def https_middleware(match_headers: StrDict=None) -> Middleware:
+def https_middleware(match_headers: StrDict = None) -> Middleware:
     """
     Change scheme for current request when aiohttp application deployed behind
     reverse proxy with HTTPS enabled.
