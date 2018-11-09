@@ -38,9 +38,11 @@ ifeq ($(TWINE_PASSWORD),)
 	# TWINE_PASSWORD env var should be supplied
 	exit 1
 endif
-ifneq ($(CIRCLECI),)
+ifeq ($(CIRCLECI),)
 	$(MAKE) test
 endif
+	rm -rf build/ dist/
+	$(POETRY) build
 	$(PYTHON) -m twine upload dist/*
 
 distclean: clean
