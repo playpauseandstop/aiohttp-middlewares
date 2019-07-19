@@ -48,4 +48,4 @@ repos:
         entry: make update-setup-py
         pass_filenames: false
         language: system
-        files: ^pyproject\.toml$
+        files: ^(pyproject\.toml|README\.rst)$
