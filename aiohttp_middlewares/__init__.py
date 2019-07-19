@@ -7,7 +7,7 @@ Collection of useful middlewares for aiohttp applications.
 
 """
 
-__version__ = '0.2.0a0'
+__version__ = "0.2.0a1"
 
 from .constants import IDEMPOTENT_METHODS, NON_IDEMPOTENT_METHODS
 from .https import https_middleware

@@ -30,6 +30,7 @@ Collection of useful middlewares for `aiohttp <http://aiohttp.readthedocs.org/>`
 applications.
 
 - Works on Python 3.5+
+- Works with aiohttp 3.5+
 - BSD licensed
 - Latest documentation `on Read The Docs
   <https://aiohttp-middlewares.readthedocs.io/>`_

@@ -11,13 +11,15 @@ from aiohttp_middlewares import NON_IDEMPOTENT_METHODS, shield_middleware
 def create_app(*, methods=None, urls=None, ignore=None):
     app = web.Application(
         middlewares=[
-            shield_middleware(methods=methods, urls=urls, ignore=ignore)])
+            shield_middleware(methods=methods, urls=urls, ignore=ignore)
+        ]
+    )
 
-    app.router.add_get('/one', handler)
-    app.router.add_post('/one', handler)
-    app.router.add_get('/two', handler)
-    app.router.add_post('/two', handler)
-    app.router.add_patch('/three', handler)
+    app.router.add_get("/one", handler)
+    app.router.add_post("/one", handler)
+    app.router.add_get("/two", handler)
+    app.router.add_post("/two", handler)
+    app.router.add_patch("/three", handler)
 
     return app
 
@@ -33,23 +35,26 @@ def test_shield_middleware_no_arguments():
 
 def test_shield_middleware_mixed_methods_and_urls():
     with pytest.raises(ValueError):
-        shield_middleware(methods=NON_IDEMPOTENT_METHODS, urls=['/one'])
+        shield_middleware(methods=NON_IDEMPOTENT_METHODS, urls=["/one"])
 
 
 def test_shield_middleware_mixed_urls_and_ignore():
     with pytest.raises(ValueError):
-        shield_middleware(urls=['/one'], ignore=['/two'])
+        shield_middleware(urls=["/one"], ignore=["/two"])
 
 
-@pytest.mark.parametrize('method, url', [
-    ('GET', '/one'),
-    ('GET', '/two'),
-    ('POST', '/one'),
-    ('POST', '/two'),
-    ('PATCH', '/three'),
-])
+@pytest.mark.parametrize(
+    "method, url",
+    [
+        ("GET", "/one"),
+        ("GET", "/two"),
+        ("POST", "/one"),
+        ("POST", "/two"),
+        ("PATCH", "/three"),
+    ],
+)
 async def test_shield_request_by_method(aiohttp_client, url, method):
-    app = create_app(methods=NON_IDEMPOTENT_METHODS, ignore=['/three'])
+    app = create_app(methods=NON_IDEMPOTENT_METHODS, ignore=["/three"])
     client = await aiohttp_client(app)
 
     response = await client.request(method, url)
@@ -57,18 +62,20 @@ async def test_shield_request_by_method(aiohttp_client, url, method):
     assert await response.json() is True
 
 
-@pytest.mark.parametrize('method, url', [
-    ('GET', '/one'),
-    ('GET', '/two'),
-    ('POST', '/one'),
-    ('POST', '/two'),
-    ('PATCH', '/three'),
-])
+@pytest.mark.parametrize(
+    "method, url",
+    [
+        ("GET", "/one"),
+        ("GET", "/two"),
+        ("POST", "/one"),
+        ("POST", "/two"),
+        ("PATCH", "/three"),
+    ],
+)
 async def test_shield_request_by_url(aiohttp_client, url, method):
-    app = create_app(urls={
-        '/one': ['POST'],
-        re.compile(r'/(two|three)'): {'post', 'patch'},
-    })
+    app = create_app(
+        urls={"/one": ["POST"], re.compile(r"/(two|three)"): {"post", "patch"}}
+    )
     client = await aiohttp_client(app)
 
     response = await client.request(method, url)
@@ -76,12 +83,10 @@ async def test_shield_request_by_url(aiohttp_client, url, method):
     assert await response.json() is True
 
 
-@pytest.mark.parametrize('method, value', [
-    ('DELETE', False),
-    ('GET', False),
-    ('POST', True),
-    ('PUT', False),
-])
+@pytest.mark.parametrize(
+    "method, value",
+    [("DELETE", False), ("GET", False), ("POST", True), ("PUT", False)],
+)
 async def test_shield_middleware_funcitonal(loop, method, value):
     flag = False
     client_ready = asyncio.Event()
@@ -99,11 +104,11 @@ async def test_shield_middleware_funcitonal(loop, method, value):
 
         return web.Response(status=200)
 
-    factory = shield_middleware(methods=frozenset({'POST'}))
-    wrapped_handler = await factory(web.Application(), handler)
-
     # Run handler in a task.
-    task = loop.create_task(wrapped_handler(make_mocked_request(method, '/')))
+    middleware = shield_middleware(methods=frozenset({"POST"}))
+    task = loop.create_task(
+        middleware(make_mocked_request(method, "/"), handler)
+    )
     await handler_ready.wait()
 
     # Cancel the handler.

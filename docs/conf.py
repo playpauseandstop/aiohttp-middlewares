@@ -20,78 +20,86 @@
 
 import re
 import sys
-
 from pathlib import Path
 
 
 rel = Path(__file__).parent.parent
 sys.path.insert(0, str(rel))
 
-with open(str(rel / 'aiohttp_middlewares' / '__init__.py')) as handler:
-    INIT_PY = handler.read()
-
-VERSION = re.findall("__version__ = '([^']+)'", INIT_PY)[0]
+INIT_PY = (rel / "aiohttp_middlewares" / "__init__.py").read_text()
+VERSION = re.findall('__version__ = "([^"]+)"', INIT_PY)[0]
 
 
 extensions = [
-    'alabaster',
-    'sphinx.ext.autodoc',
-    'sphinx_autodoc_typehints',
-    'sphinx.ext.intersphinx',
-    'sphinx.ext.coverage',
-    'sphinx.ext.viewcode',
+    "alabaster",
+    "sphinx.ext.autodoc",
+    "sphinx_autodoc_typehints",
+    "sphinx.ext.intersphinx",
+    "sphinx.ext.coverage",
+    "sphinx.ext.viewcode",
 ]
 
-templates_path = ['_templates']
-source_suffix = '.rst'
-master_doc = 'index'
+templates_path = ["_templates"]
+source_suffix = ".rst"
+master_doc = "index"
 
-project = 'aiohttp-middlewares'
-copyright = '2017, Igor Davydenko'
-author = 'Igor Davydenko'
+project = "aiohttp-middlewares"
+copyright = "2017-2019, Igor Davydenko"
+author = "Igor Davydenko"
 
-version = '.'.join(VERSION.split('.')[:2])
+version = ".".join(VERSION.split(".")[:2])
 release = VERSION
 
-language = 'en'
-exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store']
-pygments_style = 'sphinx'
+language = "en"
+exclude_patterns = ["_build", "Thumbs.db", ".DS_Store"]
+pygments_style = "sphinx"
 
-html_theme = 'alabaster'
+html_theme = "alabaster"
 html_theme_options = {
-    'logo_name': True,
-    'description': 'Collection of aiohttp middlewares',
-    'github_user': 'playpauseandstop',
-    'github_repo': project,
-    'github_banner': True,
-    'github_button': True,
-    'github_type': 'star',
-    'fixed_sidebar': True,
+    "logo_name": True,
+    "description": "Collection of aiohttp middlewares",
+    "github_user": "playpauseandstop",
+    "github_repo": project,
+    "github_banner": True,
+    "github_button": True,
+    "github_type": "star",
+    "fixed_sidebar": True,
 }
-html_static_path = ['_static']
-html_sidebars = {
-    '**': [
-        'about.html', 'localtoc.html', 'searchbox.html',
-    ]
-}
+html_static_path = ["_static"]
+html_sidebars = {"**": ["about.html", "localtoc.html", "searchbox.html"]}
 
-htmlhelp_basename = 'aiohttp-middlewaresdoc'
-latex_elements = {
-}
+htmlhelp_basename = "aiohttp-middlewaresdoc"
+latex_elements = {}
 latex_documents = [
-    (master_doc, 'aiohttp-middlewares.tex', 'aiohttp-middlewares Documentation',
-     'Igor Davydenko', 'manual'),
+    (
+        master_doc,
+        "aiohttp-middlewares.tex",
+        "aiohttp-middlewares Documentation",
+        "Igor Davydenko",
+        "manual",
+    )
 ]
 
 man_pages = [
-    (master_doc, 'aiohttp-middlewares', 'aiohttp-middlewares Documentation',
-     [author], 1)
+    (
+        master_doc,
+        "aiohttp-middlewares",
+        "aiohttp-middlewares Documentation",
+        [author],
+        1,
+    )
 ]
 
 texinfo_documents = [
-    (master_doc, 'aiohttp-middlewares', 'aiohttp-middlewares Documentation',
-     author, 'aiohttp-middlewares', 'One line description of project.',
-     'Miscellaneous'),
+    (
+        master_doc,
+        "aiohttp-middlewares",
+        "aiohttp-middlewares Documentation",
+        author,
+        "aiohttp-middlewares",
+        "One line description of project.",
+        "Miscellaneous",
+    )
 ]
 
-intersphinx_mapping = {'https://docs.python.org/': None}
+intersphinx_mapping = {"https://docs.python.org/": None}

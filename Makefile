@@ -1,30 +1,30 @@
-.PHONY: clean \
+.PHONY: ci-deploy \
+	ci-lint \
+	ci-test \
+	clean \
 	coveralls \
-	deploy \
 	distclean \
 	docs \
 	install \
 	lint \
+	list-outdated \
 	test \
-	update-python
+	update-setup-py
 
 # Project settings
 PROJECT = aiohttp_middlewares
+DIST_PROJECT = aiohttp-middlewares
 
 # Python commands
 POETRY ?= poetry
+PRE_COMMIT ?= pre-commit
 PYTHON ?= $(POETRY) run python
 SPHINXBUILD ?= $(POETRY) run sphinx-build
+TOX ?= tox
 
 all: install
 
-clean:
-	find . \( -name __pycache__ -o -type d -empty \) -exec rm -rf {} + 2> /dev/null
-
-coveralls:
-	-$(PYTHON) -m coveralls
-
-deploy:
+ci-deploy:
 ifeq ($(TWINE_USERNAME),)
 	# TWINE_USERNAME env var should be supplied
 	exit 1
@@ -36,35 +36,50 @@ endif
 ifeq ($(CIRCLECI),)
 	$(MAKE) test
 endif
-	rm -rf build/ dist/
+	-rm -rf build/ dist/
 	$(POETRY) build
-	$(PYTHON) -m twine upload dist/*
+	$(POETRY) publish -u $(TWINE_USERNAME) -p $(TWINE_PASSWORD)
+
+ci-lint:
+	SKIP=$(SKIP) $(PRE_COMMIT) run --all $(HOOK)
+
+ci-test:
+	TOXENV=$(TOXENV) $(TOX) $(TOX_ARGS) -- $(TEST_ARGS)
+
+clean:
+	find . \( -name __pycache__ -o -type d -empty \) -exec rm -rf {} + 2> /dev/null
+
+coveralls:
+	-$(PYTHON) -m coveralls
 
 distclean: clean
 	rm -rf build/ dist/ *.egg*/ .venv/
 
 docs: .install
+	$(PYTHON) -m pip install -r docs/requirements.txt
 	$(MAKE) -C docs/ SPHINXBUILD="$(SPHINXBUILD)" html
 
 install: .install
-.install: poetry.lock pyproject.toml
+.install: pyproject.toml poetry.lock
+ifneq ($(CIRCLECI),)
+	$(POETRY) config settings.virtualenvs.create true
+endif
+	$(POETRY) config settings.virtualenvs.in-project true
 	$(POETRY) install
 	touch $@
 
-lint:
-	TOXENV=lint $(MAKE) test
+lint: install
+	SKIP=update-setup-py $(MAKE) ci-lint
 
-poetry.lock: pyproject.toml
-	$(POETRY) install
+list-outdated: install
+	$(POETRY) show -o
 
-test: .install clean
-	TOXENV=$(TOXENV) $(PYTHON) -m tox $(TOX_ARGS) -- $(TEST_ARGS)
+test: install clean lint ci-test
 
-update-python:
-ifeq ($(PYTHON_VERSION),)
-	# PYTHON_VERSION environment var should be supplied to update Python version to use
-else
-	rm -rf .install .venv/
-	pyenv local $(PYTHON_VERSION)
-	$(MAKE) .install
-endif
+update-setup-py: .install
+	rm -rf dist/
+	$(POETRY) build
+	tar -xzf dist/$(DIST_PROJECT)-*.tar.gz --directory dist/
+	cp dist/$(DIST_PROJECT)-*/setup.py .
+	rm -rf dist/
+	$(PYTHON) -c 'from pathlib import Path; setup_py = Path("setup.py"); setup_py.write_text(setup_py.read_text().replace("from distutils.core import setup", "from setuptools import setup"))'

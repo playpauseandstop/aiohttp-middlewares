@@ -6,6 +6,7 @@ Collection of useful middlewares for `aiohttp <http://aiohttp.readthedocs.io>`_
 applications.
 
 - Works on Python 3.5+
+- Works with aiohttp 3.5+
 - BSD licensed
 - Source, issues, and pull requests `on GitHub
   <https://github.com/playpauseandstop/aiohttp-middlewares>`_

@@ -1,7 +1,15 @@
 0.2.0 (In Development)
 ======================
 
-0.2.0a1 (2018-10-23)
+0.2.0a1 (In Development)
+------------------------
+
+- chore: Enable pre-commit hooks
+- chore: As aiohttp-middlewares heavily depends on aiohttp annotations, drop
+  support of aiohttp < 3.5
+- chore: Wrap all middlewares into ``@web.middleware`` decorator
+
+0.2.0a0 (2018-10-23)
 --------------------
 
 - Ensure Python 3.7 support

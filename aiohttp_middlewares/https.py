@@ -26,17 +26,17 @@ Usage
 import logging
 
 from aiohttp import web
+from aiohttp.web_middlewares import _Handler, _Middleware
 
-from .annotations import Handler, Middleware, StrDict
-from .utils import get_aiohttp_version
+from .annotations import StrDict
 
 
-DEFAULT_MATCH_HEADERS = {'X-Forwarded-Proto': 'https'}
+DEFAULT_MATCH_HEADERS = {"X-Forwarded-Proto": "https"}
 
 logger = logging.getLogger(__name__)
 
 
-def https_middleware(match_headers: StrDict = None) -> Middleware:
+def https_middleware(match_headers: StrDict = None) -> _Middleware:
     """
     Change scheme for current request when aiohttp application deployed behind
     reverse proxy with HTTPS enabled.
@@ -50,37 +50,30 @@ def https_middleware(match_headers: StrDict = None) -> Middleware:
         Dict of header(s) from reverse proxy to specify that aiohttp run behind
         HTTPS. By default: ``{'X-Forwarded-Proto': 'https'}``
     """
-    async def factory(app: web.Application, handler: Handler) -> Handler:
-        """Actual HTTPS middleware factory."""
-        async def middleware(request: web.Request) -> web.Response:
-            """Change scheme of current request when HTTPS headers matched."""
-            headers = DEFAULT_MATCH_HEADERS
-            if match_headers is not None:
-                headers = match_headers
 
-            if get_aiohttp_version() < (2, 3):
-                if len(headers) > 1:  # pragma: no cover
-                    logger.warning(
-                        'aiohttp <= 2.2 does not support multiple headers '
-                        'for _secure_proxy_ssl_header attr',
-                        extra={'headers': 'headers'})
-                if headers:
-                    request._secure_proxy_ssl_header = (
-                        tuple(headers.items())[0])
-            else:
-                matched = any(
-                    request.headers.get(key) == value
-                    for key, value in headers.items())
+    @web.middleware
+    async def middleware(
+        request: web.Request, handler: _Handler
+    ) -> web.StreamResponse:
+        """Change scheme of current request when HTTPS headers matched."""
+        headers = DEFAULT_MATCH_HEADERS
+        if match_headers is not None:
+            headers = match_headers
 
-                if matched:
-                    logger.debug(
-                        'Substitute request URL scheme to https',
-                        extra={
-                            'headers': headers,
-                            'request_headers': dict(request.headers),
-                        })
-                    request = request.clone(scheme='https')
+        matched = any(
+            request.headers.get(key) == value for key, value in headers.items()
+        )
 
-            return await handler(request)
-        return middleware
-    return factory
+        if matched:
+            logger.debug(
+                "Substitute request URL scheme to https",
+                extra={
+                    "headers": headers,
+                    "request_headers": dict(request.headers),
+                },
+            )
+            request = request.clone(scheme="https")
+
+        return await handler(request)
+
+    return middleware

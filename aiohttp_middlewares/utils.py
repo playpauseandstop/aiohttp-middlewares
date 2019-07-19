@@ -8,11 +8,13 @@ from .annotations import Url, Urls
 def get_aiohttp_version() -> Tuple[int, int]:
     """Return tuple of current aiohttp MAJOR.MINOR version."""
     return tuple(  # type: ignore
-        int(item) for item in aiohttp.__version__.split('.')[:2])
+        int(item) for item in aiohttp.__version__.split(".")[:2]
+    )
 
 
 def match_request(urls: Urls, method: str, path: str) -> bool:
     """Check whether request method and path matches given URLs or not."""
+
     def match_item(item: Url, path: str) -> bool:
         """Check whether current path is equal to given URL str or regexp."""
         try:

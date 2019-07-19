@@ -39,21 +39,22 @@ Usage
 """
 
 import logging
-from typing import Optional, Union  # noqa: F401
+from typing import Union
 
 from aiohttp import web
+from aiohttp.web_middlewares import _Handler, _Middleware
 from async_timeout import timeout
 
-from .annotations import Handler, Middleware, Urls
+from .annotations import Urls
 from .utils import match_request
 
 
 logger = logging.getLogger(__name__)
 
 
-def timeout_middleware(seconds: Union[int, float],
-                       *,
-                       ignore: Urls = None) -> Middleware:
+def timeout_middleware(
+    seconds: Union[int, float], *, ignore: Urls = None
+) -> _Middleware:
     """Ensure that request handling does not exceed X seconds.
 
     This is helpful when aiohttp application served behind nginx or other
@@ -108,20 +109,23 @@ def timeout_middleware(seconds: Union[int, float],
         slow API endpoint, but still need to have GET requests to same endpoint
         to not exceed X seconds.
     """
-    async def factory(app: web.Application, handler: Handler) -> Handler:
-        """Actual timeout middleware factory."""
-        async def middleware(request: web.Request) -> web.Response:
-            """Wrap request handler into timeout context manager."""
-            request_method = request.method
-            request_path = request.rel_url.path
 
-            if ignore and match_request(ignore, request_method, request_path):
-                logger.debug(
-                    'Ignore path from timeout handling',
-                    extra={'method': request_method, 'path': request_path})
-                return await handler(request)
+    @web.middleware
+    async def middleware(
+        request: web.Request, handler: _Handler
+    ) -> web.StreamResponse:
+        """Wrap request handler into timeout context manager."""
+        request_method = request.method
+        request_path = request.rel_url.path
 
-            with timeout(seconds):
-                return await handler(request)
-        return middleware
-    return factory
+        if ignore and match_request(ignore, request_method, request_path):
+            logger.debug(
+                "Ignore path from timeout handling",
+                extra={"method": request_method, "path": request_path},
+            )
+            return await handler(request)
+
+        with timeout(seconds):
+            return await handler(request)
+
+    return middleware

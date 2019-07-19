@@ -1,6 +1,9 @@
+[tool.black]
+line_length = 79
+
 [tool.poetry]
 name = "aiohttp-middlewares"
-version = "0.2.0a0"
+version = "0.2.0a1"
 description = "Collection of useful middlewares for aiohttp applications."
 authors = ["Igor Davydenko <iam@igordavydenko.com>"]
 license = "BSD-3-Clause"
@@ -10,7 +13,7 @@ repository = "https://github.com/playpauseandstop/aiohttp-middlewares"
 documentation = "https://aiohttp-middlewares.readthedocs.io/"
 keywords = ["aiohttp", "middlewares"]
 classifiers = [
-    "Development Status :: 3 - Alpha",
+    "Development Status :: 4 - Beta",
     "Environment :: Web Environment",
     "Operating System :: OS Independent",
     "Topic :: Utilities",
@@ -21,19 +24,32 @@ classifiers = [
 
 [tool.poetry.dependencies]
 python = "^3.5.3"
-aiohttp = "^3"
+aiohttp = "^3.5"
 async-timeout = "^1.2 || ^2 || ^3"
 
 [tool.poetry.dev-dependencies]
-coveralls = "^1.5"
-Sphinx = "^1.8"
-sphinx-autodoc-typehints = "^1.3"
-tox = "^3.5"
-twine = "^1.12"
-pytest = "^3.9"
+coveralls = "^1.7"
+pytest = "^5.0"
 pytest-aiohttp = "^0.3.0"
-pytest-cov = "^2.6"
+pytest-cov = "^2.7"
 
-[build-system]
-requires = ["poetry>=0.12"]
-build-backend = "poetry.masonry.api"
+[tool.tox]
+legacy_tox_ini = """
+[tox]
+envlist = py35,py36,py37
+skipsdist = True
+
+[testenv]
+passenv =
+    PYTHONPATH
+    PYTEST_ADDOPTS
+setenv =
+    PYTHONPATH=.
+    USER=playpauseandstop
+skip_install = True
+whitelist_externals = poetry
+commands_pre =
+    poetry install
+commands =
+    poetry run python -m pytest tests/ --cov=aiohttp_middlewares --cov-branch --cov-fail-under=90 --cov-report=term-missing:skip-covered --no-cov-on-fail
+"""
