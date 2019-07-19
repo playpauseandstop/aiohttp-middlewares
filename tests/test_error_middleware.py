@@ -3,7 +3,7 @@ import re
 import pytest
 from aiohttp import web
 
-from aiohttp_middlewares.error import error_context, error_middleware
+from aiohttp_middlewares import error_context, error_middleware
 
 
 class LegalException(Exception):

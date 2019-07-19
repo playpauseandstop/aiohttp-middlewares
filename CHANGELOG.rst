@@ -5,6 +5,11 @@ Changelog
 0.2.0 (In Development)
 ======================
 
+0.2.0b1 (2019-07-19)
+--------------------
+
+- fix: Fix global visibility for error context & middleware
+
 0.2.0b0 (2019-07-19)
 --------------------
 

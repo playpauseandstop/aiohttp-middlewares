@@ -2,7 +2,8 @@ import re
 
 import pytest
 
-from aiohttp_middlewares.utils import match_path, match_request
+from aiohttp_middlewares import match_path
+from aiohttp_middlewares.utils import match_request
 
 
 URLS_COLLECTION = {
