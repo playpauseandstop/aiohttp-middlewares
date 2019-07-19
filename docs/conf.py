@@ -44,6 +44,7 @@ source_suffix = ".rst"
 master_doc = "index"
 
 project = "aiohttp-middlewares"
+description = "Collection of useful middlewares for aiohttp applications."
 copyright = "2017-2019, Igor Davydenko"
 author = "Igor Davydenko"
 
@@ -57,7 +58,7 @@ pygments_style = "sphinx"
 html_theme = "alabaster"
 html_theme_options = {
     "logo_name": True,
-    "description": "Collection of aiohttp middlewares",
+    "description": description,
     "github_user": "playpauseandstop",
     "github_repo": project,
     "github_banner": True,
@@ -97,9 +98,9 @@ texinfo_documents = [
         "aiohttp-middlewares Documentation",
         author,
         "aiohttp-middlewares",
-        "One line description of project.",
+        description,
         "Miscellaneous",
     )
 ]
 
-intersphinx_mapping = {"https://docs.python.org/": None}
+intersphinx_mapping = {"https://docs.python.org/3/": None}

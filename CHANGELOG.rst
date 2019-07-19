@@ -1,7 +1,18 @@
+=========
+Changelog
+=========
+
 0.2.0 (In Development)
 ======================
 
+0.2.0b0 (2019-07-19)
+--------------------
+
+- feature: Add ``error_middleware`` to allow handle errors inside of aiohttp
+  applications
+
 0.2.0a2 (2019-07-19)
+--------------------
 
 - feature: Put ``match_path`` function to ``aiohttp_middlewares.utils`` module
   scope
