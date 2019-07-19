@@ -1,7 +1,7 @@
 """
-=============
-aiohttp.https
-=============
+================
+HTTPS Middleware
+================
 
 Change scheme for current request when aiohttp application deployed behind
 reverse proxy with HTTPS enabled.
@@ -9,7 +9,7 @@ reverse proxy with HTTPS enabled.
 Usage
 =====
 
-::
+.. code-block:: python
 
     from aiohttp import web
     from aiohttp_middlewares import https_middleware
@@ -19,7 +19,8 @@ Usage
 
     # Specify custom headers to match, not `X-Forwarded-Proto: https`
     app = web.Application(
-        middlewares=https_middleware({'Forwarded': 'https'}))
+        middlewares=https_middleware({"Forwarded": "https"})
+    )
 
 """
 
@@ -28,7 +29,7 @@ import logging
 from aiohttp import web
 from aiohttp.web_middlewares import _Handler, _Middleware
 
-from .annotations import StrDict
+from .annotations import DictStrStr
 
 
 DEFAULT_MATCH_HEADERS = {"X-Forwarded-Proto": "https"}
@@ -36,7 +37,7 @@ DEFAULT_MATCH_HEADERS = {"X-Forwarded-Proto": "https"}
 logger = logging.getLogger(__name__)
 
 
-def https_middleware(match_headers: StrDict = None) -> _Middleware:
+def https_middleware(match_headers: DictStrStr = None) -> _Middleware:
     """
     Change scheme for current request when aiohttp application deployed behind
     reverse proxy with HTTPS enabled.

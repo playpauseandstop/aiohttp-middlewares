@@ -1,40 +1,46 @@
 r"""
-==========================
-aiohttp_middlewares.shield
-==========================
+=================
+Shield Middleware
+=================
 
 Middleware to shield application handlers by method or URL.
 
 Usage
 =====
 
-::
+.. code-block:: python
 
     from aiohttp import web
     from aiohttp_middlewares import NON_IDEMPOTENT_METHODS, shield_middleware
 
     # Basic usage (shield by handler method)
     app = web.Application(
-        middlewares=[shield_middleware(methods=IDEMPOTENT_METHODS)])
+        middlewares=[shield_middleware(methods=IDEMPOTENT_METHODS)]
+    )
 
     # Shield by handler URL
     app = web.Application(
-        middlewares=[shield_middleware(urls=['/', '/about-us'])])
+        middlewares=[shield_middleware(urls=["/", "/about-us"])]
+    )
 
     # Shield by handler method, but ignore shielding list of URLs
     app = web.Application(
         middlewares=[
             shield_middleware(
                 methods=NON_IDEMPOTENT_METHODS,
-                ignore={'/api/documents', '/api/comments'})])
+                ignore={"/api/documents", "/api/comments"}
+            )
+        ]
+    )
 
     # Combine shielding by method and URL
     SHIELD_URLS = {
-        '/api/documents': ['POST', 'DELETE'],
-        re.compile('/api/documents/\d+'): ['DELETE', 'PUT', 'PATCH'],
+        "/api/documents": ["POST", "DELETE"],
+        re.compile(r"/api/documents/\d+"): ["DELETE", "PUT", "PATCH"],
     }
     app = web.Application(
-        middlewares=[shield_middleware(urls=SHIELD_URLS)])
+        middlewares=[shield_middleware(urls=SHIELD_URLS)]
+    )
 
 """
 
@@ -72,23 +78,33 @@ def shield_middleware(
     to last added. In Python 3.6+ you can supply standard ``dict`` here, in
     Python 3.5 please supply ``collections.OrderedDict`` instance instead.
 
-    To shield all non-idempotent methods you need to::
+    To shield all non-idempotent methods you need to:
+
+    .. code-block:: python
 
         from aiohttp import web
 
         app = web.Application(
-            middlewares=shield_middleware(methods=NON_IDEMPOTENT_METHODS))
+            middlewares=[shield_middleware(methods=NON_IDEMPOTENT_METHODS)]
+        )
 
     To shield all non-idempotent methods and ``GET`` requests to
-    ``/downloads/*`` URLs::
+    ``/downloads/*`` URLs:
+
+    .. code-block:: python
 
         import re
 
         app = web.Application(
-            middlewares=shield_middleware(urls={
-                re.compile(r'^/downloads/.*$'): 'GET',
-                re.compile(r'.*'): NON_IDEMPOTENT_METHODS,
-            }))
+            middlewares=[
+                shield_middleware(
+                    urls={
+                        re.compile(r"^/downloads/.*$"): "GET",
+                        re.compile(r".*"): NON_IDEMPOTENT_METHODS,
+                    }
+                )
+            ]
+        )
 
     :param methods:
         Methods to shield. Use ``aiohttp_middlewares.IDEMPOTENT_METHODS`` to

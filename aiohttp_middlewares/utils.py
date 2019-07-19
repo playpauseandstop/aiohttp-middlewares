@@ -1,19 +1,21 @@
-from typing import Tuple
+"""
+=========================
+aiohttp_middlewares.utils
+=========================
 
-import aiohttp
+Various utility functions for ``aiohttp_middlewares`` library.
+
+"""
 
 from .annotations import Url, Urls
 
 
-def get_aiohttp_version() -> Tuple[int, int]:
-    """Return tuple of current aiohttp MAJOR.MINOR version."""
-    return tuple(  # type: ignore
-        int(item) for item in aiohttp.__version__.split(".")[:2]
-    )
-
-
 def match_path(item: Url, path: str) -> bool:
-    """Check whether current path is equal to given URL str or regexp."""
+    """Check whether current path is equal to given URL str or regexp.
+
+    :param item: URL to compare with request path.
+    :param path: Request path string.
+    """
     try:
         return bool(item.match(path))  # type: ignore
     except (AttributeError, TypeError):

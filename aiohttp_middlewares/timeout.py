@@ -1,40 +1,44 @@
 """
-===========================
-aiohttp_middlewares.timeout
-===========================
+==================
+Timeout Middleware
+==================
 
 Middleware to ensure that request handling does not exceeds X seconds.
 
 Usage
 =====
 
-::
+.. code-block:: python
 
     from aiohttp import web
     from aiohttp_middlewares import error_middleware, timeout_middleware
 
     # Basic usage
     app = web.Application(
-        middlewares=[timeout_middleware(29.5)])
+        middlewares=[timeout_middleware(29.5)]
+    )
 
     # Ignore slow responses from list of urls
-    slow_urls = ('/slow-url', '/very-slow-url', '/very/very/slow/url')
+    slow_urls = ("/slow-url", "/very-slow-url", "/very/very/slow/url")
     app = web.Application(
-        middlewares=[timeout_middleware(4.5, ignore=slow_urls)])
+        middlewares=[timeout_middleware(4.5, ignore=slow_urls)]
+    )
 
     # Ignore slow responsed from dict of urls. URL to ignore is a key,
     # value is a lone string with HTTP method or list of strings with
     # HTTP methods to ignore. HTTP methods are case-insensitive
     slow_urls = {
-        '/slow-url': 'POST',
-        '/very-slow-url': ('GET', 'POST'),
+        "/slow-url": "POST",
+        "/very-slow-url": ("GET", "POST"),
     }
     app = web.Application(
-        middlewares=[timeout_middleware(4,5, ignore=slow_urls)])
+        middlewares=[timeout_middleware(4,5, ignore=slow_urls)]
+    )
 
     # Handle timeout errors with error middleware
     app = web.Application(
-        middlewares=[error_middleware(), timeout_middleware(14.5)])
+        middlewares=[error_middleware(), timeout_middleware(14.5)]
+    )
 
 """
 
