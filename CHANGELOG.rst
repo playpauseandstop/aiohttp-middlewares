@@ -10,6 +10,7 @@ Changelog
 
 - feature: Add ``error_middleware`` to allow handle errors inside of aiohttp
   applications
+- chore: Drop Python 3.5 support
 
 0.2.0a2 (2019-07-19)
 --------------------
