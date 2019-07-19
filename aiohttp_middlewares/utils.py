@@ -12,17 +12,17 @@ def get_aiohttp_version() -> Tuple[int, int]:
     )
 
 
+def match_path(item: Url, path: str) -> bool:
+    """Check whether current path is equal to given URL str or regexp."""
+    try:
+        return bool(item.match(path))  # type: ignore
+    except (AttributeError, TypeError):
+        return item == path
+
+
 def match_request(urls: Urls, method: str, path: str) -> bool:
     """Check whether request method and path matches given URLs or not."""
-
-    def match_item(item: Url, path: str) -> bool:
-        """Check whether current path is equal to given URL str or regexp."""
-        try:
-            return bool(item.match(path))  # type: ignore
-        except (AttributeError, TypeError):
-            return item == path
-
-    found = [item for item in urls if match_item(item, path)]
+    found = [item for item in urls if match_path(item, path)]
     if not found:
         return False
 

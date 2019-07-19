@@ -3,7 +3,11 @@ import re
 import aiohttp
 import pytest
 
-from aiohttp_middlewares.utils import get_aiohttp_version, match_request
+from aiohttp_middlewares.utils import (
+    get_aiohttp_version,
+    match_path,
+    match_request,
+)
 
 
 URLS_COLLECTION = {
@@ -20,7 +24,7 @@ URLS_DICT = {
 
 @pytest.mark.parametrize(
     "version, expected",
-    [
+    (
         ("2.0.7", (2, 0)),
         ("2.1.0", (2, 1)),
         ("2.2.5", (2, 2)),
@@ -28,7 +32,7 @@ URLS_DICT = {
         ("2.3.0", (2, 3)),
         ("2.3.1a1", (2, 3)),
         ("2.3.1", (2, 3)),
-    ],
+    ),
 )
 def test_get_aiohttp_version(monkeypatch, version, expected):
     monkeypatch.setattr(aiohttp, "__version__", version)
@@ -36,8 +40,22 @@ def test_get_aiohttp_version(monkeypatch, version, expected):
 
 
 @pytest.mark.parametrize(
+    "url, path, expected",
+    (
+        ("/slow-url", "/slow-url", True),
+        ("/slow-url", "/slow-url/", False),
+        (re.compile("^/slow-url"), "/slow-url", True),
+        (re.compile("^/slow-url"), "/slow-url/", True),
+        (re.compile("^/slow-url"), "/very-slow-url", False),
+    ),
+)
+def test_match_path(url, path, expected):
+    assert match_path(url, path) == expected
+
+
+@pytest.mark.parametrize(
     "urls, request_method, request_path, expected",
-    [
+    (
         (URLS_COLLECTION, "GET", "/", False),
         (URLS_COLLECTION, "POST", "/slow-url", True),
         (URLS_COLLECTION, "GET", "/very-slow-url", True),
@@ -59,7 +77,7 @@ def test_get_aiohttp_version(monkeypatch, version, expected):
         (URLS_DICT, "POST", "/very-very-very-slow-url", True),
         (URLS_DICT, "PUT", "/very-very-very-slow-url", True),
         (URLS_DICT, "PATCH", "/very-very-very-slow-url", False),
-    ],
+    ),
 )
 def test_match_request(urls, request_method, request_path, expected):
     assert match_request(urls, request_method, request_path) is expected

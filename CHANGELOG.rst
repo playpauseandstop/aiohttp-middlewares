@@ -1,6 +1,11 @@
 0.2.0 (In Development)
 ======================
 
+0.2.0a2 (2019-07-19)
+
+- feature: Put ``match_path`` function to ``aiohttp_middlewares.utils`` module
+  scope
+
 0.2.0a1 (2019-07-19)
 --------------------
 
