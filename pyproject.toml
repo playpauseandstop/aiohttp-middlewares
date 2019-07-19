@@ -23,7 +23,7 @@ classifiers = [
 ]
 
 [tool.poetry.dependencies]
-python = "^3.5.3"
+python = "^3.6"
 aiohttp = "^3.5"
 async-timeout = "^1.2 || ^2 || ^3"
 
