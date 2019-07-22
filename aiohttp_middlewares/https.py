@@ -49,7 +49,12 @@ def https_middleware(match_headers: DictStrStr = None) -> _Middleware:
 
     :param match_headers:
         Dict of header(s) from reverse proxy to specify that aiohttp run behind
-        HTTPS. By default: ``{'X-Forwarded-Proto': 'https'}``
+        HTTPS. By default:
+
+        .. code-block:: python
+
+            {"X-Forwarded-Proto": "https"}
+
     """
 
     @web.middleware

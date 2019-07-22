@@ -5,6 +5,13 @@ Changelog
 0.2.0 (In Development)
 ======================
 
+0.2.0b2 (2019-07-21)
+--------------------
+
+- feature: Add ``cors_middleware`` to simplify handling CORS policies for
+  aiohttp apps comparing to `aiohttp-cors
+  <https://github.com/aio-libs/aiohttp-cors>`_ library
+
 0.2.0b1 (2019-07-19)
 --------------------
 

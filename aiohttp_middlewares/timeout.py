@@ -74,30 +74,35 @@ def timeout_middleware(
     after 29.5 seconds. In that case in most cases user for sure will see the
     error from aiohttp app instead of reverse proxy.
 
-    Notice that timeout middleware just raised ``asyncio.Timeout`` in case of
-    exceeding seconds per request, but not handling the error by itself. If you
-    need to handle this error, please place ``error_middleware_factory`` in
-    list of application middlewares as well. Error middleware should be placed
-    before timeout middleware, so timeout errors can be catched and processed
+    Notice that timeout middleware just raised :class:`asyncio.TimeoutError` in
+    case of exceeding seconds per request, but not handling the error by
+    itself. If you need to handle this error, please place
+    :func:`aiohttp_middlewares.error.error_middleware` in list of
+    application middlewares as well. Error middleware should be placed before
+    timeout middleware, so timeout errors can be catched and processed
     properly.
 
     In case if you need to "disable" timeout middleware for given request path,
-    please supply ignore collection as second positional argument, like::
+    please supply ignore collection as second positional argument, like:
+
+    .. code-block:: python
 
         from aiohttp import web
 
         app = web.Application(
-            middlewares=[timeout_middleware(14.5, ignore={'/slow-url'})])
+            middlewares=[timeout_middleware(14.5, ignore={"/slow-url"})]
+        )
 
     In case if you need more flexible ignore rules you can pass ``ignore``
     dict, where key is an URL to ignore and value is a collection of methods to
     ignore from timeout handling for given URL.
 
-    ::
+    .. code-block:: python
 
-        ignore = {'/slow-url': ['POST']}
+        ignore = {"/slow-url": ["POST"]}
         app = web.Application(
-            middlewares=[timeout_middleware(14.5, ignore=ignore)])
+            middlewares=[timeout_middleware(14.5, ignore=ignore)]
+        )
 
     Behind the scene, when current request path match the URL from ignore
     collection or dict timeout context manager will be configured to avoid

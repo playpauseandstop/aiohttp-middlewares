@@ -10,6 +10,11 @@ Error Middleware
 
 .. autofunction:: aiohttp_middlewares.error.error_middleware
 
+CORS Middleware
+---------------
+
+.. autofunction:: aiohttp_middlewares.cors.cors_middleware
+
 Timeout Middleware
 ------------------
 

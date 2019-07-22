@@ -1,4 +1,4 @@
-"""
+r"""
 ================
 Error Middleware
 ================
@@ -36,12 +36,13 @@ Usage
         ]
     )
 
-    # Advanced usage (multiple error handlers for different application parts)
+    # Advanced usage (multiple error handlers for different
+    # application parts)
     app = web.Application(
         middlewares=[
             error_middleware(
                 default_handler=error,
-                config={re.compile(r"^/api"): api_error}
+                config={re.compile(r"^\/api"): api_error}
             )
         ]
     )

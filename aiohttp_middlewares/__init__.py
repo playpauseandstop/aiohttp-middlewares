@@ -7,9 +7,10 @@ Collection of useful middlewares for aiohttp applications.
 
 """
 
-__version__ = "0.2.0b1"
+__version__ = "0.2.0b2"
 
 from .constants import IDEMPOTENT_METHODS, NON_IDEMPOTENT_METHODS
+from .cors import cors_middleware
 from .error import error_context, error_middleware
 from .https import https_middleware
 from .shield import shield_middleware
@@ -18,6 +19,7 @@ from .utils import match_path
 
 # Make flake8 happy
 (
+    cors_middleware,
     error_context,
     error_middleware,
     https_middleware,

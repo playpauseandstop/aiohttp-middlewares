@@ -60,23 +60,24 @@ logger = logging.getLogger(__name__)
 def shield_middleware(
     *, methods: StrCollection = None, urls: Urls = None, ignore: Urls = None
 ) -> _Middleware:
-    """Ensure that handler execution would not break on ``CancelledError``.
+    """
+    Ensure that handler execution would not break on
+    :class:`asyncio.CancelledError`.
 
     Shielding handlers allow to avoid breaking handler execution on
-    ``CancelledError`` (this happens for example while client closes
-    conneciton, but server still not ready to fullify response).
+    :class:`asyncio.CancelledError` (this happens for example while client
+    closes conneciton, but server still not ready to fullify response).
 
     In most cases you need to shield non-idempotent methods (``POST``, ``PUT``,
     ``PATCH``, ``DELETE``) and ignore shielding idempotent ``GET``, ``HEAD``,
     ``OPTIONS`` and ``TRACE`` requests.
 
-    More about shielding coroutines in official Python docs,
-    https://docs.python.org/3/library/asyncio-task.html#asyncio.shield
+    More details about shielding coroutines in official Python docs:
+    :func:`asyncio.shield`
 
     Other possibility to allow shielding request handlers by URLs dict. In that
     case  order of dict keys is necessary as they will be processed from first
-    to last added. In Python 3.6+ you can supply standard ``dict`` here, in
-    Python 3.5 please supply ``collections.OrderedDict`` instance instead.
+    to last added.
 
     To shield all non-idempotent methods you need to:
 
