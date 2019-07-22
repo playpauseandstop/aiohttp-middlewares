@@ -5,7 +5,7 @@ Changelog
 0.2.0 (In Development)
 ======================
 
-0.2.0b2 (2019-07-21)
+0.2.0b2 (2019-07-22)
 --------------------
 
 - feature: Add ``cors_middleware`` to simplify handling CORS headers for
