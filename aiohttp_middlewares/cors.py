@@ -116,22 +116,18 @@ ACCESS_CONTROL_EXPOSE_HEADERS = f"{ACCESS_CONTROL}-Expose-Headers"
 ACCESS_CONTROL_MAX_AGE = f"{ACCESS_CONTROL}-Max-Age"
 ACCESS_CONTROL_REQUEST_METHOD = f"{ACCESS_CONTROL}-Request-Method"
 
-DEFAULT_ALLOW_HEADERS = frozenset(
-    [
-        "accept",
-        "accept-encoding",
-        "authorization",
-        "content-type",
-        "dnt",
-        "origin",
-        "user-agent",
-        "x-csrftoken",
-        "x-requested-with",
-    ]
+DEFAULT_ALLOW_HEADERS = (
+    "accept",
+    "accept-encoding",
+    "authorization",
+    "content-type",
+    "dnt",
+    "origin",
+    "user-agent",
+    "x-csrftoken",
+    "x-requested-with",
 )
-DEFAULT_ALLOW_METHODS = frozenset(
-    ["DELETE", "GET", "OPTIONS", "PATCH", "POST", "PUT"]
-)
+DEFAULT_ALLOW_METHODS = ("DELETE", "GET", "OPTIONS", "PATCH", "POST", "PUT")
 DEFAULT_URLS = (re.compile(r".*"),)
 
 logger = logging.getLogger(__name__)
@@ -168,7 +164,7 @@ def cors_middleware(
 
         .. code-block:: python
 
-            [
+            (
                 "accept",
                 "accept-encoding",
                 "authorization",
@@ -178,14 +174,14 @@ def cors_middleware(
                 "user-agent",
                 "x-csrftoken",
                 "x-requested-with",
-            ]
+            )
 
     :param allow_methods:
         List of allowed methods. By default:
 
         .. code-block:: python
 
-            ["DELETE", "GET", "OPTIONS", "PATCH", "POST", "PUT"]
+            ("DELETE", "GET", "OPTIONS", "PATCH", "POST", "PUT")
 
     :param allow_credentials:
         When enabled apply allow credentials header in response, which results
