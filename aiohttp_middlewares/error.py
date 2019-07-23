@@ -3,6 +3,8 @@ r"""
 Error Middleware
 ================
 
+.. versionadded:: 0.2.0
+
 Middleware to handle errors in aiohttp applications.
 
 Usage

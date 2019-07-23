@@ -3,6 +3,8 @@ r"""
 CORS Middleware
 ===============
 
+.. versionadded:: 0.2.0
+
 Dealing with CORS headers for aiohttp applications.
 
 **IMPORTANT:** There is a `aiohttp-cors
