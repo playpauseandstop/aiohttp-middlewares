@@ -2,8 +2,11 @@
 Changelog
 =========
 
-0.2.0 (In Development)
-======================
+0.2.0 (2019-07-23)
+==================
+
+- chore: Release **0.2.0** version with new CORS & Error middlewares and
+  dropped support of Python 3.5 and aiohttp < 3.5
 
 0.2.0b2 (2019-07-22)
 --------------------
