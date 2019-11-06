@@ -15,7 +15,7 @@ jobs:
       - checkout
       - run: mkdir -p test-results/pytest
       - run: make install
-      - run: PYTEST_ADDOPTS=--junitxml=test-results/pytest/junit.xml TOXENV=py36 make ci-test
+      - run: PYTEST_ADDOPTS=--junitxml=test-results/pytest/junit.xml TOXENV=py36 make test-ci
       - store_test_results:
           path: test-results
       - store_artifacts:
@@ -27,12 +27,25 @@ jobs:
       - checkout
       - run: mkdir -p test-results/pytest
       - run: make install
-      - run: PYTEST_ADDOPTS=--junitxml=test-results/pytest/junit.xml TOXENV=py37 make ci-test
+      - run: PYTEST_ADDOPTS=--junitxml=test-results/pytest/junit.xml TOXENV=py37 make test-ci
       - store_test_results:
           path: test-results
       - store_artifacts:
           path: test-results
       - run: make coveralls
+
+  test38:
+    docker: python/3.8.0-slim-stretch
+    steps:
+      - checkout
+      - run: POETRY_PREVIEW=1 curl -sSL https://raw.githubusercontent.com/sdispater/poetry/master/get-poetry.py | python
+      - run: python -m pip install tox
+      - run: mkdir -p test-results/pytest
+      - run: POETRY=${HOME}/.poetry/bin/poetry PYTEST_ADDOPTS=--junitxml=test-results/pytest/junit.xml TOXENV=py38 make test-ci
+      - store_test_results:
+          path: test-results
+      - store_artifacts:
+          path: test-results
 
   deploy:
     docker: *py37
@@ -60,10 +73,16 @@ workflows:
             - lint
           filters: *all_tags_and_branches
 
+      - test38:
+          requires:
+            - lint
+          filters: *all_tags_and_branches
+
       - deploy:
           requires:
             - test36
             - test37
+            - test38
           filters:
             tags:
               only: /^v.*/

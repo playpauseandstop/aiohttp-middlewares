@@ -2,6 +2,12 @@
 Changelog
 =========
 
+0.3.0 (In Development)
+======================
+
+- feature: Ensure Python 3.8 support
+- chore: Speedup matching text URLs for timeout & shield middlewares
+
 0.2.0 (2019-07-23)
 ==================
 

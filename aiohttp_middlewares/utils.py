@@ -20,7 +20,7 @@ def match_path(item: Url, path: str) -> bool:
         return item == path
 
     try:
-        return bool(item.match(path))  # type: ignore
+        return bool(item.match(path))
     except (AttributeError, TypeError):
         return False
 

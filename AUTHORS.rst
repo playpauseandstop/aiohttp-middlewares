@@ -1,0 +1,2 @@
+- `Igor Davydenko <https://github.com/playpauseandstop>`_
+- `Alex Kuzmenko <https://github.com/alxpy>`_
