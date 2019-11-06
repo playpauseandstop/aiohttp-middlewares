@@ -35,7 +35,8 @@ jobs:
       - run: make coveralls
 
   test38:
-    docker: python/3.8.0-slim-stretch
+    docker:
+      - image: python/3.8.0-slim-stretch
     steps:
       - checkout
       - run: POETRY_PREVIEW=1 curl -sSL https://raw.githubusercontent.com/sdispater/poetry/master/get-poetry.py | python
