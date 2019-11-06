@@ -43,11 +43,13 @@ jobs:
       - run: curl -sSL https://raw.githubusercontent.com/sdispater/poetry/master/get-poetry.py > get-poetry.py
       - run: python get-poetry.py --version 1.0.0b3
       - run: mkdir -p test-results/pytest
-      - run: |
-        set -ex
-        source $HOME/.poetry/env
-        poetry --version
-        PYTEST_ADDOPTS=--junitxml=test-results/pytest/junit.xml TOXENV=py38 make test-ci
+      - run:
+          name: Run tests
+          command: |
+            set -ex
+            source $HOME/.poetry/env
+            poetry --version
+            PYTEST_ADDOPTS=--junitxml=test-results/pytest/junit.xml TOXENV=py38 make test-ci
       - store_test_results:
           path: test-results
       - store_artifacts:
