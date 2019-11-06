@@ -16,10 +16,13 @@ def match_path(item: Url, path: str) -> bool:
     :param item: URL to compare with request path.
     :param path: Request path string.
     """
+    if isinstance(item, str):
+        return item == path
+
     try:
         return bool(item.match(path))  # type: ignore
     except (AttributeError, TypeError):
-        return item == path
+        return False
 
 
 def match_request(urls: Urls, method: str, path: str) -> bool:
