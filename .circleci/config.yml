@@ -1,8 +1,8 @@
 version: 2
 jobs:
   lint:
-    docker: &py37
-      - image: playpauseandstop/docker-python:2.0.0-py37
+    docker: &py38
+      - image: "playpauseandstop/docker-python:3.0.0b0-py38"
     steps:
       - checkout
       - run: make install
@@ -10,11 +10,10 @@ jobs:
 
   test36:
     docker:
-      - image: playpauseandstop/docker-python:2.0.0-py36
+      - image: "playpauseandstop/docker-python:2.0.0-py36"
     steps:
       - checkout
       - run: mkdir -p test-results/pytest
-      - run: make install
       - run:
           command: make test-ci
           environment:
@@ -26,11 +25,11 @@ jobs:
           path: test-results
 
   test37:
-    docker: *py37
+    docker:
+      - image: "playpauseandstop/docker-python:2.0.0-py37"
     steps:
       - checkout
       - run: mkdir -p test-results/pytest
-      - run: make install
       - run:
           command: make test-ci
           environment:
@@ -43,13 +42,9 @@ jobs:
       - run: make coveralls
 
   test38:
-    docker:
-      - image: python:3.8.0
+    docker: *py38
     steps:
       - checkout
-      - run: python -m pip install tox
-      - run: curl -sSL https://raw.githubusercontent.com/sdispater/poetry/master/get-poetry.py > get-poetry.py
-      - run: python get-poetry.py -y --version 1.0.0b4
       - run: mkdir -p test-results/pytest
       - run:
           command: source ~/.poetry/env && make test-ci
@@ -62,7 +57,7 @@ jobs:
           path: test-results
 
   deploy:
-    docker: *py37
+    docker: *py38
     steps:
       - checkout
       - run: make install
