@@ -3,7 +3,7 @@ line_length = 79
 
 [tool.poetry]
 name = "aiohttp-middlewares"
-version = "0.3.1a0"
+version = "0.3.1"
 description = "Collection of useful middlewares for aiohttp applications."
 authors = ["Igor Davydenko <iam@igordavydenko.com>"]
 license = "BSD-3-Clause"
