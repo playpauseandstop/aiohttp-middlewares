@@ -10,7 +10,7 @@ jobs:
 
   test36:
     docker:
-      - image: "playpauseandstop/docker-python:2.0.0-py36"
+      - image: "playpauseandstop/docker-python:3.0.0b0-py36"
     steps:
       - checkout
       - run: mkdir -p test-results/pytest
@@ -26,7 +26,7 @@ jobs:
 
   test37:
     docker:
-      - image: "playpauseandstop/docker-python:2.0.0-py37"
+      - image: "playpauseandstop/docker-python:3.0.0b0-py37"
     steps:
       - checkout
       - run: mkdir -p test-results/pytest
@@ -39,7 +39,6 @@ jobs:
           path: test-results
       - store_artifacts:
           path: test-results
-      - run: make coveralls
 
   test38:
     docker: *py38
@@ -47,10 +46,11 @@ jobs:
       - checkout
       - run: mkdir -p test-results/pytest
       - run:
-          command: source ~/.poetry/env && make test-ci
+          command: make test-ci
           environment:
             PYTEST_ADDOPTS: --junitxml=test-results/pytest/junit.xml
             TOXENV: py38
+      - run: make coveralls
       - store_test_results:
           path: test-results
       - store_artifacts:
