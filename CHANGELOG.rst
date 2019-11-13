@@ -2,6 +2,15 @@
 Changelog
 =========
 
+0.3.1 (In Development)
+======================
+
+0.3.1a0 (2019-11-13)
+--------------------
+
+- chore: Deploy `aiohttp-middlewares` from `py38` image to ensure Python 3.8
+  classifier added
+
 0.3.0 (2019-11-12)
 ==================
 
