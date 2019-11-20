@@ -4,7 +4,6 @@ repos:
     rev: "19.10b0"
     hooks:
       - id: black
-        entry: which black
         name: Format code (black)
         exclude: ^docs/.*$
 
