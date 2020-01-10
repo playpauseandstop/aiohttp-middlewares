@@ -8,13 +8,15 @@
 	lint \
 	lint-ci \
 	list-outdated \
+	open-docs \
 	test \
 	test-ci
 
-# Project settings
+# Project constants
 PROJECT = aiohttp_middlewares
+DOCS_DIR = ./docs
 
-# Python commands
+# Project vars
 POETRY ?= poetry
 PRE_COMMIT ?= pre-commit
 PYTHON ?= $(POETRY) run python
@@ -65,6 +67,9 @@ lint-ci:
 
 list-outdated: install
 	$(POETRY) show -o
+
+open-docs: docs
+	open $(DOCS_DIR)/_build/html/index.html
 
 test: install clean lint test-ci
 
