@@ -15,61 +15,57 @@ Usage
     import re
 
     from aiohttp import web
-    from aiohttp_middlewares import error_context, error_middleware
-
-    # Default error handler
-    async def error(request: web.Request) -> web.Response:
-        with error_context(request) as context:
-            return web.Response(
-                text=context.message,
-                status=context.status,
-                content_type="text/plain"
-            )
+    from aiohttp_middlewares import (
+        default_error_handler,
+        error_context,
+        error_middleware,
+    )
 
     # Error handler for API requests
     async def api_error(request: web.Request) -> web.Response:
         with error_context(request) as context:
             return web.json_response(context.data, status=context.status)
 
-    # Basic usage (one error handler for whole application)
-    app = web.Application(
-        middlewares=[
-            error_middleware(default_handler=api_error)
-        ]
-    )
+    # Basic usage (default error handler for whole application)
+    app = web.Application(middlewares=[error_middleware()])
 
     # Advanced usage (multiple error handlers for different
     # application parts)
     app = web.Application(
         middlewares=[
             error_middleware(
-                default_handler=error,
+                default_handler=default_error_handler,
                 config={re.compile(r"^\/api"): api_error}
             )
         ]
     )
 
+    # Ignore aiohttp.web HTTP Not Found errors from handling via middleware
+    app = web.Application(
+        middlewares=[error_middleware(ignore_exceptions=web.HTTPNotFound)]
+    )
+
 """
 
+import logging
 from contextlib import contextmanager
-from typing import Dict, Iterator, Optional
+from typing import Dict, Iterator, Optional, Tuple, Union
 
 import attr
 from aiohttp import web
-from aiohttp.web_middlewares import _Handler, _Middleware
 
-from .annotations import DictStrAny, Url
+from .annotations import DictStrAny, ExceptionType, Handler, Middleware, Url
 from .utils import match_path
 
 
 DEFAULT_EXCEPTION = Exception("Unhandled aiohttp-middlewares exception.")
-IGNORE_LOG_STATUSES = (400, 404, 422)
-ERROR_REQUEST_KEY = "error"
+REQUEST_ERROR_KEY = "error"
 
-Config = Dict[Url, _Handler]
+Config = Dict[Url, Handler]
+logger = logging.getLogger(__name__)
 
 
-@attr.dataclass
+@attr.dataclass(frozen=True, slots=True)
 class ErrorContext:
     """Context with all necessary data about the error."""
 
@@ -77,6 +73,29 @@ class ErrorContext:
     message: str
     status: int
     data: DictStrAny
+
+
+async def default_error_handler(request: web.Request) -> web.Response:
+    """Default error handler to respond with JSON error details.
+
+    If, for example, ``aiohttp.web`` view handler raises
+    ``ValueError("wrong value")`` exception, default error handler will produce
+    JSON response of 500 status with given content:
+
+    .. code-block:: json
+
+        {
+            "detail": "wrong value"
+        }
+
+    And to see the whole exception traceback in logs you need to enable
+    ``aiohttp_middlewares`` in logging config.
+
+    .. versionadded:: 1.0.0
+    """
+    with error_context(request) as context:
+        logger.error(context.message, exc_info=True)
+        return web.json_response(context.data, status=context.status)
 
 
 @contextmanager
@@ -100,12 +119,15 @@ def error_context(request: web.Request) -> Iterator[ErrorContext]:
 
 
 def error_middleware(
-    *, default_handler: _Handler, config: Config = None
-) -> _Middleware:
+    *,
+    default_handler: Handler = default_error_handler,
+    config: Config = None,
+    ignore_exceptions: Union[ExceptionType, Tuple[ExceptionType, ...]] = None
+) -> Middleware:
     """Middleware to handle exceptions in aiohttp applications.
 
     To catch all possible errors, please put this middleware on top of your
-    ``middlewares`` list as:
+    ``middlewares`` list (**but after CORS middleware if it used**) as:
 
     .. code-block:: python
 
@@ -123,18 +145,23 @@ def error_middleware(
         Default handler to called on error catched by error middleware.
     :param config:
         When application requires multiple error handlers, provide mapping in
-        format ``Dict[Url, _Handler]``, where ``Url`` can be an exact string
-        to match path or regex and ``_Handler`` is a handler to be called when
+        format ``Dict[Url, Handler]``, where ``Url`` can be an exact string
+        to match path or regex and ``Handler`` is a handler to be called when
         ``Url`` matches current request path if any.
+    :param ignore_exceptions:
+        Do not process given exceptions via error middleware.
     """
 
     @web.middleware
     async def middleware(
-        request: web.Request, handler: _Handler
+        request: web.Request, handler: Handler
     ) -> web.StreamResponse:
         try:
             return await handler(request)
         except Exception as err:
+            if ignore_exceptions and isinstance(err, ignore_exceptions):
+                raise err
+
             set_error_to_request(request, err)
             error_handler = (
                 get_error_handler(request, config) or default_handler
@@ -149,12 +176,12 @@ def get_error_from_request(request: web.Request) -> Exception:
 
     Return default exception if nothing stored before.
     """
-    return request.get(ERROR_REQUEST_KEY) or DEFAULT_EXCEPTION
+    return request.get(REQUEST_ERROR_KEY) or DEFAULT_EXCEPTION
 
 
 def get_error_handler(
     request: web.Request, config: Optional[Config]
-) -> Optional[_Handler]:
+) -> Optional[Handler]:
     """Find error handler matching current request path if any."""
     if not config:
         return None
@@ -169,5 +196,5 @@ def get_error_handler(
 
 def set_error_to_request(request: web.Request, err: Exception) -> Exception:
     """Store catched error to request dict."""
-    request[ERROR_REQUEST_KEY] = err
+    request[REQUEST_ERROR_KEY] = err
     return err

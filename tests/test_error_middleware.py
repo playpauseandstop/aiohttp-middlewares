@@ -35,6 +35,32 @@ async def no_error_context(request):
     return web.Response(text="Server Error", status=500)
 
 
+async def test_default_handler(aiohttp_client):
+    app = web.Application(middlewares=[error_middleware()])
+    client = await aiohttp_client(app)
+
+    response = await client.get("/does-not-exist.exe")
+    assert response.content_type == "application/json"
+    assert response.status == 404
+    assert await response.json() == {"detail": "Not Found"}
+
+
+@pytest.mark.parametrize(
+    "ignore_exceptions",
+    (web.HTTPNotFound, (web.HTTPNotFound,), (ValueError, web.HTTPNotFound)),
+)
+async def test_ignore_exceptions(aiohttp_client, ignore_exceptions):
+    app = web.Application(
+        middlewares=[error_middleware(ignore_exceptions=ignore_exceptions)]
+    )
+    client = await aiohttp_client(app)
+
+    response = await client.get("/does-not-exist.exe")
+    assert response.content_type == "text/plain"
+    assert response.status == 404
+    assert await response.text() == "404: Not Found"
+
+
 @pytest.mark.parametrize(
     "path, expected_status, expected_content_type, expected_text",
     (

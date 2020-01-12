@@ -7,6 +7,8 @@ Various utility functions for ``aiohttp_middlewares`` library.
 
 """
 
+from yarl import URL
+
 from .annotations import Url, Urls
 
 
@@ -16,6 +18,9 @@ def match_path(item: Url, path: str) -> bool:
     :param item: URL to compare with request path.
     :param path: Request path string.
     """
+    if isinstance(item, URL):
+        item = str(item)
+
     if isinstance(item, str):
         return item == path
 

@@ -100,11 +100,11 @@ Usage
 
 import logging
 import re
+from typing import Pattern, Tuple
 
 from aiohttp import web
-from aiohttp.web_middlewares import _Handler, _Middleware
 
-from .annotations import StrCollection, UrlCollection
+from .annotations import Handler, Middleware, StrCollection, UrlCollection
 from .utils import match_path
 
 
@@ -130,7 +130,7 @@ DEFAULT_ALLOW_HEADERS = (
     "x-requested-with",
 )
 DEFAULT_ALLOW_METHODS = ("DELETE", "GET", "OPTIONS", "PATCH", "POST", "PUT")
-DEFAULT_URLS = (re.compile(r".*"),)
+DEFAULT_URLS: Tuple[Pattern[str]] = (re.compile(r".*"),)
 
 logger = logging.getLogger(__name__)
 
@@ -145,7 +145,7 @@ def cors_middleware(
     allow_methods: StrCollection = DEFAULT_ALLOW_METHODS,
     allow_credentials: bool = False,
     max_age: int = None,
-) -> _Middleware:
+) -> Middleware:
     """Middleware to provide CORS headers for aiohttp applications.
 
     :param allow_all:
@@ -191,10 +191,13 @@ def cors_middleware(
         allowing credentials for CORS requests.** By default: ``False``
     :param max_age: Access control max age in seconds. By default: ``None``
     """
+    check_urls: UrlCollection = (
+        DEFAULT_URLS if urls is None else urls  # type: ignore
+    )
 
     @web.middleware
     async def middleware(
-        request: web.Request, handler: _Handler
+        request: web.Request, handler: Handler
     ) -> web.StreamResponse:
         # Initial vars
         request_method = request.method
@@ -218,9 +221,7 @@ def cors_middleware(
 
         # Check whether CORS should be enabled for given URL or not. By default
         # CORS enabled for all URLs
-        if not match_items(
-            DEFAULT_URLS if urls is None else urls, request_path
-        ):
+        if not match_items(check_urls, request_path):
             logger.debug(
                 "Request should not be processed via CORS middleware",
                 extra=log_extra,

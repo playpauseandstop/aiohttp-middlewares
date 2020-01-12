@@ -1,6 +1,7 @@
 import re
 
 import pytest
+from yarl import URL
 
 from aiohttp_middlewares import match_path
 from aiohttp_middlewares.utils import match_request
@@ -8,12 +9,12 @@ from aiohttp_middlewares.utils import match_request
 
 URLS_COLLECTION = {
     "/slow-url",
-    "/very-slow-url",
+    URL("/very-slow-url"),
     re.compile("/(very-very|very-very-very)-slow-url"),
 }
 URLS_DICT = {
     "/slow-url": "POST",
-    "/very-slow-url": ["get", "post"],
+    URL("/very-slow-url"): ["get", "post"],
     re.compile("/(very-very|very-very-very)-slow-url"): {"GET", "post", "put"},
 }
 
@@ -23,9 +24,12 @@ URLS_DICT = {
     (
         ("/slow-url", "/slow-url", True),
         ("/slow-url", "/slow-url/", False),
+        (URL("/slow-url"), "/slow-url", True),
+        (URL("/slow-url/"), "/slow-url", False),
         (re.compile("^/slow-url"), "/slow-url", True),
         (re.compile("^/slow-url"), "/slow-url/", True),
         (re.compile("^/slow-url"), "/very-slow-url", False),
+        (42, "/slow-url", False),
     ),
 )
 def test_match_path(url, path, expected):

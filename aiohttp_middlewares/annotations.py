@@ -7,17 +7,23 @@ Type annotation shortcuts for ``aiohttp_middlewares`` library.
 
 """
 
-from typing import Any, Dict, FrozenSet, List, Set, Tuple, Union
-from typing.re import Pattern
+from typing import Any, Collection, Dict, Pattern, Type, Union
+
+from aiohttp.web_middlewares import _Handler, _Middleware
+from yarl import URL
 
 
 DictStrAny = Dict[str, Any]
 DictStrStr = Dict[str, str]
 
-IntCollection = Union[List[int], FrozenSet[int], Set[int], Tuple[int, ...]]
-StrCollection = Union[List[str], FrozenSet[str], Set[str], Tuple[str, ...]]
+ExceptionType = Type[Exception]
+Handler = _Handler
+Middleware = _Middleware
 
-Url = Union[str, Pattern]
-UrlCollection = Union[List[Url], Set[Url], Tuple[Url, ...]]
-UrlDict = Dict[Url, Union[StrCollection, str]]
+IntCollection = Collection[int]
+StrCollection = Collection[str]
+
+Url = Union[str, Pattern[str], URL]
+UrlCollection = Collection[Url]
+UrlDict = Dict[Url, StrCollection]
 Urls = Union[UrlCollection, UrlDict]

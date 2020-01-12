@@ -2,6 +2,16 @@
 Changelog
 =========
 
+1.0.0 (In Development)
+======================
+
+1.0.0a0 (In Development)
+========================
+
+- feature: Provide default error handler and enable it in error middleware
+- feature: Allow to ignore exceptions from handling by error middleware
+- feature: First class support of ``yarl.URL`` within all library
+
 0.3.1 (2019-11-13)
 ==================
 
@@ -10,7 +20,7 @@ Changelog
 0.3.1a0 (2019-11-13)
 --------------------
 
-- chore: Pulbish `aiohttp-middlewares` to PyPI from `py38` image to ensure
+- chore: Pulbish ``aiohttp-middlewares`` to PyPI from ``py38`` image to ensure
   Python 3.8 classifier used
 
 0.3.0 (2019-11-12)
