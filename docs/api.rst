@@ -33,6 +33,11 @@ HTTPS Middleware
 Other
 =====
 
+default_error_handler
+---------------------
+
+.. autofunction:: aiohttp_middlewares.error.default_error_handler
+
 error_context
 -------------
 
