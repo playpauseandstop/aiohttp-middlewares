@@ -7,6 +7,36 @@ Error Middleware
 
 Middleware to handle errors in aiohttp applications.
 
+.. versionchanged:: 1.0.0
+
+Previosly, ``error_middleware`` required ``default_handler`` to be passed
+on initialization. However in **1.0.0** version ``aiohttp-middlewares`` ships
+default error handler, which log exception traceback into
+``aiohttp_middlewares.error`` logger and responds with given JSON:
+
+.. code-block:: json
+
+    {
+        "detail": "str"
+    }
+
+For example, if view handler raises ``ValueError("wrong value")`` the default
+error handler provides 500 Server Error JSON:
+
+.. code-block:: json
+
+    {
+        "detail": "wrong value"
+    }
+
+In same time, it is still able to provide custom default error handler if you
+need more control on error handling.
+
+Other notable change in **1.0.0** version is allowing to ignore exception or
+tuple of exceptions (as in ``try/catch`` block) from handling via middleware.
+This might be helpful, when you don't want, for example, to have in Sentry
+``web.HTTPNotFound`` and/or ``web.BadRequest`` errors.
+
 Usage
 =====
 
