@@ -5,8 +5,13 @@ Changelog
 1.0.0 (In Development)
 ======================
 
+1.0.0b0 (2020-01-14)
+--------------------
+
+- chore: Return empty response for CORS preflight requests
+
 1.0.0a0 (2020-01-12)
-====================
+--------------------
 
 - feature: Provide default error handler and enable it in error middleware
 - feature: Allow to ignore exceptions from handling by error middleware

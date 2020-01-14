@@ -6,6 +6,7 @@ from aiohttp import web
 
 from aiohttp_middlewares import cors_middleware
 from aiohttp_middlewares.cors import (
+    ACCESS_CONTROL,
     ACCESS_CONTROL_ALLOW_HEADERS,
     ACCESS_CONTROL_ALLOW_METHODS,
     ACCESS_CONTROL_ALLOW_ORIGIN,
@@ -32,7 +33,7 @@ def check_allow_origin(
     origin,
     *,
     allow_headers=DEFAULT_ALLOW_HEADERS,
-    allow_methods=DEFAULT_ALLOW_METHODS
+    allow_methods=DEFAULT_ALLOW_METHODS,
 ):
     assert response.headers[ACCESS_CONTROL_ALLOW_ORIGIN] == origin
     if allow_headers:
@@ -125,7 +126,7 @@ async def test_allow_origin(
             method, "/", headers={"Origin": TEST_ORIGIN, **extra_headers}
         ),
         expected_origin,
-        **kwargs
+        **kwargs,
     )
 
 
@@ -145,6 +146,29 @@ async def test_allow_origin(
 async def test_deny_origin(aiohttp_client, origins, method, headers):
     client = await aiohttp_client(create_app(origins=origins))
     check_deny_origin(await client.request(method, "/", headers=headers))
+
+
+async def test_empty_response(aiohttp_client):
+    client = await aiohttp_client(create_app(allow_all=True))
+    client_url = f"http://{client.host}:{client.port}"
+
+    response = await client.request(
+        "OPTIONS",
+        "/",
+        headers={
+            f"{ACCESS_CONTROL}-Request-Headers": (
+                "x-client-uid,x-requested-with"
+            ),
+            ACCESS_CONTROL_REQUEST_METHOD: "GET",
+            "Origin": client_url,
+            "Referer": f"{client_url}/",
+            "User-Agent": "Mozilla/5.0",
+        },
+    )
+
+    assert response.headers["Content-Type"] == "text/plain; charset=utf-8"
+    assert response.headers["Content-Length"] == "0"
+    assert await response.text() == ""
 
 
 @pytest.mark.parametrize(

@@ -290,7 +290,7 @@ def cors_middleware(
                 "request",
                 extra=log_extra,
             )
-            raise web.HTTPOk(headers=response.headers)
+            raise web.HTTPOk(text="", headers=response.headers)
 
         # Otherwise return normal response
         logger.debug("Provide CORS headers for request", extra=log_extra)
