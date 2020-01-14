@@ -3,6 +3,7 @@ import re
 import attr
 import pytest
 from aiohttp import web
+from yarl import URL
 
 from aiohttp_middlewares import cors_middleware
 from aiohttp_middlewares.cors import (
@@ -22,6 +23,7 @@ API_REGEX = re.compile(r"^\/api")
 TEST_DENIED_ORIGIN = "https://www.google.com"
 TEST_ORIGIN = "http://localhost:3000"
 TEST_ORIGIN_REGEX = re.compile(r"^http\:\/\/localhost")
+TEST_ORIGIN_URL = URL(TEST_ORIGIN)
 
 
 async def index(request):
@@ -96,6 +98,14 @@ def create_app(**kwargs):
         ),
         (
             {"origins": {TEST_ORIGIN_REGEX}},
+            "OPTIONS",
+            {ACCESS_CONTROL_REQUEST_METHOD: "GET"},
+            TEST_ORIGIN,
+            attr.NOTHING,
+            attr.NOTHING,
+        ),
+        (
+            {"origins": [TEST_ORIGIN_URL]},
             "OPTIONS",
             {ACCESS_CONTROL_REQUEST_METHOD: "GET"},
             TEST_ORIGIN,
