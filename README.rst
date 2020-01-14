@@ -26,8 +26,8 @@ aiohttp-middlewares
     :target: http://aiohttp-middlewares.readthedocs.org/en/latest/
     :alt: Documentation
 
-Collection of useful middlewares for `aiohttp <http://aiohttp.readthedocs.org/>`_
-applications.
+Collection of useful middlewares for
+`aiohttp.web <https://docs.aiohttp.org/en/stable/web.html>`_ applications.
 
 - Works on Python 3.6+
 - Works with aiohttp 3.5+
@@ -40,15 +40,16 @@ applications.
 Quickstart
 ==========
 
-By default ``aiohttp.web`` does not provide many built-in middlewares for
-standart web development actions such as handling errors, shielding view
+By default ``aiohttp.web`` does not provide `many built-in middlewares
+<https://docs.aiohttp.org/en/stable/web_reference.html#middlewares>`_ for
+standart web-development needs such as: handling errors, shielding view
 handlers, or providing CORS headers.
 
-``aiohttp-middlewares`` fix this by providing several middlewares that aims to
-cover most common web-development needs.
+``aiohttp-middlewares`` tries to fix this by providing several middlewares that
+aims to cover most common web-development needs.
 
-For example, to enable CORS headers for ``http://localhost:8081`` and handle
-errors for ``aiohttp.web`` application you need to,
+For example, to enable CORS headers for ``http://localhost:8081`` origin and
+handle errors for ``aiohttp.web`` application you need to,
 
 .. code-block:: python
 
