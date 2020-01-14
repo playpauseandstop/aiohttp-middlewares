@@ -2,15 +2,18 @@
 Changelog
 =========
 
-1.0.0 (In Development)
-======================
+1.0.0 (2020-01-14)
+==================
+
+- chore: Release **1.0.0** version which highlights updates to error middleware
+  and first class support of `yarl.URL` instances within the library
 
 1.0.0b1 (2020-01-14)
 --------------------
 
 - chore: Make default error handler available to import as,
 
-      .. code-block:: python
+  .. code-block:: python
 
       from aiohttp_middlewares import default_error_handler
 

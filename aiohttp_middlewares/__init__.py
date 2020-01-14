@@ -7,7 +7,7 @@ Collection of useful middlewares for aiohttp applications.
 
 """
 
-__version__ = "1.0.0b1"
+__version__ = "1.0.0"
 
 from .constants import IDEMPOTENT_METHODS, NON_IDEMPOTENT_METHODS
 from .cors import cors_middleware
