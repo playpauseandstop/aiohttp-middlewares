@@ -2,8 +2,9 @@
 List of Middlewares
 ===================
 
-As of version **0.2.0** ``aiohttp-middlewares`` library contains 5 middlewares
-for better work with aiohttp applications.
+As of version **1.0.0** ``aiohttp-middlewares`` library contains 5 middlewares
+to help `aiohttp.web <https://docs.aiohttp.org/en/stable/web.html>`_
+applications cover common web-development needs.
 
 If some middleware is missed and should be added, feel free to create new
 `feature request on GitHub
