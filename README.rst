@@ -36,3 +36,32 @@ applications.
   <https://aiohttp-middlewares.readthedocs.io/>`_
 - Source, issues, and pull requests `on GitHub
   <https://github.com/playpauseandstop/aiohttp-middlewares>`_
+
+Quickstart
+==========
+
+By default ``aiohttp.web`` does not provide many built-in middlewares for
+standart web development actions such as handling errors, shielding view
+handlers, or providing CORS headers.
+
+``aiohttp-middlewares`` fix this by providing several middlewares that aims to
+cover most common web-development needs.
+
+For example, to enable CORS headers for ``http://localhost:8081`` and handle
+errors for ``aiohttp.web`` application you need to,
+
+.. code-block:: python
+
+    from aiohttp import web
+    from aiohttp_middlewares import cors_middleware, error_middleware
+
+
+    app = web.Application(
+        middlewares=(
+            cors_middleware(origins=("http://localhost:8081",)),
+            error_middleware(),
+        )
+    )
+
+Check `documentation <https://aiohttp-middlewares.readthedocs.io/>`_ for
+all available middlewares and available initialization options.
