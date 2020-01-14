@@ -13,7 +13,7 @@ repository = "https://github.com/playpauseandstop/aiohttp-middlewares"
 documentation = "https://aiohttp-middlewares.readthedocs.io/"
 keywords = ["aiohttp", "middlewares"]
 classifiers = [
-    "Development Status :: 4 - Beta",
+    "Development Status :: 5 - Stable",
     "Environment :: Web Environment",
     "Operating System :: OS Independent",
     "Topic :: Utilities",
