@@ -5,6 +5,15 @@ Changelog
 1.0.0 (In Development)
 ======================
 
+1.0.0b1 (2020-01-14)
+--------------------
+
+- chore: Make default error handler available to import as,
+
+      .. code-block:: python
+
+      from aiohttp_middlewares import default_error_handler
+
 1.0.0b0 (2020-01-14)
 --------------------
 
