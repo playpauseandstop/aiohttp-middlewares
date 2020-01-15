@@ -43,11 +43,11 @@ aiohttp = "^3.5"
 async-timeout = "^1.2 || ^2 || ^3"
 
 [tool.poetry.dev-dependencies]
+coverage = {extras = ["toml"], version = "^5.0.3"}
 coveralls = "^1.7"
 pytest = "^5.0"
 pytest-aiohttp = "^0.3.0"
 pytest-cov = "^2.7"
-coverage = {extras = ["toml"], version = "^5.0.3"}
 
 [tool.tox]
 legacy_tox_ini = """
@@ -66,5 +66,9 @@ whitelist_externals = poetry
 commands_pre =
     poetry install
 commands =
-    poetry run python -m pytest tests/ --cov=aiohttp_middlewares --no-cov-on-fail
+    poetry run python -m pytest tests/ --cov --no-cov-on-fail
 """
+
+[build-system]
+requires = ["poetry>=1.0.0"]
+build-backend = "poetry.masonry.api"
