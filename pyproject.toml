@@ -36,6 +36,7 @@ classifiers = [
     "Topic :: Utilities",
     "Typing :: Typed"
 ]
+include = ["AUTHORS.rst", "CHANGELOG.rst"]
 
 [tool.poetry.dependencies]
 python = "^3.6"
