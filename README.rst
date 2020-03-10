@@ -2,9 +2,9 @@
 aiohttp-middlewares
 ===================
 
-.. image:: https://img.shields.io/circleci/project/github/playpauseandstop/aiohttp-middlewares/master.svg
-    :target: https://circleci.com/gh/playpauseandstop/aiohttp-middlewares
-    :alt: CircleCI
+.. image:: https://github.com/playpauseandstop/aiohttp-middlewares/workflows/ci/badge.svg
+   :target: https://github.com/playpauseandstop/aiohttp-middlewares/actions?query=workflow%3A%22ci%22
+   :alt: CI Workflow
 
 .. image:: https://img.shields.io/pypi/v/aiohttp-middlewares.svg
     :target: https://pypi.org/project/aiohttp-middlewares/
