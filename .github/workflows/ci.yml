@@ -65,12 +65,14 @@ jobs:
           python -m pip install tox==3.14.5 tox-gh-actions==1.1.0
 
       - name: "Cache pre-commit"
+        if: "matrix.python-version == '3.8'"
         uses: "actions/cache@v1.1.2"
         with:
           path: "~/.cache/pre-commit"
           key: "pre-commit-${{ matrix.python-version }}-${{ hashFiles('.pre-commit-config.yaml') }}"
 
       - name: "Run pre-commit"
+        if: "matrix.python-version == '3.8'"
         uses: "pre-commit/action@v1.0.1"
 
       - name: "Run tests"
