@@ -53,7 +53,7 @@ pytest-cov = "^2.7"
 [tool.tox]
 legacy_tox_ini = """
 [tox]
-envlist = py36,py37,py38,pypy3
+envlist = py36,py37,py38
 skipsdist = True
 
 [gh-actions]

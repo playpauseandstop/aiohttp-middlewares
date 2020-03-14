@@ -191,9 +191,7 @@ def cors_middleware(
         allowing credentials for CORS requests.** By default: ``False``
     :param max_age: Access control max age in seconds. By default: ``None``
     """
-    check_urls: UrlCollection = (
-        DEFAULT_URLS if urls is None else urls  # type: ignore
-    )
+    check_urls: UrlCollection = DEFAULT_URLS if urls is None else urls
 
     @web.middleware
     async def middleware(
