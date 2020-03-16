@@ -7,7 +7,7 @@ Installation
 
     pip install aiohttp-middlewares
 
-Or with `poetry <https://poetry.eustace.io/>`_:
+Or using `poetry <https://python-poetry.org/>`_:
 
 .. code-block:: bash
 
