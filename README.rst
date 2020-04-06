@@ -58,7 +58,10 @@ handle errors for ``aiohttp.web`` application you need to,
 .. code-block:: python
 
     from aiohttp import web
-    from aiohttp_middlewares import cors_middleware, error_middleware
+    from aiohttp_middlewares import (
+        cors_middleware,
+        error_middleware,
+    )
 
 
     app = web.Application(

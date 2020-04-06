@@ -11,15 +11,20 @@ Usage
 .. code-block:: python
 
     from aiohttp import web
-    from aiohttp_middlewares import error_middleware, timeout_middleware
-
-    # Basic usage
-    app = web.Application(
-        middlewares=[timeout_middleware(29.5)]
+    from aiohttp_middlewares import (
+        error_middleware,
+        timeout_middleware,
     )
 
+    # Basic usage
+    app = web.Application(middlewares=[timeout_middleware(29.5)])
+
     # Ignore slow responses from list of urls
-    slow_urls = ("/slow-url", "/very-slow-url", "/very/very/slow/url")
+    slow_urls = (
+        "/slow-url",
+        "/very-slow-url",
+        "/very/very/slow/url",
+    )
     app = web.Application(
         middlewares=[timeout_middleware(4.5, ignore=slow_urls)]
     )
@@ -32,7 +37,7 @@ Usage
         "/very-slow-url": ("GET", "POST"),
     }
     app = web.Application(
-        middlewares=[timeout_middleware(4,5, ignore=slow_urls)]
+        middlewares=[timeout_middleware(4.5, ignore=slow_urls)]
     )
 
     # Handle timeout errors with error middleware

@@ -54,7 +54,10 @@ Usage
     # Error handler for API requests
     async def api_error(request: web.Request) -> web.Response:
         with error_context(request) as context:
-            return web.json_response(context.data, status=context.status)
+            return web.json_response(
+                context.data, status=context.status
+            )
+
 
     # Basic usage (default error handler for whole application)
     app = web.Application(middlewares=[error_middleware()])
@@ -65,14 +68,16 @@ Usage
         middlewares=[
             error_middleware(
                 default_handler=default_error_handler,
-                config={re.compile(r"^\/api"): api_error}
+                config={re.compile(r"^\/api"): api_error},
             )
         ]
     )
 
     # Ignore aiohttp.web HTTP Not Found errors from handling via middleware
     app = web.Application(
-        middlewares=[error_middleware(ignore_exceptions=web.HTTPNotFound)]
+        middlewares=[
+            error_middleware(ignore_exceptions=web.HTTPNotFound)
+        ]
     )
 
 """
@@ -162,13 +167,13 @@ def error_middleware(
     .. code-block:: python
 
         from aiohttp import web
-        from aiohttp_middlewares import error_middleware, timeout_middleware
+        from aiohttp_middlewares import (
+            error_middleware,
+            timeout_middleware,
+        )
 
         app = web.Application(
-            midllewares=[
-                error_middleware(...),
-                timeout_middleware(...)
-            ]
+            midllewares=[error_middleware(...), timeout_middleware(...)]
         )
 
     :param default_handler:

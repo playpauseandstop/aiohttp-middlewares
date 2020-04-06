@@ -11,7 +11,10 @@ Usage
 .. code-block:: python
 
     from aiohttp import web
-    from aiohttp_middlewares import NON_IDEMPOTENT_METHODS, shield_middleware
+    from aiohttp_middlewares import (
+        NON_IDEMPOTENT_METHODS,
+        shield_middleware,
+    )
 
     # Basic usage (shield by handler method)
     app = web.Application(
@@ -28,7 +31,7 @@ Usage
         middlewares=[
             shield_middleware(
                 methods=NON_IDEMPOTENT_METHODS,
-                ignore={"/api/documents", "/api/comments"}
+                ignore={"/api/documents", "/api/comments"},
             )
         ]
     )
@@ -36,7 +39,11 @@ Usage
     # Combine shielding by method and URL
     SHIELD_URLS = {
         "/api/documents": ["POST", "DELETE"],
-        re.compile(r"/api/documents/\d+"): ["DELETE", "PUT", "PATCH"],
+        re.compile(r"/api/documents/\d+"): [
+            "DELETE",
+            "PUT",
+            "PATCH",
+        ],
     }
     app = web.Application(
         middlewares=[shield_middleware(urls=SHIELD_URLS)]
@@ -86,7 +93,9 @@ def shield_middleware(
         from aiohttp import web
 
         app = web.Application(
-            middlewares=[shield_middleware(methods=NON_IDEMPOTENT_METHODS)]
+            middlewares=[
+                shield_middleware(methods=NON_IDEMPOTENT_METHODS)
+            ]
         )
 
     To shield all non-idempotent methods and ``GET`` requests to

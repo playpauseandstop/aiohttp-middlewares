@@ -68,8 +68,7 @@ Usage
     app = web.Application(
         middlewares=[
             cors_middleware(
-                origins=CORS_ALLOW_ORIGINS,
-                allow_credentials=True,
+                origins=CORS_ALLOW_ORIGINS, allow_credentials=True,
             )
         ]
     )
@@ -91,7 +90,8 @@ Usage
             cors_middleware(
                 origings=CORS_ALLOW_ORIGINS,
                 allow_methods=("POST", "PATCH"),
-                allow_headers=DEFAULT_ALLOW_HEADERS + ("X-Client-UID",),
+                allow_headers=DEFAULT_ALLOW_HEADERS
+                + ("X-Client-UID",),
             )
         ]
     )
