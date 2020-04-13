@@ -10,6 +10,10 @@ aiohttp-middlewares
     :target: https://github.com/pre-commit/pre-commit
     :alt: pre-commit
 
+.. image:: https://img.shields.io/badge/code%20style-black-000000.svg
+    :target: https://github.com/psf/black
+    :alt: black
+
 .. image:: https://img.shields.io/pypi/v/aiohttp-middlewares.svg
     :target: https://pypi.org/project/aiohttp-middlewares/
     :alt: Latest Version
