@@ -2,6 +2,12 @@
 Changelog
 =========
 
+1.1.0 (In Development)
+======================
+
+- Provide ``get_error_response`` coroutine to allow other projects to reuse
+  error handling logic
+
 1.0.0 (2020-01-14)
 ==================
 

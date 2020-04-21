@@ -43,6 +43,11 @@ error_context
 
 .. autofunction:: aiohttp_middlewares.error.error_context
 
+get_error_response
+------------------
+
+.. autofunction:: aiohttp_middlewares.error.get_error_response
+
 match_path
 ----------
 

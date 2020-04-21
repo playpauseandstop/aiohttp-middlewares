@@ -15,7 +15,7 @@ show_missing = true
 
 [tool.poetry]
 name = "aiohttp-middlewares"
-version = "1.0.0"
+version = "1.1.0a0"
 description = "Collection of useful middlewares for aiohttp applications."
 authors = ["Igor Davydenko <iam@igordavydenko.com>"]
 license = "BSD-3-Clause"

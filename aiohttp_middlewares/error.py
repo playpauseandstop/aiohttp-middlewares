@@ -84,6 +84,7 @@ Usage
 
 import logging
 from contextlib import contextmanager
+from functools import partial
 from typing import Dict, Iterator, Optional, Tuple, Union
 
 import attr
@@ -162,7 +163,7 @@ def error_middleware(
     """Middleware to handle exceptions in aiohttp applications.
 
     To catch all possible errors, please put this middleware on top of your
-    ``middlewares`` list (**but after CORS middleware if it used**) as:
+    ``middlewares`` list (**but after CORS middleware if it is used**) as:
 
     .. code-block:: python
 
@@ -186,6 +187,12 @@ def error_middleware(
     :param ignore_exceptions:
         Do not process given exceptions via error middleware.
     """
+    get_response = partial(
+        get_error_response,
+        default_handler=default_handler,
+        config=config,
+        ignore_exceptions=ignore_exceptions,
+    )
 
     @web.middleware
     async def middleware(
@@ -194,14 +201,7 @@ def error_middleware(
         try:
             return await handler(request)
         except Exception as err:
-            if ignore_exceptions and isinstance(err, ignore_exceptions):
-                raise err
-
-            set_error_to_request(request, err)
-            error_handler = (
-                get_error_handler(request, config) or default_handler
-            )
-            return await error_handler(request)
+            return await get_response(request, err)
 
     return middleware
 
@@ -227,6 +227,50 @@ def get_error_handler(
             return handler
 
     return None
+
+
+async def get_error_response(
+    request: web.Request,
+    err: Exception,
+    *,
+    default_handler: Handler = default_error_handler,
+    config: Config = None,
+    ignore_exceptions: Union[ExceptionType, Tuple[ExceptionType, ...]] = None
+) -> web.StreamResponse:
+    """Actual coroutine to get response for given request & error.
+
+    .. versionadded:: 1.1.0
+
+    This is a cornerstone of error middleware and can be reused in attempt to
+    overwrite error middleware logic.
+
+    For example, when you need to post-process response and it may result in
+    extra exceptions it is useful to make ``custom_error_middleware`` as
+    follows,
+
+    .. code-block:: python
+
+        from aiohttp import web
+        from aiohttp_middlewares import get_error_response
+        from aiohttp_middlewares.annotations import Handler
+
+
+        @web.middleware
+        async def custom_error_middleware(
+            request: web.Request, handler: Handler
+        ) -> web.StreamResponse:
+            try:
+                response = await handler(request)
+                post_process_response(response)
+            except Exception as err:
+                return await get_error_response(request, err)
+    """
+    if ignore_exceptions and isinstance(err, ignore_exceptions):
+        raise err
+
+    set_error_to_request(request, err)
+    error_handler = get_error_handler(request, config) or default_handler
+    return await error_handler(request)
 
 
 def set_error_to_request(request: web.Request, err: Exception) -> Exception:

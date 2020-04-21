@@ -3,7 +3,11 @@ import re
 import pytest
 from aiohttp import web
 
-from aiohttp_middlewares import error_context, error_middleware
+from aiohttp_middlewares import (
+    error_context,
+    error_middleware,
+    get_error_response,
+)
 
 
 class LegalException(Exception):
@@ -11,6 +15,14 @@ class LegalException(Exception):
         super().__init__("Not available for legal reasons")
         self.status = 451
         self.data = {"paid": False, "pay_at": "https://payment.url/"}
+
+
+@web.middleware
+async def custom_error_middleware(request, handler):
+    try:
+        return await handler(request)
+    except Exception as err:
+        return await get_error_response(request, err, default_handler=error)
 
 
 async def api_error(request):
@@ -33,6 +45,16 @@ async def legal(request):
 
 async def no_error_context(request):
     return web.Response(text="Server Error", status=500)
+
+
+async def test_custom_middleware(aiohttp_client):
+    app = web.Application(middlewares=[custom_error_middleware])
+    client = await aiohttp_client(app)
+
+    response = await client.get("/does-not-exist.exe")
+    assert response.content_type == "text/plain"
+    assert response.status == 404
+    assert await response.text() == "Not Found"
 
 
 async def test_default_handler(aiohttp_client):
