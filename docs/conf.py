@@ -18,6 +18,7 @@
 # documentation root, use os.path.abspath to make it absolute, like shown here.
 #
 
+import datetime
 import re
 import sys
 from pathlib import Path
@@ -28,6 +29,7 @@ sys.path.insert(0, str(rel))
 
 INIT_PY = (rel / "aiohttp_middlewares" / "__init__.py").read_text()
 VERSION = re.findall('__version__ = "([^"]+)"', INIT_PY)[0]
+TODAY = datetime.date.today()
 
 
 extensions = [
@@ -45,7 +47,7 @@ master_doc = "index"
 
 project = "aiohttp-middlewares"
 description = "Collection of useful middlewares for aiohttp applications."
-copyright = "2017-2019, Igor Davydenko"
+copyright = f"2017-{TODAY.year}, Igor Davydenko"
 author = "Igor Davydenko"
 
 version = ".".join(VERSION.split(".")[:2])
@@ -103,4 +105,7 @@ texinfo_documents = [
     )
 ]
 
-intersphinx_mapping = {"https://docs.python.org/3/": None}
+intersphinx_mapping = {
+    "https://docs.python.org/3/": None,
+    "https://aiohttp.readthedocs.io/en/stable/": None,
+}

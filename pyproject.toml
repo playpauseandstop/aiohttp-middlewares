@@ -15,7 +15,7 @@ show_missing = true
 
 [tool.poetry]
 name = "aiohttp-middlewares"
-version = "1.1.0"
+version = "1.2.0a0"
 description = "Collection of useful middlewares for aiohttp applications."
 authors = ["Igor Davydenko <iam@igordavydenko.com>"]
 license = "BSD-3-Clause"
@@ -36,7 +36,6 @@ classifiers = [
     "Topic :: Utilities",
     "Typing :: Typed"
 ]
-include = ["AUTHORS.rst", "CHANGELOG.rst"]
 
 [tool.poetry.dependencies]
 python = "^3.6"
@@ -48,6 +47,7 @@ coverage = {extras = ["toml"], version = "^5.0.3"}
 pytest = "^5.0"
 pytest-aiohttp = "^0.3.0"
 pytest-cov = "^2.7"
+sphinx-autobuild = "^0.7.1"
 
 [tool.tox]
 legacy_tox_ini = """
@@ -72,7 +72,7 @@ whitelist_externals = poetry
 commands_pre =
     poetry install
 commands =
-    poetry run python -m pytest tests/ --cov --no-cov-on-fail
+    poetry run python -m pytest --cov --no-cov-on-fail tests/
 """
 
 [build-system]
