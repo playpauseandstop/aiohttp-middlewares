@@ -7,7 +7,9 @@ Collection of useful middlewares for aiohttp applications.
 
 """
 
-__version__ = "1.1.0"
+__author__ = "Igor Davydenko"
+__license__ = "BSD-3-Clause"
+__version__ = "1.2.0a0"
 
 from .constants import IDEMPOTENT_METHODS, NON_IDEMPOTENT_METHODS
 from .cors import cors_middleware
