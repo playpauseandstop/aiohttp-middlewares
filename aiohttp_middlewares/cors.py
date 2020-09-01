@@ -68,7 +68,8 @@ Usage
     app = web.Application(
         middlewares=[
             cors_middleware(
-                origins=CORS_ALLOW_ORIGINS, allow_credentials=True,
+                origins=CORS_ALLOW_ORIGINS,
+                allow_credentials=True,
             )
         ]
     )

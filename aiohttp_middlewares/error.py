@@ -138,7 +138,7 @@ async def default_error_handler(request: web.Request) -> web.Response:
 def error_context(request: web.Request) -> Iterator[ErrorContext]:
     """Context manager to retrieve error data inside of error handler (view).
 
-    The context will contain:
+    The result instance will contain:
 
     - Error itself
     - Error message (by default: ``str(err)``)

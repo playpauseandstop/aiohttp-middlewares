@@ -8,12 +8,12 @@ on:
     branches: ["master"]
 
 env:
-  COVERALLS_VERSION: "2.1.1"
+  COVERALLS_VERSION: "2.1.2"
   DEV_PYTHON_VERSION: "3.8"
-  POETRY_VERSION: "1.0.9"
+  POETRY_VERSION: "1.0.10"
   TOX_GH_ACTIONS_VERSION: "1.3.0"
-  TOX_VERSION: "3.16.1"
-  TWINE_VERSION: "3.1.1"
+  TOX_VERSION: "3.19.0"
+  TWINE_VERSION: "3.2.0"
 
 jobs:
   dev:
@@ -26,10 +26,10 @@ jobs:
     runs-on: "${{ matrix.os }}"
 
     steps:
-      - uses: "actions/checkout@v2.3.1"
+      - uses: "actions/checkout@v2.3.2"
 
       - name: "Install Python"
-        uses: "actions/setup-python@v2.0.1"
+        uses: "actions/setup-python@v2.1.2"
         with:
           python-version: "${{ env.DEV_PYTHON_VERSION }}"
 
@@ -55,10 +55,10 @@ jobs:
     runs-on: "ubuntu-latest"
 
     steps:
-      - uses: "actions/checkout@v2.3.1"
+      - uses: "actions/checkout@v2.3.2"
 
       - name: "Install Python"
-        uses: "actions/setup-python@v2.0.1"
+        uses: "actions/setup-python@v2.1.2"
         with:
           python-version: "${{ matrix.python-version }}"
 
@@ -71,13 +71,6 @@ jobs:
         run: |
           poetry install --no-dev
           python -m pip install tox==${{ env.TOX_VERSION }} tox-gh-actions==${{ env.TOX_GH_ACTIONS_VERSION }}
-
-      - name: "Cache pre-commit"
-        if: "matrix.python-version == env.DEV_PYTHON_VERSION"
-        uses: "actions/cache@v2.0.0"
-        with:
-          path: "~/.cache/pre-commit"
-          key: "pre-commit-${{ matrix.python-version }}-${{ hashFiles('.pre-commit-config.yaml') }}"
 
       - name: "Run pre-commit"
         if: "matrix.python-version == env.DEV_PYTHON_VERSION"
@@ -101,10 +94,10 @@ jobs:
     runs-on: "ubuntu-latest"
 
     steps:
-      - uses: "actions/checkout@v2.3.1"
+      - uses: "actions/checkout@v2.3.2"
 
       - name: "Install Python"
-        uses: "actions/setup-python@v2.0.1"
+        uses: "actions/setup-python@v2.1.2"
         with:
           python-version: "${{ env.DEV_PYTHON_VERSION }}"
 
@@ -134,7 +127,7 @@ jobs:
     runs-on: "ubuntu-latest"
 
     steps:
-      - uses: "actions/checkout@v2.3.1"
+      - uses: "actions/checkout@v2.3.2"
 
       - name: "Fetch git data"
         run: |
@@ -168,7 +161,7 @@ jobs:
           echo "::set-output name=prerelease::${prerelease}"
 
       - name: "Create new release"
-        uses: "actions/create-release@v1.1.2"
+        uses: "actions/create-release@v1.1.3"
         env:
           GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
         with:

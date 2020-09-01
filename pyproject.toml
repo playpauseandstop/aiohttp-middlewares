@@ -25,16 +25,16 @@ repository = "https://github.com/playpauseandstop/aiohttp-middlewares"
 documentation = "https://aiohttp-middlewares.readthedocs.io/"
 keywords = ["aiohttp", "middlewares"]
 classifiers = [
-    "Development Status :: 5 - Production/Stable",
-    "Environment :: Web Environment",
-    "Framework :: AsyncIO",
-    "Intended Audience :: Developers",
-    "License :: OSI Approved :: BSD License",
-    "Operating System :: OS Independent",
-    "Topic :: Internet :: WWW/HTTP",
-    "Topic :: Internet :: WWW/HTTP :: WSGI :: Middleware",
-    "Topic :: Utilities",
-    "Typing :: Typed"
+  "Development Status :: 5 - Production/Stable",
+  "Environment :: Web Environment",
+  "Framework :: AsyncIO",
+  "Intended Audience :: Developers",
+  "License :: OSI Approved :: BSD License",
+  "Operating System :: OS Independent",
+  "Topic :: Internet :: WWW/HTTP",
+  "Topic :: Internet :: WWW/HTTP :: WSGI :: Middleware",
+  "Topic :: Utilities",
+  "Typing :: Typed"
 ]
 
 [tool.poetry.dependencies]
@@ -43,11 +43,14 @@ aiohttp = "^3.5"
 async-timeout = "^1.2 || ^2 || ^3"
 
 [tool.poetry.dev-dependencies]
-coverage = {extras = ["toml"], version = "^5.0.3"}
-pytest = "^5.0"
+coverage = {version = "^5.0.3", extras=["toml"]}
+pytest = "^6.0.1"
 pytest-aiohttp = "^0.3.0"
 pytest-cov = "^2.7"
-sphinx-autobuild = "^0.7.1"
+
+[tool.pytest.ini_options]
+addopts = "--cov --no-cov-on-fail"
+testpaths = ["tests/"]
 
 [tool.tox]
 legacy_tox_ini = """
@@ -57,22 +60,22 @@ skipsdist = True
 
 [gh-actions]
 python =
-    3.6: py36
-    3.7: py37
-    3.8: py38
+  3.6: py36
+  3.7: py37
+  3.8: py38
 
 [testenv]
 passenv =
-    PYTHONPATH
-    PYTEST_ADDOPTS
+  PYTHONPATH
+  PYTEST_ADDOPTS
 setenv =
-    PYTHONPATH=.
+  PYTHONPATH=.
 skip_install = True
 whitelist_externals = poetry
 commands_pre =
-    poetry install
+  poetry install
 commands =
-    poetry run python -m pytest --cov --no-cov-on-fail tests/
+  poetry run python -m pytest
 """
 
 [build-system]
