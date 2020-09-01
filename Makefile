@@ -29,6 +29,9 @@ all: install
 clean:
 	find . \( -name __pycache__ -o -type d -empty \) -exec rm -rf {} + 2> /dev/null
 
+clean-egg-info:
+	-find . \( -name *.egg-info -type d \) -exec rm -rf {} +
+
 distclean: clean
 	rm -rf build/ dist/ *.egg*/ .tox/ .venv/ .install
 
@@ -44,6 +47,7 @@ $(DOCS_DIR)/requirements-sphinx.txt: $(DOCS_DIR)/requirements-sphinx.in
 
 install: .install
 .install: pyproject.toml poetry.toml poetry.lock
+	@$(MAKE) -s clean-egg-info
 	$(POETRY) install
 	touch $@
 

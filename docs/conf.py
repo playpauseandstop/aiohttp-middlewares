@@ -24,10 +24,11 @@ import sys
 from pathlib import Path
 
 
-rel = Path(__file__).parent.parent
-sys.path.insert(0, str(rel))
+ROOT_PATH = Path(__file__).parent.parent
+SRC_PATH = ROOT_PATH / "src"
+sys.path.insert(0, str(SRC_PATH))
 
-INIT_PY = (rel / "aiohttp_middlewares" / "__init__.py").read_text()
+INIT_PY = (SRC_PATH / "aiohttp_middlewares" / "__init__.py").read_text()
 VERSION = re.findall('__version__ = "([^"]+)"', INIT_PY)[0]
 TODAY = datetime.date.today()
 
