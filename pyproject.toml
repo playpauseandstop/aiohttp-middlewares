@@ -49,7 +49,7 @@ async-timeout = "^1.2 || ^2 || ^3"
 coverage = {version = "^5.3", extras=["toml"]}
 pytest = "^6.1.2"
 pytest-aiohttp = "^0.3.0"
-pytest-cov = "^2.10.1"
+pytest-cov = "^2.12.0"
 
 [tool.pytest.ini_options]
 addopts = "--cov --no-cov-on-fail"
