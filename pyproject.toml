@@ -47,7 +47,7 @@ async-timeout = "^1.2 || ^2 || ^3"
 
 [tool.poetry.dev-dependencies]
 coverage = {version = "^5.3", extras=["toml"]}
-pytest = "^6.1.2"
+pytest = "^6.2.5"
 pytest-aiohttp = "^0.3.0"
 pytest-cov = "^2.10.1"
 
