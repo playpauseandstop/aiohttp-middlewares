@@ -22,7 +22,7 @@ updates:
     open-pull-requests-limit: 10
     reviewers:
       - "playpauseandstop"
-      - "dependencies"
-      - "ci"
     labels:
       - "build"
+      - "dependencies"
+      - "ci"
