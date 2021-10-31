@@ -21,7 +21,7 @@ class LegalException(Exception):
 async def custom_error_middleware(request, handler):
     try:
         return await handler(request)
-    except Exception as err:
+    except Exception as err:  # noqa: PIE786
         return await get_error_response(request, err, default_handler=error)
 
 

@@ -4,7 +4,7 @@
 	docs \
 	install \
 	lint \
-	lint-only \
+	lint-and-test \
 	list-outdated \
 	test \
 	test-only
@@ -24,16 +24,13 @@ TOX ?= tox
 DOCS_HOST ?= localhost
 DOCS_PORT ?= 8241
 
+include python.mk
+
 all: install
 
-clean:
-	find . \( -name __pycache__ -o -type d -empty \) -exec rm -rf {} + 2> /dev/null
+clean: clean-python
 
-clean-egg-info:
-	-find . \( -name *.egg-info -type d \) -exec rm -rf {} +
-
-distclean: clean
-	rm -rf build/ dist/ *.egg*/ .tox/ .venv/ .install
+distclean: clean distclean-python
 
 docs: .install $(DOCS_DIR)/requirements.txt $(DOCS_DIR)/requirements-sphinx.txt
 	$(PYTHON) -m pip install -r $(DOCS_DIR)/requirements-sphinx.txt
@@ -45,25 +42,15 @@ $(DOCS_DIR)/requirements.txt: .install
 $(DOCS_DIR)/requirements-sphinx.txt: $(DOCS_DIR)/requirements-sphinx.in
 	$(PIP_COMPILE) -Ur --allow-unsafe --generate-hashes $(DOCS_DIR)/requirements-sphinx.in
 
-install: .install
-.install: pyproject.toml poetry.toml poetry.lock
-	@$(MAKE) -s clean-egg-info
-	$(POETRY) install
-	touch $@
+install: install-python
 
-lint: install lint-only
+lint: lint-python
 
-lint-only:
-	SKIP=$(SKIP) $(PRE_COMMIT) run --all $(HOOK)
+lint-and-test: lint test
 
-list-outdated: install
-	$(POETRY) show -o
+list-outdated: list-outdated-python
 
-poetry.toml:
-	$(POETRY) config --local virtualenvs.create true
-	$(POETRY) config --local virtualenvs.in-project true
-
-test: install clean lint test-only
+test: install clean test-only
 
 test-only:
-	TOXENV=$(TOXENV) $(TOX) $(TOX_ARGS) -- $(TEST_ARGS)
+	PYTHONPATH=$(PYTHONPATH) TOXENV=$(TOXENV) $(TOX) $(TOX_ARGS) -- $(TEST_ARGS)

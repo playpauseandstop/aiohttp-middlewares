@@ -1,16 +1,28 @@
 version: 2
 updates:
-- package-ecosystem: pip
-  directory: "/"
-  schedule:
-    interval: monthly
-    time: "03:00"
-  open-pull-requests-limit: 10
-  reviewers:
-  - playpauseandstop
-  assignees:
-  - playpauseandstop
-  labels:
-  - build
-  allow:
-  - dependency-type: direct
+  - package-ecosystem: "pip"
+    directory: "/"
+    schedule:
+      interval: "monthly"
+      time: "03:00"
+    open-pull-requests-limit: 25
+    reviewers:
+      - "playpauseandstop"
+    labels:
+      - "build"
+      - "dependencies"
+    allow:
+      - dependency-type: "direct"
+
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "monthly"
+      time: "05:00"
+    open-pull-requests-limit: 10
+    reviewers:
+      - "playpauseandstop"
+      - "dependencies"
+      - "ci"
+    labels:
+      - "build"

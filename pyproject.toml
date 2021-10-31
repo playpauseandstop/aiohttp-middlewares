@@ -1,3 +1,6 @@
+[tool.badabump]
+version_type = "semver"
+
 [tool.black]
 line_length = 79
 
@@ -6,16 +9,54 @@ branch = true
 source = ["aiohttp_middlewares"]
 
 [tool.coverage.paths]
-source = ["aiohttp_middlewares/"]
+source = ["./src/"]
 
 [tool.coverage.report]
 fail_under = 95
 skip_covered = true
 show_missing = true
 
+[tool.isort]
+profile = "attrs"
+combine_as_imports = true
+force_alphabetical_sort_within_sections = true
+lines_between_types = 0
+src_paths = ["./", "./src/"]
+virtual_env = "./.venv/"
+
+[tool.mypy]
+allow_untyped_globals = true
+check_untyped_defs = true
+disallow_any_decorated = true
+disallow_any_generics = true
+disallow_incomplete_defs = true
+disallow_untyped_calls = true
+disallow_untyped_decorators = true
+disallow_untyped_defs = true
+follow_imports = "normal"
+follow_imports_for_stubs = true
+ignore_missing_imports = false
+namespace_packages = true
+mypy_path = "./src/"
+python_executable = "./.venv/bin/python3"
+show_column_numbers = true
+show_error_codes = true
+warn_redundant_casts = true
+warn_return_any = true
+warn_unused_ignores = true
+
+[[tool.mypy.overrides]]
+module = [
+  "conftest",
+  "migrations.*",
+  "tests.*",
+  "*.tests",
+]
+ignore_errors = true
+
 [tool.poetry]
 name = "aiohttp-middlewares"
-version = "1.2.0a0"
+version = "1.1.0"
 description = "Collection of useful middlewares for aiohttp applications."
 authors = ["Igor Davydenko <iam@igordavydenko.com>"]
 license = "BSD-3-Clause"
@@ -24,7 +65,7 @@ homepage = "https://igordavydenko.com/projects.html#aiohttp-middlewares"
 repository = "https://github.com/playpauseandstop/aiohttp-middlewares"
 documentation = "https://aiohttp-middlewares.readthedocs.io/"
 packages = [
-  {include = "aiohttp_middlewares", from = "src"}
+  {include = "aiohttp_middlewares", from = "./src/"}
 ]
 keywords = ["aiohttp", "aiohttp-server", "middlewares", "aiohttp-middlewares"]
 classifiers = [
@@ -42,23 +83,26 @@ classifiers = [
 
 [tool.poetry.dependencies]
 python = "^3.6"
-aiohttp = "^3.5"
-async-timeout = "^1.2 || ^2 || ^3"
+aiohttp = "^3.7.0"
+async-timeout = ">=3.0,<5.0"
 
 [tool.poetry.dev-dependencies]
-coverage = {version = "^5.3", extras=["toml"]}
-pytest = "^6.1.2"
+coverage = "^6.1.1"
+mypy = "^0.910"
+pytest = "^6.2.5"
 pytest-aiohttp = "^0.3.0"
-pytest-cov = "^2.10.1"
+pytest-cov = "^3.0.0"
 
 [tool.pytest.ini_options]
+minversion = "6.2.5"
 addopts = "--cov --no-cov-on-fail"
-testpaths = ["tests/"]
+testpaths = ["./tests/"]
+log_level = "info"
 
 [tool.tox]
 legacy_tox_ini = """
 [tox]
-envlist = py36,py37,py38
+envlist = py36,py37,py38,py39,py310,py310-minimum-requirements
 skipsdist = True
 
 [gh-actions]
@@ -66,6 +110,8 @@ python =
   3.6: py36
   3.7: py37
   3.8: py38
+  3.9: py39
+  3.10: py310
 
 [testenv]
 passenv =
@@ -79,8 +125,13 @@ commands_pre =
   poetry install
 commands =
   poetry run python -m pytest
+
+[testenv:py310-minimum-requirements]
+commands_pre =
+  poetry install
+  poetry run python3 -m pip install aiohttp==3.7.0 async-timeout==3.0.0
 """
 
 [build-system]
-requires = ["poetry>=1.0.0"]
-build-backend = "poetry.masonry.api"
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
