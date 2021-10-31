@@ -1,6 +1,5 @@
 [flake8]
-application-import-names = aiohttp_middlewares
-import-order-style = smarkets
+extend-ignore = E501
 inline-quotes = double
 max-complexity = 15
-multiline-quotes = """
+multiline-quotes = double
