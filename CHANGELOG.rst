@@ -1,6 +1,9 @@
 1.2.0 (2021-11-01)
 ==================
 
+Release new version, which supports latest aiohttp 3.8.0 release and ensures support
+of Python 3.9 & 3.10.
+
 **Features:**
 
 - Support latest aiohttp release (#55)
