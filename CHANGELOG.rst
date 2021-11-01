@@ -1,3 +1,38 @@
+1.2.0 (2021-11-01)
+==================
+
+Release new version, which supports latest aiohttp 3.8.0 release and ensures support
+of Python 3.9 & 3.10.
+
+**Features:**
+
+- Support latest aiohttp release (#55)
+
+**Refactoring:**
+
+- Move code to src directory
+
+**Other:**
+
+- Update pre-commit hooks
+- Massive updates to internal library infrastructure
+- Bump pre-commit hooks
+- Update config
+- Bump github actions to use
+- Update library infrastructure
+- Update package version
+- Update common files
+- (**deps-dev**) bump pytest from 6.0.1 to 6.1.0 (#29)
+- (**deps-dev**) bump coverage from 5.2.1 to 5.3 (#28)
+- (**deps**) bump aiohttp from 3.6.2 to 3.7.2 (#30)
+- (**deps-dev**) bump pytest from 6.1.0 to 6.1.2 (#31)
+- Use Python 3.10 as dev version (#52)
+- (**deps**) bump actions/checkout from 2.3.4 to 2.3.5 (#53)
+- Update docs requirements (#54)
+- Bump requirements for docs (#56)
+- Switch to Furo theme (#57)
+- Update Read the Docs configuration (#58)
+
 =========
 Changelog
 =========
