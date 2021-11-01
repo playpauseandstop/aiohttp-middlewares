@@ -51,11 +51,10 @@ import logging
 from typing import Union
 
 from aiohttp import web
-from aiohttp.web_middlewares import _Handler, _Middleware
 from async_timeout import timeout
 
-from .annotations import Urls
-from .utils import match_request
+from aiohttp_middlewares.annotations import Handler, Middleware, Urls
+from aiohttp_middlewares.utils import match_request
 
 
 logger = logging.getLogger(__name__)
@@ -63,7 +62,7 @@ logger = logging.getLogger(__name__)
 
 def timeout_middleware(
     seconds: Union[int, float], *, ignore: Urls = None
-) -> _Middleware:
+) -> Middleware:
     """Ensure that request handling does not exceed X seconds.
 
     This is helpful when aiohttp application served behind nginx or other
@@ -126,7 +125,7 @@ def timeout_middleware(
 
     @web.middleware
     async def middleware(
-        request: web.Request, handler: _Handler
+        request: web.Request, handler: Handler
     ) -> web.StreamResponse:
         """Wrap request handler into timeout context manager."""
         request_method = request.method

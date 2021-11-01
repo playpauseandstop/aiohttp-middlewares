@@ -55,10 +55,14 @@ import asyncio
 import logging
 
 from aiohttp import web
-from aiohttp.web_middlewares import _Handler, _Middleware
 
-from .annotations import StrCollection, Urls
-from .utils import match_request
+from aiohttp_middlewares.annotations import (
+    Handler,
+    Middleware,
+    StrCollection,
+    Urls,
+)
+from aiohttp_middlewares.utils import match_request
 
 
 logger = logging.getLogger(__name__)
@@ -66,7 +70,7 @@ logger = logging.getLogger(__name__)
 
 def shield_middleware(
     *, methods: StrCollection = None, urls: Urls = None, ignore: Urls = None
-) -> _Middleware:
+) -> Middleware:
     """
     Ensure that handler execution would not break on
     :class:`asyncio.CancelledError`.
@@ -142,7 +146,7 @@ def shield_middleware(
 
     @web.middleware
     async def middleware(
-        request: web.Request, handler: _Handler
+        request: web.Request, handler: Handler
     ) -> web.StreamResponse:
         """Shield handler execution if necessary."""
         request_method = request.method.lower()

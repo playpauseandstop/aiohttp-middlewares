@@ -53,4 +53,4 @@ list-outdated: list-outdated-python
 test: install clean test-only
 
 test-only:
-	PYTHONPATH=$(PYTHONPATH) TOXENV=$(TOXENV) $(TOX) $(TOX_ARGS) -- $(TEST_ARGS)
+	TOXENV=$(TOXENV) $(TOX) $(TOX_ARGS)

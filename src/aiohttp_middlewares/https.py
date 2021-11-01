@@ -27,9 +27,8 @@ Usage
 import logging
 
 from aiohttp import web
-from aiohttp.web_middlewares import _Handler, _Middleware
 
-from .annotations import DictStrStr
+from aiohttp_middlewares.annotations import DictStrStr, Handler, Middleware
 
 
 DEFAULT_MATCH_HEADERS = {"X-Forwarded-Proto": "https"}
@@ -37,7 +36,7 @@ DEFAULT_MATCH_HEADERS = {"X-Forwarded-Proto": "https"}
 logger = logging.getLogger(__name__)
 
 
-def https_middleware(match_headers: DictStrStr = None) -> _Middleware:
+def https_middleware(match_headers: DictStrStr = None) -> Middleware:
     """
     Change scheme for current request when aiohttp application deployed behind
     reverse proxy with HTTPS enabled.
@@ -59,7 +58,7 @@ def https_middleware(match_headers: DictStrStr = None) -> _Middleware:
 
     @web.middleware
     async def middleware(
-        request: web.Request, handler: _Handler
+        request: web.Request, handler: Handler
     ) -> web.StreamResponse:
         """Change scheme of current request when HTTPS headers matched."""
         headers = DEFAULT_MATCH_HEADERS
