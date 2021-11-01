@@ -36,11 +36,11 @@ docs: .install $(DOCS_DIR)/requirements.txt $(DOCS_DIR)/requirements-sphinx.txt
 	$(PYTHON) -m pip install -r $(DOCS_DIR)/requirements-sphinx.txt
 	$(PYTHON) -m sphinx_autobuild --host $(DOCS_HOST) --port $(DOCS_PORT) -b html $(DOCS_DIR)/ $(DOCS_DIR)/_build/
 
-$(DOCS_DIR)/requirements.txt: .install
-	$(POETRY) export -f requirements.txt -o $(DOCS_DIR)/requirements.txt
+$(DOCS_DIR)/requirements.txt: .install-python
+	$(POETRY) export -f requirements.txt -o $(DOCS_DIR)/requirements.txt --without-hashes
 
 $(DOCS_DIR)/requirements-sphinx.txt: $(DOCS_DIR)/requirements-sphinx.in
-	$(PIP_COMPILE) -Ur --allow-unsafe --generate-hashes $(DOCS_DIR)/requirements-sphinx.in
+	$(PIP_COMPILE) -Ur --allow-unsafe $(DOCS_DIR)/requirements-sphinx.in
 
 install: install-python
 
