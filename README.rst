@@ -38,7 +38,7 @@ Collection of useful middlewares for
 `aiohttp.web <https://docs.aiohttp.org/en/stable/web.html>`_ applications.
 
 - Works on Python 3.6+
-- Works with aiohttp 3.5+
+- Works with aiohttp 3.7+
 - BSD licensed
 - Latest documentation `on Read The Docs
   <https://aiohttp-middlewares.readthedocs.io/>`_

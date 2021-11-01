@@ -9,7 +9,7 @@ Various utility functions for ``aiohttp_middlewares`` library.
 
 from yarl import URL
 
-from .annotations import Url, Urls
+from aiohttp_middlewares.annotations import Url, Urls
 
 
 def match_path(item: Url, path: str) -> bool:

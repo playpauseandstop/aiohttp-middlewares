@@ -90,8 +90,14 @@ from typing import Dict, Iterator, Optional, Tuple, Union
 import attr
 from aiohttp import web
 
-from .annotations import DictStrAny, ExceptionType, Handler, Middleware, Url
-from .utils import match_path
+from aiohttp_middlewares.annotations import (
+    DictStrAny,
+    ExceptionType,
+    Handler,
+    Middleware,
+    Url,
+)
+from aiohttp_middlewares.utils import match_path
 
 
 DEFAULT_EXCEPTION = Exception("Unhandled aiohttp-middlewares exception.")

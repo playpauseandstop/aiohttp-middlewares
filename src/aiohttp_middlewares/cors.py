@@ -105,8 +105,13 @@ from typing import Pattern, Tuple
 
 from aiohttp import web
 
-from .annotations import Handler, Middleware, StrCollection, UrlCollection
-from .utils import match_path
+from aiohttp_middlewares.annotations import (
+    Handler,
+    Middleware,
+    StrCollection,
+    UrlCollection,
+)
+from aiohttp_middlewares.utils import match_path
 
 
 ACCESS_CONTROL = "Access-Control"

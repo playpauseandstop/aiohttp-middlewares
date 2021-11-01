@@ -7,18 +7,21 @@ Collection of useful middlewares for aiohttp applications.
 
 """
 
-from .constants import IDEMPOTENT_METHODS, NON_IDEMPOTENT_METHODS
-from .cors import cors_middleware
-from .error import (
+from aiohttp_middlewares.constants import (
+    IDEMPOTENT_METHODS,
+    NON_IDEMPOTENT_METHODS,
+)
+from aiohttp_middlewares.cors import cors_middleware
+from aiohttp_middlewares.error import (
     default_error_handler,
     error_context,
     error_middleware,
     get_error_response,
 )
-from .https import https_middleware
-from .shield import shield_middleware
-from .timeout import timeout_middleware
-from .utils import match_path
+from aiohttp_middlewares.https import https_middleware
+from aiohttp_middlewares.shield import shield_middleware
+from aiohttp_middlewares.timeout import timeout_middleware
+from aiohttp_middlewares.utils import match_path
 
 
 __author__ = "Igor Davydenko"
