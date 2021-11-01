@@ -1,3 +1,6 @@
+furo
 Sphinx
 sphinx-autobuild
 sphinx-autodoc-typehints
+sphinx-copybutton
+sphinxext-opengraph

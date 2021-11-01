@@ -34,12 +34,13 @@ TODAY = datetime.date.today()
 
 
 extensions = [
-    "alabaster",
     "sphinx.ext.autodoc",
-    "sphinx_autodoc_typehints",
     "sphinx.ext.intersphinx",
     "sphinx.ext.coverage",
     "sphinx.ext.viewcode",
+    "sphinx_autodoc_typehints",
+    "sphinx_copybutton",
+    "sphinxext.opengraph",
 ]
 
 templates_path = ["_templates"]
@@ -57,20 +58,12 @@ release = VERSION
 language = "en"
 exclude_patterns = ["_build", "Thumbs.db", ".DS_Store"]
 pygments_style = "sphinx"
+pygments_dark_style = "monokai"
 
-html_theme = "alabaster"
-html_theme_options = {
-    "logo_name": True,
-    "description": description,
-    "github_user": "playpauseandstop",
-    "github_repo": project,
-    "github_banner": True,
-    "github_button": True,
-    "github_type": "star",
-    "fixed_sidebar": True,
-}
+html_theme = "furo"
+html_theme_options = {}
 html_static_path = ["_static"]
-html_sidebars = {"**": ["about.html", "localtoc.html", "searchbox.html"]}
+html_title = project
 
 htmlhelp_basename = "aiohttp-middlewaresdoc"
 latex_elements = {}
@@ -110,3 +103,7 @@ intersphinx_mapping = {
     "https://docs.python.org/3/": None,
     "https://aiohttp.readthedocs.io/en/stable/": None,
 }
+
+ogp_site_url = "https://aiohttp-middlewares.readthedocs.io"
+ogp_site_name = project
+ogp_image = "https://repository-images.githubusercontent.com/91174188/e1a75000-4063-11ea-8c47-f34e26fe6d40"
