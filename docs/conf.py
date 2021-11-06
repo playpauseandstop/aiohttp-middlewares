@@ -63,7 +63,6 @@ pygments_dark_style = "monokai"
 html_theme = "furo"
 html_theme_options = {}
 html_static_path = ["_static"]
-html_title = project
 
 htmlhelp_basename = "aiohttp-middlewaresdoc"
 latex_elements = {}

@@ -33,10 +33,6 @@ of Python 3.9 & 3.10.
 - Switch to Furo theme (#57)
 - Update Read the Docs configuration (#58)
 
-=========
-Changelog
-=========
-
 1.1.0 (2020-04-21)
 ==================
 
