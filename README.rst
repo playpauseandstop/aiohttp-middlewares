@@ -2,8 +2,8 @@
 aiohttp-middlewares
 ===================
 
-.. image:: https://github.com/playpauseandstop/aiohttp-middlewares/workflows/ci/badge.svg
-    :target: https://github.com/playpauseandstop/aiohttp-middlewares/actions?query=workflow%3A%22ci%22
+.. image:: https://github.com/playpauseandstop/aiohttp-middlewares/actions/workflows/ci.yml/badge.svg
+    :target: https://github.com/playpauseandstop/aiohttp-middlewares/actions/workflows/ci.yml
     :alt: CI Workflow
 
 .. image:: https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit&logoColor=white
@@ -34,19 +34,21 @@ aiohttp-middlewares
     :target: http://aiohttp-middlewares.readthedocs.org/en/latest/
     :alt: Documentation
 
-Collection of useful middlewares for
-`aiohttp.web <https://docs.aiohttp.org/en/stable/web.html>`_ applications.
+Collection of useful middlewares for `aiohttp.web`_ applications.
 
-- Works on Python 3.6+
-- Works with aiohttp 3.7+
+- Works on `Python`_ 3.6+
+- Works with `aiohttp.web`_ 3.7+
 - BSD licensed
 - Latest documentation `on Read The Docs
   <https://aiohttp-middlewares.readthedocs.io/>`_
 - Source, issues, and pull requests `on GitHub
   <https://github.com/playpauseandstop/aiohttp-middlewares>`_
 
-Quickstart
-==========
+.. _`aiohttp.web`: https://docs.aiohttp.org/en/stable/web.html
+.. _`Python`: https://www.python.org/
+
+Quick Start
+===========
 
 By default ``aiohttp.web`` does not provide `many built-in middlewares
 <https://docs.aiohttp.org/en/stable/web_reference.html#middlewares>`_ for
