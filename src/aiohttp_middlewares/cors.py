@@ -237,7 +237,15 @@ def cors_middleware(
             response = web.StreamResponse()
         # Otherwise - call actual handler
         else:
-            response = await handler(request)
+            try:
+                response = await handler(request)
+            except web.HTTPException as exc:
+                response = web.Response(
+                    headers=exc.headers,
+                    status=exc.status,
+                    reason=exc.reason,
+                    text=exc.text
+                )
 
         # Now check origin heaer
         origin = request.headers.get("Origin")
