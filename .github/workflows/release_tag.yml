@@ -37,11 +37,11 @@ jobs:
           python-version-file: ".python-version"
 
       - name: "Install badabump"
-        run: "python3 -m pip install badabump==${{ env.BADABUMP_VERSION }}"
+        run: "pipx install badabump==${{ env.BADABUMP_VERSION }}"
 
       - id: "badabump"
         name: "Run badabump"
-        run: "python3 -m badabump.ci prepare_tag"
+        run: "badabump-ci prepare_tag"
 
       - name: "Create release tag from latest commit"
         run: |

@@ -41,11 +41,11 @@ jobs:
           python-version-file: ".python-version"
 
       - name: "Install badabump"
-        run: "python3 -m pip install badabump==${{ env.BADABUMP_VERSION }}"
+        run: "pipx install badabump==${{ env.BADABUMP_VERSION }}"
 
       - id: "badabump"
         name: "Run badabump"
-        run: "python3 -m badabump --ci ${{ github.event.inputs.args }}"
+        run: "badabump --ci ${{ github.event.inputs.args }}"
 
       - id: "token"
         uses: "tibdex/github-app-token@v1.5"
