@@ -42,11 +42,15 @@ jobs:
       - name: "Install poetry"
         run: "pipx install poetry==${{ env.POETRY_VERSION }}"
 
-      - name: "Install Python"
+      - id: "python"
+        name: "Install Python"
         uses: "actions/setup-python@v4.0.0"
         with:
           python-version-file: ".python-version"
           cache: "poetry"
+
+      - name: "Tell poetry to use proper Python"
+        run: "poetry env use '${{ steps.python.outputs.python-path }}'"
 
       - name: "Install package"
         run: "poetry install"
@@ -62,7 +66,8 @@ jobs:
     steps:
       - uses: "actions/checkout@v3.0.2"
 
-      - name: "Install Python"
+      - id: "python"
+        name: "Install Python"
         uses: "actions/setup-python@v4.0.0"
         with:
           python-version-file: ".python-version"
@@ -97,11 +102,15 @@ jobs:
       - name: "Install poetry"
         run: "pipx install poetry==${{ env.POETRY_VERSION }}"
 
-      - name: "Install Python"
+      - id: "python"
+        name: "Install Python"
         uses: "actions/setup-python@v4.0.0"
         with:
           python-version: "${{ matrix.python-version }}"
           cache: "poetry"
+
+      - name: "Tell poetry to use proper Python"
+        run: "poetry env use '${{ steps.python.outputs.python-path }}'"
 
       - name: "Install package with dev dependencies"
         if: "${{ matrix.dev == true }}"
@@ -119,7 +128,7 @@ jobs:
         run: |
           set -euo pipefail
 
-          pipx install tox==${{ env.TOX_VERSION }}
+          pipx install --python='${{ steps.python.outputs.python-path }}' tox==${{ env.TOX_VERSION }}
           pipx inject tox tox-gh-actions==${{ env.TOX_GH_ACTIONS_VERSION }}
 
       - name: "Run tests"
@@ -143,17 +152,21 @@ jobs:
       - name: "Install poetry"
         run: "pipx install poetry==${{ env.POETRY_VERSION }}"
 
-      - name: "Install Python"
+      - id: "python"
+        name: "Install Python"
         uses: "actions/setup-python@v4.0.0"
         with:
           python-version-file: ".python-version"
           cache: "poetry"
 
+      - name: "Tell poetry to use proper Python"
+        run: "poetry env use '${{ steps.python.outputs.python-path }}'"
+
       - name: "Build package"
         run: "poetry build"
 
       - name: "Install twine"
-        run: "pipx install twine==${{ env.TWINE_VERSION }}"
+        run: "pipx install --python='${{ steps.python.outputs.python-path }}' twine==${{ env.TWINE_VERSION }}"
 
       - name: "Check package"
         run: "twine check ./dist/*"
@@ -182,13 +195,14 @@ jobs:
           git fetch --depth=1 origin +refs/tags/*:refs/tags/*
           git fetch --prune --unshallow
 
-      - name: "Install Python"
+      - id: "python"
+        name: "Install Python"
         uses: "actions/setup-python@v4.0.0"
         with:
           python-version-file: ".python-version"
 
       - name: "Install badabump"
-        run: "pipx install badabump==${{ env.BADABUMP_VERSION }}"
+        run: "pipx install --python='${{ steps.python.outputs.python-path }}' badabump==${{ env.BADABUMP_VERSION }}"
 
       - id: "badabump"
         name: "Run badabump"

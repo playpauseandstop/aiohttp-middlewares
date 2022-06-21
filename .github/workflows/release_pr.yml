@@ -35,13 +35,14 @@ jobs:
           git fetch --depth=1 origin +refs/tags/*:refs/tags/* || :
           git fetch --prune --unshallow
 
-      - name: "Install Python"
+      - id: "python"
+        name: "Install Python"
         uses: "actions/setup-python@v4.0.0"
         with:
           python-version-file: ".python-version"
 
       - name: "Install badabump"
-        run: "pipx install badabump==${{ env.BADABUMP_VERSION }}"
+        run: "pipx install --python='${{ steps.python.outputs.python-path }}' badabump==${{ env.BADABUMP_VERSION }}"
 
       - id: "badabump"
         name: "Run badabump"
