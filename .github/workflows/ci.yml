@@ -12,21 +12,18 @@ on:
     branches: ["master"]
 
 env:
-  # Dev Python version
-  DEV_PYTHON_VERSION: "3.10.1"
+  PYTHONUNBUFFERED: "1"
   # Get latest versions by running,
   #
   # ```bash
-  # pip-latest-release badabump coveralls poetry tox tox-gh-actions twine
+  # pip-latest-release badabump poetry tox tox-gh-actions twine
   # ```
   #
   BADABUMP_VERSION: "21.3.3"
-  COVERAGE_VERSION: "6.2"
-  COVERALLS_VERSION: "3.3.1"
-  POETRY_VERSION: "1.1.12"
-  TOX_VERSION: "3.24.5"
-  TOX_GH_ACTIONS_VERSION: "2.8.1"
-  TWINE_VERSION: "3.7.1"
+  POETRY_VERSION: "1.1.13"
+  TOX_VERSION: "3.25.0"
+  TOX_GH_ACTIONS_VERSION: "2.9.1"
+  TWINE_VERSION: "4.0.1"
 
 jobs:
   dev:
@@ -39,29 +36,26 @@ jobs:
     runs-on: "${{ matrix.os }}"
 
     steps:
-      - uses: "actions/checkout@v2.4.0"
+      - uses: "actions/checkout@v3.0.2"
 
       - name: "Install Python"
-        uses: "actions/setup-python@v2.3.1"
+        uses: "actions/setup-python@v4.0.0"
         with:
-          python-version: "${{ env.DEV_PYTHON_VERSION }}"
+          python-version-file: ".python-version"
 
       - name: "Install poetry"
-        run: "python3 -m pip install poetry==${{ env.POETRY_VERSION }}"
+        uses: "snok/install-poetry@v1.3.1"
+        with:
+          version: "${{ env.POETRY_VERSION }}"
 
       - name: "Cache venv"
-        uses: "actions/cache@v2.1.7"
+        uses: "actions/cache@v3.0.4"
         with:
           path: "./.venv/"
-          key: "venv-${{ matrix.python-version }}-${{ hashFiles('poetry.lock') }}"
+          key: "venv-dev-${{ hashFiles('poetry.lock') }}"
 
-      - name: "Install package with dev dependencies"
-        if: "${{ startsWith(env.DEV_PYTHON_VERSION, matrix.python-version) }}"
+      - name: "Install package"
         run: "poetry install"
-
-      - name: "Install package without dev dependencies"
-        if: "${{ !startsWith(env.DEV_PYTHON_VERSION, matrix.python-version) }}"
-        run: "poetry install --no-dev"
 
       - name: "Import package"
         run: "poetry run python3 -c 'import aiohttp_middlewares'"
@@ -72,12 +66,12 @@ jobs:
     runs-on: "ubuntu-latest"
 
     steps:
-      - uses: "actions/checkout@v2.4.0"
+      - uses: "actions/checkout@v3.0.2"
 
       - name: "Install Python"
-        uses: "actions/setup-python@v2.3.1"
+        uses: "actions/setup-python@v4.0.0"
         with:
-          python-version: "${{ matrix.python-version }}"
+          python-version-file: ".python-version"
 
       - name: "Install docs requirements"
         run: "python3 -m pip install -r ./docs/requirements.txt -r ./docs/requirements-sphinx.txt"
@@ -90,51 +84,68 @@ jobs:
 
     strategy:
       matrix:
-        python-version: ["3.6", "3.7", "3.8", "3.9", "3.10"]
+        python-version: ["3.7", "3.8", "3.9", "3.10", "3.11.0-beta.3"]
+        include:
+          - python-version: "3.7"
+            python-cache-key: "3.7"
+
+          - python-version: "3.8"
+            python-cache-key: "3.8"
+
+          - python-version: "3.9"
+            python-cache-key: "3.9"
+
+          - python-version: "3.10"
+            python-cache-key: "dev"
+
+          - python-version: "3.11.0-beta.3"
+            python-cache-key: "3.11.0-beta.3"
 
     runs-on: "ubuntu-latest"
+    continue-on-error: "${{ startsWith(matrix.python-version, '3.11') }}"
 
     steps:
-      - uses: "actions/checkout@v2.4.0"
+      - uses: "actions/checkout@v3.0.2"
 
       - name: "Install Python"
-        uses: "actions/setup-python@v2.3.1"
+        uses: "actions/setup-python@v4.0.0"
         with:
           python-version: "${{ matrix.python-version }}"
 
-      - name: "Install poetry & tox"
-        run: "python3 -m pip install poetry==${{ env.POETRY_VERSION }} tox==${{ env.TOX_VERSION }} tox-gh-actions==${{ env.TOX_GH_ACTIONS_VERSION }}"
+      - name: "Install poetry"
+        uses: "snok/install-poetry@v1.3.1"
+        with:
+          version: "${{ env.POETRY_VERSION }}"
+
+      - name: "Install other deps"
+        run: "python3 -m pip install tox==${{ env.TOX_VERSION }} tox-gh-actions==${{ env.TOX_GH_ACTIONS_VERSION }}"
 
       - name: "Cache venv"
-        uses: "actions/cache@v2.1.7"
+        uses: "actions/cache@v3.0.4"
         with:
           path: "./.venv/"
-          key: "venv-${{ matrix.python-version }}-${{ hashFiles('poetry.lock') }}"
+          key: "venv-${{ matrix.python-cache-key }}-${{ hashFiles('poetry.lock') }}"
 
       - name: "Install package with dev dependencies"
-        if: "${{ startsWith(env.DEV_PYTHON_VERSION, matrix.python-version) }}"
+        if: "${{ matrix.python-cache-key == 'dev' }}"
         run: "poetry install"
 
       - name: "Install package without dev dependencies"
-        if: "${{ !startsWith(env.DEV_PYTHON_VERSION, matrix.python-version) }}"
+        if: "${{ matrix.python-cache-key != 'dev' }}"
         run: "poetry install --no-dev"
 
       - name: "Run pre-commit"
-        if: "${{ startsWith(env.DEV_PYTHON_VERSION, matrix.python-version) }}"
-        uses: "pre-commit/action@v2.0.3"
+        if: "${{ matrix.python-cache-key == 'dev' }}"
+        uses: "pre-commit/action@v3.0.0"
 
       - name: "Run tests"
         run: "python3 -m tox"
 
       - name: "Send report to coveralls"
-        if: "${{ startsWith(env.DEV_PYTHON_VERSION, matrix.python-version) }}"
-        run: |
-          set -euo pipefail
-
-          python3 -m pip install coverage[toml]==${{ env.COVERAGE_VERSION }} coveralls==${{ env.COVERALLS_VERSION }}
-          python3 -m coveralls --service=github
+        if: "${{ matrix.python-cache-key == 'dev' }}"
         env:
           GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
+        run: "poetry run python3 -m coveralls --service=github"
 
   package:
     needs: ["test"]
@@ -143,15 +154,17 @@ jobs:
     runs-on: "ubuntu-latest"
 
     steps:
-      - uses: "actions/checkout@v2.4.0"
+      - uses: "actions/checkout@v3.0.2"
 
       - name: "Install Python"
-        uses: "actions/setup-python@v2.3.1"
+        uses: "actions/setup-python@v4.0.0"
         with:
-          python-version: "${{ env.DEV_PYTHON_VERSION }}"
+          python-version-file: ".python-version"
 
       - name: "Install poetry"
-        run: "python3 -m pip install poetry==${{ env.POETRY_VERSION }}"
+        uses: "snok/install-poetry@v1.3.1"
+        with:
+          version: "${{ env.POETRY_VERSION }}"
 
       - name: "Build package"
         run: "poetry build"
@@ -161,7 +174,7 @@ jobs:
           set -euo pipefail
 
           python3 -m pip install twine==${{ env.TWINE_VERSION }}
-          python3 -m twine check dist/*
+          python3 -m twine check ./dist/*
 
       - name: "Publish package"
         if: "${{ github.event_name == 'push' && startsWith(github.event.ref, 'refs/tags') }}"
@@ -178,7 +191,7 @@ jobs:
     runs-on: "ubuntu-latest"
 
     steps:
-      - uses: "actions/checkout@v2.4.0"
+      - uses: "actions/checkout@v3.0.2"
 
       - name: "Fetch git data"
         run: |
@@ -188,9 +201,9 @@ jobs:
           git fetch --prune --unshallow
 
       - name: "Install Python"
-        uses: "actions/setup-python@v2.3.1"
+        uses: "actions/setup-python@v4.0.0"
         with:
-          python-version: "${{ env.DEV_PYTHON_VERSION }}"
+          python-version-file: ".python-version"
 
       - name: "Install badabump"
         run: "python3 -m pip install badabump==${{ env.BADABUMP_VERSION }}"
