@@ -111,6 +111,11 @@ jobs:
         with:
           python-version: "${{ matrix.python-version }}"
 
+      - name: "Install poetry"
+        uses: "snok/install-poetry@v1.3.1"
+        with:
+          version: "${{ env.POETRY_VERSION }}"
+
       - name: "Install other deps"
         run: "python3 -m pip install tox==${{ env.TOX_VERSION }} tox-gh-actions==${{ env.TOX_GH_ACTIONS_VERSION }}"
 
