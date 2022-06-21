@@ -90,21 +90,14 @@ jobs:
     steps:
       - uses: "actions/checkout@v3.0.2"
 
+      - name: "Install poetry"
+        run: "pipx install poetry==${{ env.POETRY_VERSION }}"
+
       - name: "Install Python"
         uses: "actions/setup-python@v4.0.0"
         with:
           python-version: "${{ matrix.python-version }}"
           cache: "poetry"
-
-      - name: "Install poetry"
-        run: "pipx install poetry==${{ env.POETRY_VERSION }}"
-
-      - name: "Install other deps"
-        run: |
-          set -euo pipefail
-
-          pipx install tox==${{ env.TOX_VERSION }}
-          pipx inject tox tox-gh-actions==${{ env.TOX_GH_ACTIONS_VERSION }}
 
       - name: "Install package with dev dependencies"
         if: "${{ matrix.dev == true }}"
@@ -117,6 +110,13 @@ jobs:
       - name: "Run pre-commit"
         if: "${{ matrix.dev == true }}"
         uses: "pre-commit/action@v3.0.0"
+
+      - name: "Install tox & tox-gh-actions"
+        run: |
+          set -euo pipefail
+
+          pipx install tox==${{ env.TOX_VERSION }}
+          pipx inject tox tox-gh-actions==${{ env.TOX_GH_ACTIONS_VERSION }}
 
       - name: "Run tests"
         run: "tox"
@@ -136,20 +136,20 @@ jobs:
     steps:
       - uses: "actions/checkout@v3.0.2"
 
+      - name: "Install poetry"
+        run: "pipx install poetry==${{ env.POETRY_VERSION }}"
+
       - name: "Install Python"
         uses: "actions/setup-python@v4.0.0"
         with:
           python-version-file: ".python-version"
           cache: "poetry"
 
-      - name: "Install poetry"
-        run: "pipx install poetry==${{ env.POETRY_VERSION }}"
-
-      - name: "Install other deps"
-        run: "pipx install twine==${{ env.TWINE_VERSION }}"
-
       - name: "Build package"
         run: "poetry build"
+
+      - name: "Install twine"
+        run: "pipx install twine==${{ env.TWINE_VERSION }}"
 
       - name: "Check package"
         run: "twine check ./dist/*"
