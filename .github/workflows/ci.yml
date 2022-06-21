@@ -16,7 +16,7 @@ env:
   # Get latest versions by running,
   #
   # ```bash
-  # pip-latest-release badabump poetry tox tox-gh-actions twine
+  # pip-latest-release badabump poetry tox tox-gh-actions twine wheel
   # ```
   #
   BADABUMP_VERSION: "21.3.3"
@@ -24,6 +24,7 @@ env:
   TOX_VERSION: "3.25.0"
   TOX_GH_ACTIONS_VERSION: "2.9.1"
   TWINE_VERSION: "4.0.1"
+  WHEEL_VERSION: "0.37.1"
 
 jobs:
   dev:
@@ -67,6 +68,9 @@ jobs:
           python-version-file: ".python-version"
           cache: "pip"
           cache-dependency-path: "./docs/requirements*.txt"
+
+      - name: "Install wheel"
+        run: "python3 -m pip install wheel==${{ env.WHEEL_VERSION }}"
 
       - name: "Install docs requirements"
         run: "python3 -m pip install -r ./docs/requirements.txt -r ./docs/requirements-sphinx.txt"
