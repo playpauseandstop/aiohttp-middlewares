@@ -26,8 +26,8 @@ env:
   TWINE_VERSION: "4.0.1"
 
 jobs:
-  dev:
-    name: "Verify package is installed well"
+  install:
+    name: "Install & cache package"
 
     strategy:
       matrix:
@@ -52,7 +52,34 @@ jobs:
         uses: "actions/cache@v3.0.4"
         with:
           path: "./.venv/"
-          key: "venv-dev-${{ hashFiles('poetry.lock') }}"
+          key: "venv-${{ matrix.os }}-dev-${{ hashFiles('poetry.lock') }}"
+
+      - name: "Install package"
+        run: "poetry install"
+
+  dev:
+    needs: ["install"]
+    name: "Verify package is installed well"
+
+    strategy:
+      matrix:
+        os: ["ubuntu-latest", "macos-latest"]
+
+    runs-on: "${{ matrix.os }}"
+
+    steps:
+      - uses: "actions/checkout@v3.0.2"
+
+      - name: "Install Python"
+        uses: "actions/setup-python@v4.0.0"
+        with:
+          python-version-file: ".python-version"
+
+      - name: "Cache venv"
+        uses: "actions/cache@v3.0.4"
+        with:
+          path: "./.venv/"
+          key: "venv-${{ runner.os }}-dev-${{ hashFiles('poetry.lock') }}"
 
       - name: "Install package"
         run: "poetry install"
@@ -80,6 +107,7 @@ jobs:
         run: "python3 -m sphinx -b html ./docs/ ./docs/_build/"
 
   test:
+    needs: ["install"]
     name: "Python ${{ matrix.python-version }}"
 
     strategy:
@@ -124,7 +152,7 @@ jobs:
         uses: "actions/cache@v3.0.4"
         with:
           path: "./.venv/"
-          key: "venv-${{ matrix.python-cache-key }}-${{ hashFiles('poetry.lock') }}"
+          key: "venv-${{ runner.os }}-${{ matrix.python-cache-key }}-${{ hashFiles('poetry.lock') }}"
 
       - name: "Install package with dev dependencies"
         if: "${{ matrix.python-cache-key == 'dev' }}"
