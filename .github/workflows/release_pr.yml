@@ -13,9 +13,8 @@ on:
         default: ""
 
 env:
-  BADABUMP_VERSION: "21.3.3"
-  PYTHON_VERSION: "3.10.1"
   PYTHONUNBUFFERED: "1"
+  BADABUMP_VERSION: "21.3.3"
 
 jobs:
   create_release_pr:
@@ -25,7 +24,7 @@ jobs:
     runs-on: "ubuntu-latest"
 
     steps:
-      - uses: "actions/checkout@v2.4.0"
+      - uses: "actions/checkout@v3.0.2"
         with:
           ref: "master"
 
@@ -37,9 +36,9 @@ jobs:
           git fetch --prune --unshallow
 
       - name: "Install Python"
-        uses: "actions/setup-python@v2.3.1"
+        uses: "actions/setup-python@v4.0.0"
         with:
-          python-version: "${{ env.PYTHON_VERSION }}"
+          python-version-file: ".python-version"
 
       - name: "Install badabump"
         run: "python3 -m pip install badabump==${{ env.BADABUMP_VERSION }}"

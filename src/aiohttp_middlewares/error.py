@@ -206,7 +206,7 @@ def error_middleware(
     ) -> web.StreamResponse:
         try:
             return await handler(request)
-        except Exception as err:  # noqa: PIE786
+        except Exception as err:
             return await get_response(request, err)
 
     return middleware
