@@ -23,10 +23,10 @@ aiohttp-middlewares
     :alt: Python versions
 
 .. image:: https://img.shields.io/pypi/l/aiohttp-middlewares.svg
-    :target: https://github.com/playpauseandstop/aiohttp-middlewares/blob/master/LICENSE
+    :target: https://github.com/playpauseandstop/aiohttp-middlewares/blob/main/LICENSE
     :alt: BSD License
 
-.. image:: https://coveralls.io/repos/playpauseandstop/aiohttp-middlewares/badge.svg?branch=master&service=github
+.. image:: https://coveralls.io/repos/playpauseandstop/aiohttp-middlewares/badge.svg?branch=main&service=github
     :target: https://coveralls.io/github/playpauseandstop/aiohttp-middlewares
     :alt: Coverage
 
