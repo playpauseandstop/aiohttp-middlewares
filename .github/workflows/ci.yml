@@ -102,8 +102,8 @@ jobs:
 
     uses: "./.github/workflows/ci_package.yml"
     secrets:
-      PYPI_USERNAME: "${{ secrets.PYPI_USERNAME }}"
-      PYPI_PASSWORD: "${{ secrets.PYPI_PASSWORD }}"
+      pypi-user: "${{ secrets.PYPI_USERNAME }}"
+      pypi-password: "${{ secrets.PYPI_PASSWORD }}"
 
   release:
     needs: ["package"]
@@ -111,4 +111,4 @@ jobs:
 
     uses: "./.github/workflows/ci_release.yml"
     secrets:
-      GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
+      release-token: "${{ secrets.GITHUB_TOKEN }}"

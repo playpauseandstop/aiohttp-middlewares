@@ -19,7 +19,7 @@ env:
 jobs:
   create_release_pr:
     if: "${{ github.actor == 'playpauseandstop' }}"
-    name: "Create release PR"
+    name: "Create Release PR"
 
     runs-on: "ubuntu-latest"
 
@@ -35,14 +35,7 @@ jobs:
           git fetch --depth=1 origin +refs/tags/*:refs/tags/* || :
           git fetch --prune --unshallow
 
-      - id: "python"
-        name: "Install Python"
-        uses: "actions/setup-python@v4.0.0"
-        with:
-          python-version-file: ".python-version"
-
-      - name: "Install badabump"
-        run: "pipx install --python='${{ steps.python.outputs.python-path }}' badabump==${{ env.BADABUMP_VERSION }}"
+      - uses: "./.github/actions/install_badabump"
 
       - id: "badabump"
         name: "Run badabump"

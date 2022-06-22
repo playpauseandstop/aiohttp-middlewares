@@ -2,16 +2,9 @@ name: "Create GitHub Release"
 
 on:
   workflow_call:
-    inputs:
-      badabump-version:
-        description: "Badabump version to use."
-        type: "string"
-        required: false
-        default: "21.3.3"
-
     secrets:
-      GITHUB_TOKEN:
-        description: "GitHub token to use."
+      release-token:
+        description: "Token to use for creating release."
         required: true
 
 jobs:
@@ -30,14 +23,7 @@ jobs:
           git fetch --depth=1 origin +refs/tags/*:refs/tags/*
           git fetch --prune --unshallow
 
-      - id: "python"
-        name: "Install Python"
-        uses: "actions/setup-python@v4.0.0"
-        with:
-          python-version-file: ".python-version"
-
-      - name: "Install badabump"
-        run: "pipx install --python='${{ steps.python.outputs.python-path }}' badabump==${{ inputs.badabump-version }}"
+      - uses: "./.github/actions/install_badabump"
 
       - id: "badabump"
         name: "Run badabump"
@@ -46,7 +32,7 @@ jobs:
       - name: "Create new release"
         uses: "actions/create-release@v1.1.4"
         env:
-          GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
+          GITHUB_TOKEN: "${{ secrets.release-token }}"
         with:
           tag_name: "${{ steps.badabump.outputs.tag_name }}"
           release_name: "${{ steps.badabump.outputs.release_name }}"
