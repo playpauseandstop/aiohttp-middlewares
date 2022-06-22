@@ -1,6 +1,13 @@
 2.0.0 (2022-06-22)
 ==================
 
+**Drop support of Python 3.6 as well as bump lower bounds of library dependencies.**
+
+Now `aiohttp-middlewares` requires,
+
+- ``aiohttp>=3.8.1,<4.0`` instead of ``>=3.7.0,<4.0``
+- ``async-timeout>=4.0.2,<5.0`` instead of ``>=3.0,<5.0``
+
 **Refactoring:**
 
 - [#81] **BREAKING CHANGE:** Bump aiohttp & async-timeout deps lower bounds (#105)
