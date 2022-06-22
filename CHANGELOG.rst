@@ -1,3 +1,41 @@
+2.0.0 (2022-06-22)
+==================
+
+**Drop support of Python 3.6 as well as bump lower bounds of library dependencies.**
+
+Now `aiohttp-middlewares` requires,
+
+- ``aiohttp>=3.8.1,<4.0`` instead of ``>=3.7.0,<4.0``
+- ``async-timeout>=4.0.2,<5.0`` instead of ``>=3.0,<5.0``
+
+**Refactoring:**
+
+- [#81] **BREAKING CHANGE:** Bump aiohttp & async-timeout deps lower bounds (#105)
+
+**Other:**
+
+- **BREAKING CHANGE:** Drop support of Python 3.6 (#99)
+- (**deps**) bump actions/checkout from 2.3.5 to 2.4.0 (#70)
+- (**deps**) bump actions/cache from 2.1.6 to 2.1.7 (#66)
+- (**deps**) bump actions/setup-python from 2.2.2 to 2.3.1 (#67)
+- (**deps**) bump tibdex/github-app-token from 1.4 to 1.5 (#69)
+- (**deps**) bump peter-evans/create-pull-request from 3.10.1 to 3.11.0 (#68)
+- (**deps**) bump aiohttp from 3.8.0 to 3.8.1 (#65)
+- (**deps**) bump async-timeout from 4.0.0 to 4.0.1 (#62)
+- (**deps**) bump yarl from 1.7.0 to 1.7.2 (#64)
+- (**deps-dev**) bump coverage from 6.1.1 to 6.2 (#63)
+- (**deps**) bump async-timeout from 4.0.1 to 4.0.2 (#71)
+- (**deps-dev**) bump mypy from 0.910 to 0.930 (#72)
+- (**deps**) bump peter-evans/create-pull-request from 3.11.0 to 3.12.0 (#73)
+- Update Python dev version to 3.10.1 (#74)
+- (**deps**) bump pypa/gh-action-pypi-publish from 1.4.2 to 1.5.0 (#77)
+- (**deps**) bump peter-evans/create-pull-request from 3.12.0 to 3.12.1 (#76)
+- (**deps-dev**) bump mypy from 0.930 to 0.931 (#75)
+- (**deps**) bump peter-evans/create-pull-request from 3.12.1 to 4.0.4 (#100)
+- Update default branch name (#103)
+- Bump requirements (#102)
+- Various improvements for CI jobs (#104)
+
 1.2.1 (2021-11-06)
 ==================
 
