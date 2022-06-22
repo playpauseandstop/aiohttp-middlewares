@@ -37,7 +37,7 @@ aiohttp-middlewares
 Collection of useful middlewares for `aiohttp.web`_ applications.
 
 - Works on `Python`_ 3.7+
-- Works with `aiohttp.web`_ 3.7+
+- Works with `aiohttp.web`_ 3.8.1+
 - BSD licensed
 - Latest documentation `on Read The Docs
   <https://aiohttp-middlewares.readthedocs.io/>`_

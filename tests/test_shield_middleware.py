@@ -87,7 +87,7 @@ async def test_shield_request_by_url(aiohttp_client, url, method):
     "method, value",
     [("DELETE", False), ("GET", False), ("POST", True), ("PUT", False)],
 )
-async def test_shield_middleware_funcitonal(loop, method, value):
+async def test_shield_middleware_funcitonal(event_loop, method, value):
     flag = False
     client_ready = asyncio.Event()
     handler_ready = asyncio.Event()
@@ -106,7 +106,7 @@ async def test_shield_middleware_funcitonal(loop, method, value):
 
     # Run handler in a task.
     middleware = shield_middleware(methods=frozenset({"POST"}))
-    task = loop.create_task(
+    task = event_loop.create_task(
         middleware(make_mocked_request(method, "/"), handler)
     )
     await handler_ready.wait()
