@@ -16,14 +16,10 @@ env:
   # Get latest versions by running,
   #
   # ```bash
-  # pip-latest-release badabump poetry tox tox-gh-actions twine wheel
+  # pip-latest-release badabump wheel
   # ```
   #
   BADABUMP_VERSION: "21.3.3"
-  POETRY_VERSION: "1.1.13"
-  TOX_VERSION: "3.25.0"
-  TOX_GH_ACTIONS_VERSION: "2.9.1"
-  TWINE_VERSION: "4.0.1"
   WHEEL_VERSION: "0.37.1"
 
 jobs:
@@ -39,24 +35,10 @@ jobs:
     steps:
       - uses: "actions/checkout@v3.0.2"
 
-      - id: "python"
-        name: "Install Python"
-        uses: "actions/setup-python@v4.0.0"
+      - id: "python_and_poetry"
+        uses: "./.github/actions/install_python_and_poetry"
         with:
           python-version-file: ".python-version"
-
-      - name: "Install poetry"
-        run: "pipx install --python='${{ steps.python.outputs.python-path }}' poetry==${{ env.POETRY_VERSION }}"
-
-      # Cache venv step used instead of `cache: "poetry"` option to
-      # `actions/setup-python` action cause poetry still need to be
-      # additionally configured, as it first installed via global Python
-      # which does not match expected Python version
-      - name: "Cache venv"
-        uses: "actions/cache@v3.0.4"
-        with:
-          path: "./.venv/"
-          key: "venv-${{ runner.os }}-${{ steps.python.outputs.python-version }}-${{ hashFiles('poetry.lock') }}"
 
       - name: "Install package"
         run: "poetry install"
@@ -105,124 +87,35 @@ jobs:
     steps:
       - uses: "actions/checkout@v3.0.2"
 
-      - id: "python"
-        name: "Install Python"
-        uses: "actions/setup-python@v4.0.0"
+      - id: "python_and_poetry"
+        uses: "./.github/actions/install_python_and_poetry"
         with:
           python-version: "${{ matrix.python-version }}"
 
-      - name: "Install poetry"
-        run: "pipx install --python='${{ steps.python.outputs.python-path }}' poetry==${{ env.POETRY_VERSION }}"
-
-      - name: "Cache venv"
-        if: "${{ matrix.dev == true }}"
-        uses: "actions/cache@v3.0.4"
+      - if: "${{ matrix.dev == 'true' }}"
+        uses: "./.github/actions/run_pre_commit"
         with:
-          path: "./.venv/"
-          key: "venv-${{ runner.os }}-${{ steps.python.outputs.python-version }}-${{ hashFiles('poetry.lock') }}"
+          python-version: "${{ steps.python_and_poetry.outputs.python-version }}"
 
-      - name: "Install package"
-        if: "${{ matrix.dev == true }}"
-        run: "poetry install"
-
-      - name: "Run pre-commit"
-        if: "${{ matrix.dev == true }}"
-        uses: "pre-commit/action@v3.0.0"
-
-      - name: "Install tox & tox-gh-actions"
-        run: |
-          set -euo pipefail
-
-          pipx install --python='${{ steps.python.outputs.python-path }}' tox==${{ env.TOX_VERSION }}
-          pipx inject tox tox-gh-actions==${{ env.TOX_GH_ACTIONS_VERSION }}
-
-      - name: "Cache tox directory"
-        uses: "actions/cache@v3.0.4"
+      - uses: "./.github/actions/run_tox"
         with:
-          path: "./.tox/"
-          key: "tox-${{ matrix.python-version }}"
-
-      - name: "Run tests"
-        run: "tox"
-
-      - name: "Send report to coveralls"
-        if: "${{ matrix.dev == true }}"
-        env:
-          GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
-        run: "poetry run python3 -m coveralls --service=github"
+          python-path: "${{ steps.python_and_poetry.outputs.python-path }}"
+          python-version: "${{ steps.python_and_poetry.outputs.python-version }}"
+          use-coveralls: "${{ matrix.dev }}"
+          coveralls-token: "${{ secrets.GITHUB_TOKEN }}"
 
   package:
     needs: ["test"]
 
-    name: "Build & deploy package"
-
-    runs-on: "ubuntu-latest"
-
-    steps:
-      - uses: "actions/checkout@v3.0.2"
-
-      - id: "python"
-        name: "Install Python"
-        uses: "actions/setup-python@v4.0.0"
-        with:
-          python-version-file: ".python-version"
-
-      - name: "Install poetry"
-        run: "pipx install --python='${{ steps.python.outputs.python-path }}' poetry==${{ env.POETRY_VERSION }}"
-
-      - name: "Build package"
-        run: "poetry build"
-
-      - name: "Install twine"
-        run: "pipx install --python='${{ steps.python.outputs.python-path }}' twine==${{ env.TWINE_VERSION }}"
-
-      - name: "Check package"
-        run: "twine check ./dist/*"
-
-      - name: "Publish package"
-        if: "${{ startsWith(github.ref, 'refs/tags/') }}"
-        uses: "pypa/gh-action-pypi-publish@v1.5.0"
-        with:
-          user: "${{ secrets.PYPI_USERNAME }}"
-          password: "${{ secrets.PYPI_PASSWORD }}"
+    uses: "./.github/workflows/ci_package.yml"
+    secrets:
+      PYPI_USERNAME: "${{ secrets.PYPI_USERNAME }}"
+      PYPI_PASSWORD: "${{ secrets.PYPI_PASSWORD }}"
 
   release:
     needs: ["package"]
     if: "${{ startsWith(github.ref, 'refs/tags/') }}"
 
-    name: "Create GitHub release"
-
-    runs-on: "ubuntu-latest"
-
-    steps:
-      - uses: "actions/checkout@v3.0.2"
-
-      - name: "Fetch git data"
-        run: |
-          set -euo pipefail
-
-          git fetch --depth=1 origin +refs/tags/*:refs/tags/*
-          git fetch --prune --unshallow
-
-      - id: "python"
-        name: "Install Python"
-        uses: "actions/setup-python@v4.0.0"
-        with:
-          python-version-file: ".python-version"
-
-      - name: "Install badabump"
-        run: "pipx install --python='${{ steps.python.outputs.python-path }}' badabump==${{ env.BADABUMP_VERSION }}"
-
-      - id: "badabump"
-        name: "Run badabump"
-        run: 'badabump-ci prepare_release "${{ github.ref }}"'
-
-      - name: "Create new release"
-        uses: "actions/create-release@v1.1.4"
-        env:
-          GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
-        with:
-          tag_name: "${{ steps.badabump.outputs.tag_name }}"
-          release_name: "${{ steps.badabump.outputs.release_name }}"
-          body: "${{ steps.badabump.outputs.release_body }}"
-          prerelease: "${{ steps.badabump.outputs.is_pre_release }}"
+    uses: "./.github/workflows/ci_release.yml"
+    secrets:
+      GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
