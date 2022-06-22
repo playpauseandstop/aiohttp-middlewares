@@ -112,7 +112,6 @@ jobs:
           python-version: "${{ matrix.python-version }}"
 
       - name: "Install poetry"
-        if: "${{ matrix.dev == true }}"
         run: "pipx install --python='${{ steps.python.outputs.python-path }}' poetry==${{ env.POETRY_VERSION }}"
 
       - name: "Cache venv"
