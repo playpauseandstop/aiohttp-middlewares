@@ -39,28 +39,24 @@ jobs:
     steps:
       - uses: "actions/checkout@v3.0.2"
 
-      - name: "Install poetry"
-        run: "pipx install poetry==${{ env.POETRY_VERSION }}"
-
       - id: "python"
         name: "Install Python"
         uses: "actions/setup-python@v4.0.0"
         with:
           python-version-file: ".python-version"
-          cache: "poetry"
 
-      - name: "Tell poetry to use proper Python"
-        run: |
-          set -euo pipefail
+      - name: "Install poetry"
+        run: "pipx install --python='${{ steps.python.outputs.python-path }}' poetry==${{ env.POETRY_VERSION }}"
 
-          python_version="$(python3 -V | awk '{print $2}')"
-          if [ ! -d "./.venv/" ] || [ "$(./.venv/bin/python3 -V | awk '{print $2}')" != "${python_version}" ]; then
-            if [ -d "./.venv/" ]; then
-              venv_python_version="$(./.venv/bin/python3 -V)"
-              echo "Venv Python does not match expected version: ${venv_python_version} != ${python_version}"
-            fi
-            poetry env use "${python_version}"
-          fi
+      # Cache venv step used instead of `cache: "poetry"` option to
+      # `actions/setup-python` action cause poetry still need to be
+      # additionally configured, as it first installed via global Python
+      # which does not match expected Python version
+      - name: "Cache venv"
+        uses: "actions/cache@v3.0.4"
+        with:
+          path: "./.venv/"
+          key: "venv-${{ runner.os }}-${{ steps.python.ouputs.python-version }}-${{ hashFiles('poetry.lock') }}"
 
       - name: "Install package"
         run: "poetry install"
@@ -94,6 +90,7 @@ jobs:
         run: "python3 -m sphinx -b html ./docs/ ./docs/_build/"
 
   test:
+    needs: ["install"]
     name: "Python ${{ matrix.python-version }}"
 
     strategy:
@@ -109,36 +106,26 @@ jobs:
     steps:
       - uses: "actions/checkout@v3.0.2"
 
-      - name: "Install poetry"
-        run: "pipx install poetry==${{ env.POETRY_VERSION }}"
-
       - id: "python"
-        name: "Install Python"
+        name: "Install Python by version"
         uses: "actions/setup-python@v4.0.0"
         with:
           python-version: "${{ matrix.python-version }}"
-          cache: "poetry"
 
-      - name: "Tell poetry to use proper Python"
-        run: |
-          set -euo pipefail
+      - name: "Install poetry"
+        if: "${{ matrix.dev == true }}"
+        run: "pipx install --python='${{ steps.python.outputs.python-path }}' poetry==${{ env.POETRY_VERSION }}"
 
-          python_version="$(python3 -V | awk '{print $2}')"
-          if [ ! -d "./.venv/" ] || [ "$(./.venv/bin/python3 -V | awk '{print $2}')" != "${python_version}" ]; then
-            if [ -d "./.venv/" ]; then
-              venv_python_version="$(./.venv/bin/python3 -V)"
-              echo "Venv Python does not match expected version: ${venv_python_version} != ${python_version}"
-            fi
-            poetry env use "${python_version}"
-          fi
+      - name: "Cache venv"
+        if: "${{ matrix.dev == true }}"
+        uses: "actions/cache@v3.0.4"
+        with:
+          path: "./.venv/"
+          key: "venv-${{ runner.os }}-${{ steps.python.ouputs.python-version }}-${{ hashFiles('poetry.lock') }}"
 
-      - name: "Install package with dev dependencies"
+      - name: "Install package"
         if: "${{ matrix.dev == true }}"
         run: "poetry install"
-
-      - name: "Install package without dev dependencies"
-        if: "${{ matrix.dev != true }}"
-        run: "poetry install --no-dev"
 
       - name: "Run pre-commit"
         if: "${{ matrix.dev == true }}"
@@ -175,28 +162,14 @@ jobs:
     steps:
       - uses: "actions/checkout@v3.0.2"
 
-      - name: "Install poetry"
-        run: "pipx install poetry==${{ env.POETRY_VERSION }}"
-
       - id: "python"
         name: "Install Python"
         uses: "actions/setup-python@v4.0.0"
         with:
           python-version-file: ".python-version"
-          cache: "poetry"
 
-      - name: "Tell poetry to use proper Python"
-        run: |
-          set -euo pipefail
-
-          python_version="$(python3 -V | awk '{print $2}')"
-          if [ ! -d "./.venv/" ] || [ "$(./.venv/bin/python3 -V | awk '{print $2}')" != "${python_version}" ]; then
-            if [ -d "./.venv/" ]; then
-              venv_python_version="$(./.venv/bin/python3 -V)"
-              echo "Venv Python does not match expected version: ${venv_python_version} != ${python_version}"
-            fi
-            poetry env use "${python_version}"
-          fi
+      - name: "Install poetry"
+        run: "pipx install --python='${{ steps.python.outputs.python-path }}' poetry==${{ env.POETRY_VERSION }}"
 
       - name: "Build package"
         run: "poetry build"
