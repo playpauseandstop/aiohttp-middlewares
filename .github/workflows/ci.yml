@@ -13,13 +13,6 @@ on:
 
 env:
   PYTHONUNBUFFERED: "1"
-  # Get latest versions by running,
-  #
-  # ```bash
-  # pip-latest-release badabump wheel
-  # ```
-  #
-  BADABUMP_VERSION: "21.3.3"
   WHEEL_VERSION: "0.37.1"
 
 jobs:
