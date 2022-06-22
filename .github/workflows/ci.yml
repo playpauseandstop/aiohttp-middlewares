@@ -90,15 +90,14 @@ jobs:
         run: "python3 -m sphinx -b html ./docs/ ./docs/_build/"
 
   test:
-    needs: ["install"]
-    name: "Python ${{ matrix.python-version }}"
-
     strategy:
       matrix:
         python-version: ["3.7", "3.8", "3.9", "3.10", "3.11.0-beta.3"]
         include:
           - python-version: "3.10"
             dev: true
+
+    name: "Python ${{ matrix.python-version }}"
 
     runs-on: "ubuntu-latest"
     continue-on-error: "${{ startsWith(matrix.python-version, '3.11') }}"
@@ -155,6 +154,7 @@ jobs:
 
   package:
     needs: ["test"]
+
     name: "Build & deploy package"
 
     runs-on: "ubuntu-latest"
@@ -181,7 +181,7 @@ jobs:
         run: "twine check ./dist/*"
 
       - name: "Publish package"
-        if: "${{ github.event_name == 'push' && startsWith(github.event.ref, 'refs/tags') }}"
+        if: "${{ startsWith(github.ref, 'refs/tags/') }}"
         uses: "pypa/gh-action-pypi-publish@v1.5.0"
         with:
           user: "${{ secrets.PYPI_USERNAME }}"
@@ -190,6 +190,7 @@ jobs:
   release:
     needs: ["package"]
     if: "${{ startsWith(github.ref, 'refs/tags/') }}"
+
     name: "Create GitHub release"
 
     runs-on: "ubuntu-latest"
