@@ -62,7 +62,7 @@ jobs:
         uses: "actions/cache@v3.0.4"
         with:
           path: "./.venv/"
-          key: "venv-${{ runner.os }}-${{ steps.python.ouputs.python-version }}-${{ hashFiles('poetry.lock') }}"
+          key: "venv-${{ runner.os }}-${{ steps.python.outputs.python-version }}-${{ hashFiles('poetry.lock') }}"
 
       - name: "Install package"
         run: "poetry install"
@@ -131,7 +131,7 @@ jobs:
         uses: "actions/cache@v3.0.4"
         with:
           path: "./.venv/"
-          key: "venv-${{ runner.os }}-${{ steps.python.ouputs.python-version }}-${{ hashFiles('poetry.lock') }}"
+          key: "venv-${{ runner.os }}-${{ steps.python.outputs.python-version }}-${{ hashFiles('poetry.lock') }}"
 
       - name: "Install package"
         if: "${{ matrix.dev == true }}"
