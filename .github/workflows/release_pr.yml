@@ -13,6 +13,7 @@ on:
         default: ""
 
 env:
+  PIPX_HOME: ".pipx"
   PYTHONUNBUFFERED: "1"
   BADABUMP_VERSION: "21.3.3"
 
@@ -44,7 +45,7 @@ jobs:
       - name: "Cache pipx"
         uses: "actions/cache@v3.0.4"
         with:
-          path: "~/.local/pipx/"
+          path: "./.pipx/"
           key: "pipx-${{ runner.os }}-${{ steps.python.outputs.python-version }}"
 
       - name: "Install badabump"

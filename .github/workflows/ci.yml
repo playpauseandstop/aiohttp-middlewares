@@ -12,6 +12,7 @@ on:
     branches: ["main"]
 
 env:
+  PIPX_HOME: ".pipx"
   PYTHONUNBUFFERED: "1"
   # Get latest versions by running,
   #
@@ -48,7 +49,7 @@ jobs:
       - name: "Cache pipx"
         uses: "actions/cache@v3.0.4"
         with:
-          path: "~/.local/pipx/"
+          path: "./.pipx/"
           key: "pipx-${{ runner.os }}-${{ steps.python.outputs.python-version }}"
 
       - name: "Install poetry"
@@ -120,7 +121,7 @@ jobs:
       - name: "Cache pipx"
         uses: "actions/cache@v3.0.4"
         with:
-          path: "~/.local/pipx/"
+          path: "./.pipx/"
           key: "pipx-${{ runner.os }}-${{ steps.python.outputs.python-version }}"
 
       - name: "Install poetry"
@@ -182,7 +183,7 @@ jobs:
       - name: "Cache pipx"
         uses: "actions/cache@v3.0.4"
         with:
-          path: "~/.local/pipx/"
+          path: "./.pipx/"
           key: "pipx-${{ runner.os }}-${{ steps.python.outputs.python-version }}"
 
       - name: "Install poetry"
@@ -231,7 +232,7 @@ jobs:
       - name: "Cache pipx"
         uses: "actions/cache@v3.0.4"
         with:
-          path: "~/.local/pipx/"
+          path: "./.pipx/"
           key: "pipx-${{ runner.os }}-${{ steps.python.outputs.python-version }}"
 
       - name: "Install badabump"
