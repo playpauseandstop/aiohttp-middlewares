@@ -37,6 +37,12 @@ jobs:
         with:
           python-version-file: ".python-version"
 
+      - name: "Cache pipx"
+        uses: "actions/cache@v3.0.4"
+        with:
+          path: "~/.local/pipx/"
+          key: "pipx-${{ runner.os }}-${{ steps.python.outputs.python-version }}"
+
       - name: "Install badabump"
         run: "pipx install --python='${{ steps.python.outputs.python-path }}' badabump==${{ env.BADABUMP_VERSION }}"
 

@@ -45,6 +45,12 @@ jobs:
         with:
           python-version-file: ".python-version"
 
+      - name: "Cache pipx"
+        uses: "actions/cache@v3.0.4"
+        with:
+          path: "~/.local/pipx/"
+          key: "pipx-${{ runner.os }}-${{ steps.python.outputs.python-version }}"
+
       - name: "Install poetry"
         run: "pipx install --python='${{ steps.python.outputs.python-path }}' poetry==${{ env.POETRY_VERSION }}"
 
@@ -111,6 +117,12 @@ jobs:
         with:
           python-version: "${{ matrix.python-version }}"
 
+      - name: "Cache pipx"
+        uses: "actions/cache@v3.0.4"
+        with:
+          path: "~/.local/pipx/"
+          key: "pipx-${{ runner.os }}-${{ steps.python.outputs.python-version }}"
+
       - name: "Install poetry"
         run: "pipx install --python='${{ steps.python.outputs.python-path }}' poetry==${{ env.POETRY_VERSION }}"
 
@@ -167,6 +179,12 @@ jobs:
         with:
           python-version-file: ".python-version"
 
+      - name: "Cache pipx"
+        uses: "actions/cache@v3.0.4"
+        with:
+          path: "~/.local/pipx/"
+          key: "pipx-${{ runner.os }}-${{ steps.python.outputs.python-version }}"
+
       - name: "Install poetry"
         run: "pipx install --python='${{ steps.python.outputs.python-path }}' poetry==${{ env.POETRY_VERSION }}"
 
@@ -209,6 +227,12 @@ jobs:
         uses: "actions/setup-python@v4.0.0"
         with:
           python-version-file: ".python-version"
+
+      - name: "Cache pipx"
+        uses: "actions/cache@v3.0.4"
+        with:
+          path: "~/.local/pipx/"
+          key: "pipx-${{ runner.os }}-${{ steps.python.outputs.python-version }}"
 
       - name: "Install badabump"
         run: "pipx install --python='${{ steps.python.outputs.python-path }}' badabump==${{ env.BADABUMP_VERSION }}"
