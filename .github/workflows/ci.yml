@@ -16,7 +16,7 @@ env:
   # Get latest versions by running,
   #
   # ```bash
-  # pip-latest-release badabump poetry tox tox-gh-actions twine
+  # pip-latest-release badabump poetry tox tox-gh-actions twine wheel
   # ```
   #
   BADABUMP_VERSION: "21.3.3"
@@ -24,6 +24,7 @@ env:
   TOX_VERSION: "3.25.0"
   TOX_GH_ACTIONS_VERSION: "2.9.1"
   TWINE_VERSION: "4.0.1"
+  WHEEL_VERSION: "0.37.1"
 
 jobs:
   dev:
@@ -38,21 +39,24 @@ jobs:
     steps:
       - uses: "actions/checkout@v3.0.2"
 
-      - name: "Install Python"
+      - id: "python"
+        name: "Install Python"
         uses: "actions/setup-python@v4.0.0"
         with:
           python-version-file: ".python-version"
 
       - name: "Install poetry"
-        uses: "snok/install-poetry@v1.3.1"
-        with:
-          version: "${{ env.POETRY_VERSION }}"
+        run: "pipx install --python='${{ steps.python.outputs.python-path }}' poetry==${{ env.POETRY_VERSION }}"
 
+      # Cache venv step used instead of `cache: "poetry"` option to
+      # `actions/setup-python` action cause poetry still need to be
+      # additionally configured, as it first installed via global Python
+      # which does not match expected Python version
       - name: "Cache venv"
         uses: "actions/cache@v3.0.4"
         with:
           path: "./.venv/"
-          key: "venv-dev-${{ hashFiles('poetry.lock') }}"
+          key: "venv-${{ runner.os }}-${{ steps.python.outputs.python-version }}-${{ hashFiles('poetry.lock') }}"
 
       - name: "Install package"
         run: "poetry install"
@@ -68,10 +72,16 @@ jobs:
     steps:
       - uses: "actions/checkout@v3.0.2"
 
-      - name: "Install Python"
+      - id: "python"
+        name: "Install Python"
         uses: "actions/setup-python@v4.0.0"
         with:
           python-version-file: ".python-version"
+          cache: "pip"
+          cache-dependency-path: "./docs/requirements*.txt"
+
+      - name: "Install wheel"
+        run: "python3 -m pip install wheel==${{ env.WHEEL_VERSION }}"
 
       - name: "Install docs requirements"
         run: "python3 -m pip install -r ./docs/requirements.txt -r ./docs/requirements-sphinx.txt"
@@ -80,26 +90,14 @@ jobs:
         run: "python3 -m sphinx -b html ./docs/ ./docs/_build/"
 
   test:
-    name: "Python ${{ matrix.python-version }}"
-
     strategy:
       matrix:
         python-version: ["3.7", "3.8", "3.9", "3.10", "3.11.0-beta.3"]
         include:
-          - python-version: "3.7"
-            python-cache-key: "3.7"
-
-          - python-version: "3.8"
-            python-cache-key: "3.8"
-
-          - python-version: "3.9"
-            python-cache-key: "3.9"
-
           - python-version: "3.10"
-            python-cache-key: "dev"
+            dev: true
 
-          - python-version: "3.11.0-beta.3"
-            python-cache-key: "3.11.0-beta.3"
+    name: "Python ${{ matrix.python-version }}"
 
     runs-on: "ubuntu-latest"
     continue-on-error: "${{ startsWith(matrix.python-version, '3.11') }}"
@@ -107,48 +105,55 @@ jobs:
     steps:
       - uses: "actions/checkout@v3.0.2"
 
-      - name: "Install Python"
+      - id: "python"
+        name: "Install Python"
         uses: "actions/setup-python@v4.0.0"
         with:
           python-version: "${{ matrix.python-version }}"
 
       - name: "Install poetry"
-        uses: "snok/install-poetry@v1.3.1"
-        with:
-          version: "${{ env.POETRY_VERSION }}"
-
-      - name: "Install other deps"
-        run: "python3 -m pip install tox==${{ env.TOX_VERSION }} tox-gh-actions==${{ env.TOX_GH_ACTIONS_VERSION }}"
+        run: "pipx install --python='${{ steps.python.outputs.python-path }}' poetry==${{ env.POETRY_VERSION }}"
 
       - name: "Cache venv"
+        if: "${{ matrix.dev == true }}"
         uses: "actions/cache@v3.0.4"
         with:
           path: "./.venv/"
-          key: "venv-${{ matrix.python-cache-key }}-${{ hashFiles('poetry.lock') }}"
+          key: "venv-${{ runner.os }}-${{ steps.python.outputs.python-version }}-${{ hashFiles('poetry.lock') }}"
 
-      - name: "Install package with dev dependencies"
-        if: "${{ matrix.python-cache-key == 'dev' }}"
+      - name: "Install package"
+        if: "${{ matrix.dev == true }}"
         run: "poetry install"
 
-      - name: "Install package without dev dependencies"
-        if: "${{ matrix.python-cache-key != 'dev' }}"
-        run: "poetry install --no-dev"
-
       - name: "Run pre-commit"
-        if: "${{ matrix.python-cache-key == 'dev' }}"
+        if: "${{ matrix.dev == true }}"
         uses: "pre-commit/action@v3.0.0"
 
+      - name: "Install tox & tox-gh-actions"
+        run: |
+          set -euo pipefail
+
+          pipx install --python='${{ steps.python.outputs.python-path }}' tox==${{ env.TOX_VERSION }}
+          pipx inject tox tox-gh-actions==${{ env.TOX_GH_ACTIONS_VERSION }}
+
+      - name: "Cache tox directory"
+        uses: "actions/cache@v3.0.4"
+        with:
+          path: "./.tox/"
+          key: "tox-${{ matrix.python-version }}"
+
       - name: "Run tests"
-        run: "python3 -m tox"
+        run: "tox"
 
       - name: "Send report to coveralls"
-        if: "${{ matrix.python-cache-key == 'dev' }}"
+        if: "${{ matrix.dev == true }}"
         env:
           GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
         run: "poetry run python3 -m coveralls --service=github"
 
   package:
     needs: ["test"]
+
     name: "Build & deploy package"
 
     runs-on: "ubuntu-latest"
@@ -156,28 +161,26 @@ jobs:
     steps:
       - uses: "actions/checkout@v3.0.2"
 
-      - name: "Install Python"
+      - id: "python"
+        name: "Install Python"
         uses: "actions/setup-python@v4.0.0"
         with:
           python-version-file: ".python-version"
 
       - name: "Install poetry"
-        uses: "snok/install-poetry@v1.3.1"
-        with:
-          version: "${{ env.POETRY_VERSION }}"
+        run: "pipx install --python='${{ steps.python.outputs.python-path }}' poetry==${{ env.POETRY_VERSION }}"
 
       - name: "Build package"
         run: "poetry build"
 
-      - name: "Check package"
-        run: |
-          set -euo pipefail
+      - name: "Install twine"
+        run: "pipx install --python='${{ steps.python.outputs.python-path }}' twine==${{ env.TWINE_VERSION }}"
 
-          python3 -m pip install twine==${{ env.TWINE_VERSION }}
-          python3 -m twine check ./dist/*
+      - name: "Check package"
+        run: "twine check ./dist/*"
 
       - name: "Publish package"
-        if: "${{ github.event_name == 'push' && startsWith(github.event.ref, 'refs/tags') }}"
+        if: "${{ startsWith(github.ref, 'refs/tags/') }}"
         uses: "pypa/gh-action-pypi-publish@v1.5.0"
         with:
           user: "${{ secrets.PYPI_USERNAME }}"
@@ -186,6 +189,7 @@ jobs:
   release:
     needs: ["package"]
     if: "${{ startsWith(github.ref, 'refs/tags/') }}"
+
     name: "Create GitHub release"
 
     runs-on: "ubuntu-latest"
@@ -200,17 +204,18 @@ jobs:
           git fetch --depth=1 origin +refs/tags/*:refs/tags/*
           git fetch --prune --unshallow
 
-      - name: "Install Python"
+      - id: "python"
+        name: "Install Python"
         uses: "actions/setup-python@v4.0.0"
         with:
           python-version-file: ".python-version"
 
       - name: "Install badabump"
-        run: "python3 -m pip install badabump==${{ env.BADABUMP_VERSION }}"
+        run: "pipx install --python='${{ steps.python.outputs.python-path }}' badabump==${{ env.BADABUMP_VERSION }}"
 
       - id: "badabump"
         name: "Run badabump"
-        run: 'python3 -m badabump.ci prepare_release "${{ github.ref }}"'
+        run: 'badabump-ci prepare_release "${{ github.ref }}"'
 
       - name: "Create new release"
         uses: "actions/create-release@v1.1.4"
