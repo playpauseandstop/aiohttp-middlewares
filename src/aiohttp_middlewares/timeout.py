@@ -138,7 +138,7 @@ def timeout_middleware(
             )
             return await handler(request)
 
-        with timeout(seconds):
+        async with timeout(seconds):
             return await handler(request)
 
     return middleware
