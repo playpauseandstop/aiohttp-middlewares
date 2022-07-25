@@ -23,6 +23,20 @@ visit:
 - `Wikipedia <https://en.m.wikipedia.org/wiki/Cross-origin_resource_sharing>`_
 - Or `MDN <https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS>`_
 
+.. versionchanged:: 2.1.0
+
+If CORS request ends up with :class:`aiohttp.web.HTTPException` - the exception
+will be used as a handler ``response`` and CORS headers will still be added to
+it, which means that even ``aiohttp`` cannot properly handle request to some
+URL, the response will still contain all necessary CORS headers.
+
+.. note::
+
+   Thanks `Kaarle Ritvanen <https://github.com/kunkku>`_ for fix in
+   `aiohttp-middlewares#98
+   <https://github.com/playpauseandstop/aiohttp-middlewares/pull/98>`_ and
+   `Jonathan Heathcote <https://github.com/mossblaser>`_ for the review.
+
 Configuration
 =============
 
@@ -239,12 +253,13 @@ def cors_middleware(
         else:
             try:
                 response = await handler(request)
+            # In case of ``HTTPException`` - use it as handler response
             except web.HTTPException as exc:
                 response = web.Response(
                     headers=exc.headers,
                     status=exc.status,
                     reason=exc.reason,
-                    text=exc.text
+                    text=exc.text,
                 )
 
         # Now check origin heaer

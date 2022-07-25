@@ -4,6 +4,7 @@ version_files = ["./pyproject.toml", "./src/aiohttp_middlewares/__init__.py"]
 
 [tool.black]
 line_length = 79
+target_version = ["py37"]
 
 [tool.coverage.run]
 branch = true

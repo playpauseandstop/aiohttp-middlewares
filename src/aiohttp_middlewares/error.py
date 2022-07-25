@@ -9,7 +9,7 @@ Middleware to handle errors in aiohttp applications.
 
 .. versionchanged:: 1.0.0
 
-Previosly, ``error_middleware`` required ``default_handler`` to be passed
+Previously, ``error_middleware`` required ``default_handler`` to be passed
 on initialization. However in **1.0.0** version ``aiohttp-middlewares`` ships
 default error handler, which log exception traceback into
 ``aiohttp_middlewares.error`` logger and responds with given JSON:
@@ -164,7 +164,7 @@ def error_middleware(
     *,
     default_handler: Handler = default_error_handler,
     config: Config = None,
-    ignore_exceptions: Union[ExceptionType, Tuple[ExceptionType, ...]] = None
+    ignore_exceptions: Union[ExceptionType, Tuple[ExceptionType, ...]] = None,
 ) -> Middleware:
     """Middleware to handle exceptions in aiohttp applications.
 
@@ -241,7 +241,7 @@ async def get_error_response(
     *,
     default_handler: Handler = default_error_handler,
     config: Config = None,
-    ignore_exceptions: Union[ExceptionType, Tuple[ExceptionType, ...]] = None
+    ignore_exceptions: Union[ExceptionType, Tuple[ExceptionType, ...]] = None,
 ) -> web.StreamResponse:
     """Actual coroutine to get response for given request & error.
 
