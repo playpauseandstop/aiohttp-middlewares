@@ -1,3 +1,4 @@
+import json
 import re
 
 import attr
@@ -26,6 +27,13 @@ TEST_ORIGIN_REGEX = re.compile(r"^http\:\/\/localhost")
 TEST_ORIGIN_URL = URL(TEST_ORIGIN)
 
 
+async def create_http_exception(request):
+    raise web.HTTPServiceUnavailable(
+        text=json.dumps({"detail": "Internal service is unavailable"}),
+        content_type="application/json",
+    )
+
+
 async def index(request):
     return web.json_response({})
 
@@ -46,16 +54,31 @@ def check_allow_origin(
         assert response.headers[ACCESS_CONTROL_ALLOW_METHODS] == ", ".join(
             allow_methods
         )
+    return response
 
 
 def check_deny_origin(response):
     assert ACCESS_CONTROL_ALLOW_ORIGIN not in response.headers
+    return response
 
 
 def create_app(**kwargs):
     app = web.Application(middlewares=[cors_middleware(**kwargs)])
     app.router.add_get("/", index)
+    app.router.add_post("/http-exceptions", create_http_exception)
     return app
+
+
+async def test_allow_all_handler_not_found(aiohttp_client):
+    client = await aiohttp_client(create_app(allow_all=True))
+    response = check_allow_origin(
+        await client.get("/does-not-exist", headers={"Origin": TEST_ORIGIN}),
+        "*",
+        allow_headers=None,
+        allow_methods=None,
+    )
+    assert response.status == 404
+    assert response.content_type == "text/plain"
 
 
 @pytest.mark.parametrize(
@@ -138,6 +161,18 @@ async def test_allow_origin(
         expected_origin,
         **kwargs,
     )
+
+
+async def test_allow_origin_handler_create_http_exception(aiohttp_client):
+    client = await aiohttp_client(create_app(origins=(TEST_ORIGIN,)))
+    response = check_allow_origin(
+        await client.post("/http-exceptions", headers={"Origin": TEST_ORIGIN}),
+        TEST_ORIGIN,
+        allow_headers=None,
+        allow_methods=None,
+    )
+    assert response.status == 503
+    assert response.content_type == "application/json"
 
 
 @pytest.mark.parametrize(
@@ -226,9 +261,10 @@ async def test_max_age(
     assert response.headers.get(ACCESS_CONTROL_MAX_AGE) == expected_max_age
 
 
-async def test_no_origin(aiohttp_client):
+@pytest.mark.parametrize("url", ("/", "/does-not-exist"))
+async def test_no_origin(aiohttp_client, url):
     client = await aiohttp_client(create_app(allow_all=True))
-    check_deny_origin(await client.get("/"))
+    check_deny_origin(await client.get(url))
 
 
 async def test_url_blacklisted(aiohttp_client):

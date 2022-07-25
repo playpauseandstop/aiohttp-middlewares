@@ -1,2 +1,3 @@
 - `Igor Davydenko <https://github.com/playpauseandstop>`_
 - `Alex Kuzmenko <https://github.com/alxpy>`_
+- `Kaarle Ritvanen <https://github.com/kunkku>`_
