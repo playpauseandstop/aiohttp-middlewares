@@ -1,3 +1,19 @@
+3.0.0 (2022-07-25)
+==================
+
+**Fixes:**
+
+- **BREAKING CHANGE:** (**cors**) Handle CORS correctly in case of HTTPException (#98)
+
+**Other:**
+
+- Fix auto release tag workflow (#107)
+- Introduce reusable actions & workflows (#108)
+- Add tests to latest changes in CORS middleware (#109)
+- (**deps-dev**) bump coverage from 6.4.1 to 6.4.2 (#110)
+- (**deps-dev**) bump mypy from 0.961 to 0.971 (#111)
+- (**deps-dev**) bump pytest-asyncio from 0.18.3 to 0.19.0 (#112)
+
 2.0.0 (2022-06-22)
 ==================
 
