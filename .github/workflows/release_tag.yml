@@ -10,7 +10,6 @@ on:
 
 env:
   PYTHONUNBUFFERED: "1"
-  BADABUMP_VERSION: "21.3.3"
 
 jobs:
   create_release_tag:
@@ -21,7 +20,7 @@ jobs:
 
     steps:
       - id: "token"
-        uses: "tibdex/github-app-token@v1.5"
+        uses: "tibdex/github-app-token@v1.6"
         with:
           app_id: "${{ secrets.BADABUMP_APP_ID }}"
           private_key: "${{ secrets.BADABUMP_APP_PRIVATE_KEY }}"
