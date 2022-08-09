@@ -14,11 +14,9 @@ on:
 
 env:
   PYTHONUNBUFFERED: "1"
-  BADABUMP_VERSION: "21.3.3"
 
 jobs:
   create_release_pr:
-    if: "${{ github.actor == 'playpauseandstop' }}"
     name: "Create Release PR"
 
     runs-on: "ubuntu-latest"
@@ -42,7 +40,7 @@ jobs:
         run: "badabump --ci ${{ github.event.inputs.args }}"
 
       - id: "token"
-        uses: "tibdex/github-app-token@v1.5"
+        uses: "tibdex/github-app-token@v1.6"
         with:
           app_id: "${{ secrets.BADABUMP_APP_ID }}"
           private_key: "${{ secrets.BADABUMP_APP_PRIVATE_KEY }}"
@@ -61,3 +59,4 @@ jobs:
           body: "${{ steps.badabump.outputs.changelog }}"
           labels: "chore"
           reviewers: "playpauseandstop"
+          assignees: "playpauseandstop"

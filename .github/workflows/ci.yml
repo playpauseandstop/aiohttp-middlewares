@@ -13,7 +13,6 @@ on:
 
 env:
   PYTHONUNBUFFERED: "1"
-  WHEEL_VERSION: "0.37.1"
 
 jobs:
   dev:
@@ -40,34 +39,12 @@ jobs:
         run: "poetry run python3 -c 'import aiohttp_middlewares'"
 
   docs:
-    name: "Verify documentation build well"
-
-    runs-on: "ubuntu-latest"
-
-    steps:
-      - uses: "actions/checkout@v3.0.2"
-
-      - id: "python"
-        name: "Install Python"
-        uses: "actions/setup-python@v4.0.0"
-        with:
-          python-version-file: ".python-version"
-          cache: "pip"
-          cache-dependency-path: "./docs/requirements*.txt"
-
-      - name: "Install wheel"
-        run: "python3 -m pip install wheel==${{ env.WHEEL_VERSION }}"
-
-      - name: "Install docs requirements"
-        run: "python3 -m pip install -r ./docs/requirements.txt -r ./docs/requirements-sphinx.txt"
-
-      - name: "Build docs"
-        run: "python3 -m sphinx -b html ./docs/ ./docs/_build/"
+    uses: "./.github/workflows/ci_verify_docs_build.yml"
 
   test:
     strategy:
       matrix:
-        python-version: ["3.7", "3.8", "3.9", "3.10", "3.11.0-beta.3"]
+        python-version: ["3.7", "3.8", "3.9", "3.10", "3.11.0-beta - 3.11.0"]
         include:
           - python-version: "3.10"
             dev: "true"
