@@ -1,4 +1,4 @@
-name: "Run pre-commit hooks"
+name: "Run pre-commit Hooks"
 description: "Composite action to install project, setup mypy cache and run pre-commit hooks."
 
 inputs:
