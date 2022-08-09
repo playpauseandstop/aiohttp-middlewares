@@ -1,4 +1,4 @@
-name: "Run pre-commit hooks"
+name: "Run pre-commit Hooks"
 description: "Composite action to install project, setup mypy cache and run pre-commit hooks."
 
 inputs:
@@ -14,7 +14,7 @@ runs:
       shell: "bash"
 
     - name: "Cache mypy"
-      uses: "actions/cache@v3.0.4"
+      uses: "actions/cache@v3.0.6"
       with:
         path: "./.mypy_cache/"
         key: "mypy-${{ runner.os }}-${{ inputs.python-version }}"
