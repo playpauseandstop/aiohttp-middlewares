@@ -8,8 +8,8 @@ build:
     post_create_environment:
       # Install poetry
       - "curl -sSL https://install.python-poetry.org | python3 -"
-      # Install project's dependencies
-      - "${HOME}/.poetry/bin/poetry install --only main,docs"
+      # Install project and docs dependencies
+      - "${HOME}/.local/bin/poetry install --only main,docs"
 
 sphinx:
   configuration: "./docs/conf.py"
