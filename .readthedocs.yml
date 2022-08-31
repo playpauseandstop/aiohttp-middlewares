@@ -12,7 +12,7 @@ build:
       # Generate requirements.txt file
       - "${HOME}/.local/bin/poetry export -f requirements.txt --without-hashes --only main,docs -o ${READTHEDOCS_VERSION}.txt"
       # Install project and docs dependencies from generated requirements file
-      - "python3 -m pip install ${READTHEDOCS_VERSION}.txt"
+      - "python3 -m pip install -r ${READTHEDOCS_VERSION}.txt"
 
 sphinx:
   configuration: "./docs/conf.py"
