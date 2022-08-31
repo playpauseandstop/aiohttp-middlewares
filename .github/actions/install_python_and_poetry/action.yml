@@ -2,6 +2,10 @@ name: "Install Python & poetry"
 description: "Composite action to setup Python, install poetry, and setup cache for venv."
 
 inputs:
+  cache-key-suffix:
+    description: "Cache key suffix to append to venv cache key"
+    required: false
+    default: ""
   python-version:
     description: "Python version to use"
     required: false
@@ -42,4 +46,4 @@ runs:
       uses: "actions/cache@v3.0.6"
       with:
         path: "./.venv/"
-        key: "venv-${{ runner.os }}-${{ steps.python.outputs.python-version }}-${{ hashFiles('poetry.lock') }}"
+        key: "venv-${{ runner.os }}-${{ steps.python.outputs.python-version }}-${{ hashFiles('poetry.lock') }}${{ inputs.cache-key-suffix }}"
