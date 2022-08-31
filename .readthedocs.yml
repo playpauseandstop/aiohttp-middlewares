@@ -12,8 +12,8 @@ build:
       - "${HOME}/.local/bin/poetry config virtualenvs.create false"
       - "${HOME}/.local/bin/poetry config --local virtualenvs.create false"
     post_install:
-      # Show current working directory
-      - "pwd"
+      # Show me the env
+      - "printenv"
       # Install project and docs dependencies
       - "${HOME}/.local/bin/poetry install --only main,docs"
 
