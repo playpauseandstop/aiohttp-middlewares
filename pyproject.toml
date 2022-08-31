@@ -29,6 +29,7 @@ virtual_env = "./.venv/"
 [tool.mypy]
 allow_untyped_globals = true
 check_untyped_defs = true
+exclude = ["./tests/"]
 disallow_any_decorated = true
 disallow_any_generics = true
 disallow_incomplete_defs = true
