@@ -8,14 +8,11 @@ build:
     post_create_environment:
       # Install poetry
       - "curl -sSL https://install.python-poetry.org | python3 -"
-      # Tell poetry to not create virtual environments
-      - "${HOME}/.local/bin/poetry config virtualenvs.create false"
-      - "${HOME}/.local/bin/poetry config --local virtualenvs.create false"
     post_install:
-      # Show me the env
-      - "printenv"
-      # Install project and docs dependencies
-      - "${HOME}/.local/bin/poetry install --only main,docs"
+      # Generate requirements.txt file
+      - "${HOME}/.local/bin/poetry export -f requirements.txt --without-hashes --only main,docs -o ${READTHEDOCS_VERSION}.txt"
+      # Install project and docs dependencies from generated requirements file
+      - "python3 -m pip install ${READTHEDOCS_VERSION}.txt"
 
 sphinx:
   configuration: "./docs/conf.py"
