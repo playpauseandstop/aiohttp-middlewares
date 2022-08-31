@@ -10,7 +10,7 @@ runs:
   using: "composite"
   steps:
     - name: "Install package"
-      run: "poetry install"
+      run: "poetry install --only main,dev,test"
       shell: "bash"
 
     - name: "Cache mypy"

@@ -35,6 +35,7 @@ disallow_incomplete_defs = true
 disallow_untyped_calls = true
 disallow_untyped_decorators = true
 disallow_untyped_defs = true
+exclude = ["docs/", "tests/"]
 follow_imports = "normal"
 follow_imports_for_stubs = true
 ignore_missing_imports = false
@@ -67,7 +68,7 @@ homepage = "https://igordavydenko.com/projects.html#aiohttp-middlewares"
 repository = "https://github.com/playpauseandstop/aiohttp-middlewares"
 documentation = "https://aiohttp-middlewares.readthedocs.io/"
 packages = [
-  {include = "aiohttp_middlewares", from = "./src/"}
+  {include = "aiohttp_middlewares", from = "./src/"},
 ]
 keywords = ["aiohttp", "aiohttp-server", "middlewares", "aiohttp-middlewares"]
 classifiers = [
@@ -90,13 +91,22 @@ aiohttp = "^3.8.1"
 async-timeout = "^4.0.2"
 yarl = "^1.5.1"
 
-[tool.poetry.dev-dependencies]
-coverage = {extras = ["toml"], version = "^6.4.3"}
-coveralls = "^3.3.1"
+[tool.poetry.group.dev.dependencies]
 mypy = "^0.971"
+
+[tool.poetry.group.docs.dependencies]
+furo = "^2022.6.21"
+Sphinx = "^5.1.1"
+sphinx-autobuild = "^2021.3.14"
+sphinx-autodoc-typehints = "^1.19.2"
+sphinx-copybutton = "^0.5.0"
+sphinxext-opengraph = "^0.6.3"
+
+[tool.poetry.group.test.dependencies]
+coverage = {extras = ["toml"], version = "^6.4.4"}
+coveralls = "^3.3.1"
 pytest = "^7.1.2"
 pytest-aiohttp = "^1.0.4"
-pytest-asyncio = "^0.19.0"
 pytest-cov = "^3.0.0"
 
 [tool.pytest.ini_options]
@@ -129,13 +139,13 @@ setenv =
 skip_install = True
 whitelist_externals = poetry
 commands_pre =
-  poetry install
+  poetry install --only main,test
 commands =
-  poetry run python -m pytest
+  poetry run python3 -m pytest
 
 [testenv:py310-minimum-requirements]
 commands_pre =
-  poetry install
+  poetry install --only main,test
   poetry run python3 -m pip install aiohttp==3.8.1 async-timeout==4.0.2 yarl==1.5.1
 """
 
