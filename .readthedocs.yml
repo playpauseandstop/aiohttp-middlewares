@@ -11,6 +11,7 @@ build:
       # Tell poetry to not create virtual environments
       - "${HOME}/.local/bin/poetry config virtualenvs.create false"
       - "${HOME}/.local/bin/poetry config --local virtualenvs.create false"
+    post_install:
       # Install project and docs dependencies
       - "${HOME}/.local/bin/poetry install --only main,docs"
 
