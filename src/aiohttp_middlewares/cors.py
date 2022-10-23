@@ -115,7 +115,7 @@ Usage
 
 import logging
 import re
-from typing import Pattern, Tuple
+from typing import Pattern, Tuple, Union
 
 from aiohttp import web
 
@@ -158,13 +158,13 @@ logger = logging.getLogger(__name__)
 def cors_middleware(
     *,
     allow_all: bool = False,
-    origins: UrlCollection = None,
-    urls: UrlCollection = None,
-    expose_headers: StrCollection = None,
+    origins: Union[UrlCollection, None] = None,
+    urls: Union[UrlCollection, None] = None,
+    expose_headers: Union[StrCollection, None] = None,
     allow_headers: StrCollection = DEFAULT_ALLOW_HEADERS,
     allow_methods: StrCollection = DEFAULT_ALLOW_METHODS,
     allow_credentials: bool = False,
-    max_age: int = None,
+    max_age: Union[int, None] = None,
 ) -> Middleware:
     """Middleware to provide CORS headers for aiohttp applications.
 
