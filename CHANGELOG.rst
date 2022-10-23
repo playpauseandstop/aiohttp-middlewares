@@ -19,7 +19,7 @@
 
 **Drop support of Python 3.6 as well as bump lower bounds of library dependencies.**
 
-Now `aiohttp-middlewares` requires,
+Now ``aiohttp-middlewares`` requires,
 
 - ``aiohttp>=3.8.1,<4.0`` instead of ``>=3.7.0,<4.0``
 - ``async-timeout>=4.0.2,<5.0`` instead of ``>=3.0,<5.0``
@@ -104,7 +104,7 @@ of Python 3.9 & 3.10.
 ==================
 
 - chore: Release **1.0.0** version which highlights updates to error middleware
-  and first class support of `yarl.URL` instances within the library
+  and first class support of ``yarl.URL`` instances within the library
 
 1.0.0b1 (2020-01-14)
 --------------------
@@ -197,13 +197,13 @@ of Python 3.9 & 3.10.
 0.1.1 (2018-05-25)
 ==================
 
-- Support `async-timeout` 3.0 version
+- Support ``async-timeout`` 3.0 version
 
 0.1.0 (2018-02-20)
 ==================
 
 - First non-beta release
-- Support `aiohttp` 3.0 version
+- Support ``aiohttp`` 3.0 version
 
 0.1.0b2 (2018-02-04)
 --------------------
