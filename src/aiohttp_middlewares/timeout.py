@@ -61,7 +61,7 @@ logger = logging.getLogger(__name__)
 
 
 def timeout_middleware(
-    seconds: Union[int, float], *, ignore: Urls = None
+    seconds: Union[int, float], *, ignore: Union[Urls, None] = None
 ) -> Middleware:
     """Ensure that request handling does not exceed X seconds.
 

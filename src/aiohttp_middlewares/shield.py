@@ -53,6 +53,7 @@ Usage
 
 import asyncio
 import logging
+from typing import Union
 
 from aiohttp import web
 
@@ -69,7 +70,10 @@ logger = logging.getLogger(__name__)
 
 
 def shield_middleware(
-    *, methods: StrCollection = None, urls: Urls = None, ignore: Urls = None
+    *,
+    methods: Union[StrCollection, None] = None,
+    urls: Union[Urls, None] = None,
+    ignore: Union[Urls, None] = None,
 ) -> Middleware:
     """
     Ensure that handler execution would not break on

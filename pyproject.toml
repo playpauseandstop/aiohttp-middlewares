@@ -1,6 +1,13 @@
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
+
 [tool.badabump]
 version_type = "semver"
-version_files = ["./pyproject.toml", "./src/aiohttp_middlewares/__init__.py"]
+version_files = [
+  "./pyproject.toml",
+  "./src/aiohttp_middlewares/__init__.py",
+]
 
 [tool.black]
 line_length = 79
@@ -14,6 +21,8 @@ source = ["aiohttp_middlewares"]
 source = ["./src/"]
 
 [tool.coverage.report]
+exclude_lines = ["if TYPE_CHECKING:", "@overload"]
+omit = ["./src/*/__main__.py", "./src/*/annotations.py"]
 fail_under = 95
 skip_covered = true
 show_missing = true
@@ -40,6 +49,7 @@ follow_imports = "normal"
 follow_imports_for_stubs = true
 ignore_missing_imports = false
 namespace_packages = true
+no_implicit_optional = true
 mypy_path = "./src/"
 python_executable = "./.venv/bin/python3"
 show_column_numbers = true
@@ -149,7 +159,3 @@ commands_pre =
   poetry install --only main,test
   poetry run python3 -m pip install aiohttp==3.8.1 async-timeout==4.0.2 yarl==1.5.1
 """
-
-[build-system]
-requires = ["poetry-core>=1.0.0"]
-build-backend = "poetry.core.masonry.api"

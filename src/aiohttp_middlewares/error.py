@@ -163,8 +163,10 @@ def error_context(request: web.Request) -> Iterator[ErrorContext]:
 def error_middleware(
     *,
     default_handler: Handler = default_error_handler,
-    config: Config = None,
-    ignore_exceptions: Union[ExceptionType, Tuple[ExceptionType, ...]] = None,
+    config: Union[Config, None] = None,
+    ignore_exceptions: Union[
+        ExceptionType, Tuple[ExceptionType, ...], None
+    ] = None,
 ) -> Middleware:
     """Middleware to handle exceptions in aiohttp applications.
 
@@ -240,8 +242,10 @@ async def get_error_response(
     err: Exception,
     *,
     default_handler: Handler = default_error_handler,
-    config: Config = None,
-    ignore_exceptions: Union[ExceptionType, Tuple[ExceptionType, ...]] = None,
+    config: Union[Config, None] = None,
+    ignore_exceptions: Union[
+        ExceptionType, Tuple[ExceptionType, ...], None
+    ] = None,
 ) -> web.StreamResponse:
     """Actual coroutine to get response for given request & error.
 

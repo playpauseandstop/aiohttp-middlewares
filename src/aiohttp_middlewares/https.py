@@ -25,6 +25,7 @@ Usage
 """
 
 import logging
+from typing import Union
 
 from aiohttp import web
 
@@ -36,7 +37,9 @@ DEFAULT_MATCH_HEADERS = {"X-Forwarded-Proto": "https"}
 logger = logging.getLogger(__name__)
 
 
-def https_middleware(match_headers: DictStrStr = None) -> Middleware:
+def https_middleware(
+    match_headers: Union[DictStrStr, None] = None
+) -> Middleware:
     """
     Change scheme for current request when aiohttp application deployed behind
     reverse proxy with HTTPS enabled.
