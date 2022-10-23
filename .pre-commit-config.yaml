@@ -84,10 +84,15 @@ repos:
   - repo: "https://github.com/asottile/yesqa"
     rev: "v1.4.0"
     hooks:
-      - id: yesqa
+      - id: "yesqa"
         name: "Lint code (yesqa)"
         additional_dependencies: *flake8_additional_dependencies
         exclude: ^docs/.*$
+
+  - repo: "https://github.com/Kludex/no-optional"
+    rev: "0.4.0"
+    hooks:
+      - id: "no_optional"
 
   - repo: "local"
     hooks:

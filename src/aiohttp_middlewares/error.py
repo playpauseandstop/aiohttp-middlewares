@@ -85,7 +85,7 @@ Usage
 import logging
 from contextlib import contextmanager
 from functools import partial
-from typing import Dict, Iterator, Optional, Tuple, Union
+from typing import Dict, Iterator, Tuple, Union
 
 import attr
 from aiohttp import web
@@ -223,8 +223,8 @@ def get_error_from_request(request: web.Request) -> Exception:
 
 
 def get_error_handler(
-    request: web.Request, config: Optional[Config]
-) -> Optional[Handler]:
+    request: web.Request, config: Union[Config, None]
+) -> Union[Handler, None]:
     """Find error handler matching current request path if any."""
     if not config:
         return None
