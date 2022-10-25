@@ -1,5 +1,5 @@
 default_language_version:
-  python: &python_version "python3.10"
+  python: &python_version "python3.11"
 exclude: ^(archive|assets|migrations)/.*|.*/(migrations|test-data|vendor)/.*|.*\.svg$
 minimum_pre_commit_version: "1.17.0"
 repos:
@@ -11,6 +11,12 @@ repos:
         # needed to provide concrete version here as well
         language_version: *python_version
         stages: ["commit-msg"]
+
+  - repo: "https://github.com/Kludex/no-optional"
+    rev: "0.4.0"
+    hooks:
+      - id: "no_optional"
+        name: "Format code (no-optional)"
 
   - repo: "https://github.com/PyCQA/isort"
     rev: "5.10.1"
@@ -88,11 +94,6 @@ repos:
         name: "Lint code (yesqa)"
         additional_dependencies: *flake8_additional_dependencies
         exclude: ^docs/.*$
-
-  - repo: "https://github.com/Kludex/no-optional"
-    rev: "0.4.0"
-    hooks:
-      - id: "no_optional"
 
   - repo: "local"
     hooks:
