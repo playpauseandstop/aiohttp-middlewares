@@ -103,7 +103,7 @@ repos:
         language: "python"
         "types": ["python"]
         require_serial: true
-        exclude: ^(docs|migrations|tests)/.*$
+        exclude: ^(.*/)?(docs|migrations|tests)/.*$
 
   - repo: "https://github.com/shellcheck-py/shellcheck-py"
     rev: "v0.8.0.4"
