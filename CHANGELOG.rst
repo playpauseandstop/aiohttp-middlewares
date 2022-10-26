@@ -1,9 +1,19 @@
+2.2.0 (2022-10-26)
+==================
+
+Set ``3.11.0`` as Python dev version, which ensures that *aiohttp-middlewares*
+works well with latest Python.
+
+**Features:**
+
+- Ensure Python 3.11.0 support (#135)
+
 2.1.1 (2022-10-23)
 ==================
 
 **Other:**
 
-- Sync common project files (#119)
+- Sync common project files (#119, #130)
 - (**docs**) Bump requirements for docs (#121)
 - Use poetry 1.2.0 for managing project dependencies (#122)
 - Fix read the docs configuration (#124)
@@ -11,7 +21,6 @@
 - Install project and docs deps on post install job (#126)
 - Do not expect to fail on Python 3.11 (#123)
 - (**deps**) bump peter-evans/create-pull-request from 4.0.4 to 4.1.2 (#128)
-- Sync common project files (#130)
 - Update Python dev version to 3.10.8 (#131)
 - Enforce mypy no-implicit-optional setting (#132)
 - Integrate no-optional pre-commit hook (#133)
