@@ -1,6 +1,9 @@
 2.2.0 (2022-10-26)
 ==================
 
+Set ``3.11.0`` as Python dev version, which ensures that *aiohttp-middlewares*
+works well with latest Python.
+
 **Features:**
 
 - Ensure Python 3.11.0 support (#135)
