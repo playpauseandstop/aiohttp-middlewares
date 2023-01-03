@@ -4,10 +4,6 @@ build-backend = "poetry.core.masonry.api"
 
 [tool.badabump]
 version_type = "semver"
-version_files = [
-  "pyproject.toml",
-  "src/aiohttp_middlewares/__init__.py",
-]
 
 [tool.black]
 line_length = 79
