@@ -140,21 +140,17 @@ python =
   3.11: py311
 
 [testenv]
+allowlist_externals = poetry
 passenv =
-  AIOHTTP_NO_EXTENSIONS
   PYTEST_ADDOPTS
-  PYTHONPATH
-setenv =
-  PYTHONPATH=.
 skip_install = True
-whitelist_externals = poetry
 commands_pre =
   poetry install --only main,test
 commands =
-  poetry run python3 -m pytest
+  python3 -m pytest
 
 [testenv:py310-minimum-requirements]
 commands_pre =
   poetry install --only main,test
-  poetry run python3 -m pip install aiohttp==3.8.1 async-timeout==4.0.2 yarl==1.5.1
+  python3 -m pip install aiohttp==3.8.1 async-timeout==4.0.2 yarl==1.5.1
 """
