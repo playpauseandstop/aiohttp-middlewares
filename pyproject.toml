@@ -4,10 +4,6 @@ build-backend = "poetry.core.masonry.api"
 
 [tool.badabump]
 version_type = "semver"
-version_files = [
-  "pyproject.toml",
-  "src/aiohttp_middlewares/__init__.py",
-]
 
 [tool.black]
 line_length = 79
@@ -99,22 +95,22 @@ async-timeout = "^4.0.2"
 yarl = "^1.5.1"
 
 [tool.poetry.group.dev.dependencies]
-mypy = "^0.982"
+mypy = "^0.991"
 
 [tool.poetry.group.docs.dependencies]
-furo = "^2022.9.29"
+furo = "^2022.12.7"
 sphinx = "^5.3.0"
 sphinx-autobuild = "^2021.3.14"
-sphinx-autodoc-typehints = "^1.19.4"
-sphinx-copybutton = "^0.5.0"
-sphinxext-opengraph = "^0.6.3"
+sphinx-autodoc-typehints = "^1.19.5"
+sphinx-copybutton = "^0.5.1"
+sphinxext-opengraph = "^0.7.4"
 
 [tool.poetry.group.test.dependencies]
 coverage = "^6.5.0"
 coveralls = "^3.3.1"
 pytest = "^7.2.0"
 pytest-aiohttp = "^1.0.4"
-pytest-asyncio = "^0.20.1"
+pytest-asyncio = "^0.20.3"
 pytest-cov = "^4.0.0"
 
 [tool.pytest.ini_options]
@@ -140,21 +136,17 @@ python =
   3.11: py311
 
 [testenv]
+allowlist_externals = poetry
 passenv =
-  AIOHTTP_NO_EXTENSIONS
   PYTEST_ADDOPTS
-  PYTHONPATH
-setenv =
-  PYTHONPATH=.
 skip_install = True
-whitelist_externals = poetry
 commands_pre =
   poetry install --only main,test
 commands =
-  poetry run python3 -m pytest
+  python3 -m pytest
 
 [testenv:py310-minimum-requirements]
 commands_pre =
   poetry install --only main,test
-  poetry run python3 -m pip install aiohttp==3.8.1 async-timeout==4.0.2 yarl==1.5.1
+  python3 -m pip install aiohttp==3.8.1 async-timeout==4.0.2 yarl==1.5.1
 """
