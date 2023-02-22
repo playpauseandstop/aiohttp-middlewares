@@ -103,7 +103,7 @@ Usage
     app = web.Application(
         middlewares=[
             cors_middleware(
-                origings=CORS_ALLOW_ORIGINS,
+                origins=CORS_ALLOW_ORIGINS,
                 allow_methods=("POST", "PATCH"),
                 allow_headers=DEFAULT_ALLOW_HEADERS
                 + ("X-Client-UID",),
