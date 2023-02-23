@@ -51,6 +51,7 @@ Usage
         error_middleware,
     )
 
+
     # Error handler for API requests
     async def api_error(request: web.Request) -> web.Response:
         with error_context(request) as context:
