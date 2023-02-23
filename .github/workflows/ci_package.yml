@@ -39,7 +39,7 @@ jobs:
         run: "pipx install --python='${{ steps.python_and_poetry.outputs.python-path }}' twine==${{ inputs.twine-version }}"
 
       - name: "Check package"
-        run: "twine check ./dist/*"
+        run: "twine check dist/*"
 
       - name: "Publish package"
         if: "${{ startsWith(github.ref, 'refs/tags/') }}"

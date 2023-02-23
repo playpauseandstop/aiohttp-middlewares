@@ -26,4 +26,4 @@ jobs:
         run: "poetry install --only main,docs"
 
       - name: "Build docs"
-        run: "poetry run python3 -m sphinx -b html ./docs/ ./docs/_build/"
+        run: "poetry run python3 -m sphinx -b html docs/ docs/_build/"
