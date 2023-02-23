@@ -566,7 +566,6 @@ category = "dev"
 optional = false
 python-versions = "*"
 files = [
-    {file = "livereload-2.6.3-py2.py3-none-any.whl", hash = "sha256:ad4ac6f53b2d62bb6ce1a5e6e96f1f00976a32348afedcb4b6d68df2a1d346e4"},
     {file = "livereload-2.6.3.tar.gz", hash = "sha256:776f2f865e59fde56490a56bcc6773b6917366bce0c267c60ee8aaf1a0959869"},
 ]
 
@@ -1399,4 +1398,4 @@ testing = ["flake8 (<5)", "func-timeout", "jaraco.functools", "jaraco.itertools"
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.7"
-content-hash = "a4d227e093349b26c4e467133fd30bbe619510e2eca1dfe1295f59482719fc36"
+content-hash = "137503fbc65dd03586fc319254e442e91c59acafd8300f148bf13f395ef64959"
