@@ -95,7 +95,7 @@ async-timeout = "^4.0.2"
 yarl = "^1.5.1"
 
 [tool.poetry.group.dev.dependencies]
-mypy = "^0.991"
+mypy = "^1.0.1"
 
 [tool.poetry.group.docs.dependencies]
 furo = "^2022.12.7"
