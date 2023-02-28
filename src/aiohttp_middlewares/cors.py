@@ -176,7 +176,7 @@ def cors_middleware(
         Allow content access for given list of origins. Support supplying
         strings for exact origin match or regex instances. By default: ``None``
     :param urls:
-        Allow contect access for given list of URLs in aiohttp application.
+        Allow content access for given list of URLs in aiohttp application.
         By default: *apply CORS headers for all URLs*
     :param expose_headers:
         List of headers to be exposed with every CORS request. By default:
