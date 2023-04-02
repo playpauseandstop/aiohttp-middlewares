@@ -39,7 +39,7 @@ repos:
         name: "Format docs (blacken-docs)"
         args: ["-l", "64"]
         additional_dependencies:
-          - "black==23.1.0"
+          - "black==23.3.0"
 
   - repo: "https://github.com/pre-commit/pre-commit-hooks"
     rev: "v4.4.0"
