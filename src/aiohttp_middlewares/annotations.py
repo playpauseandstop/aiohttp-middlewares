@@ -7,6 +7,8 @@ Type annotation shortcuts for ``aiohttp_middlewares`` library.
 
 """
 
+import importlib
+
 from typing import (
     Any,
     Awaitable,
@@ -19,9 +21,14 @@ from typing import (
 )
 
 from aiohttp import web
-from aiohttp.web_middlewares import _Middleware as Middleware
 from yarl import URL
 
+try:
+    # (<3.9.0) Try to import Middleware from aiohttp.web_middlewares
+    Middleware = importlib.import_module('aiohttp.web_middlewares')._Middleware
+except AttributeError:
+    # (>=3.9.0) If that fails, import Middleware from aiohttp.typedefs
+    Middleware = importlib.import_module('aiohttp.typedefs').Middleware
 
 # Make flake8 happy
 (Middleware,)
