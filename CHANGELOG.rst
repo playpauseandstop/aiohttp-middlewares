@@ -1,3 +1,29 @@
+2.2.1 (2023-11-23)
+==================
+
+**Fixes:**
+
+- (**cors**) Fix typo in docstring (#150)
+- Fix importing Middleware type alias (#185)
+
+**Other:**
+
+- Update Python dev version to 3.11.1 (#140)
+- (**deps**) bump certifi from 2022.9.24 to 2022.12.7 (#139)
+- Sync common project files (#141)
+- Monthly maintenance (Jan 2023) (#144)
+- (**deps**) Bump actions/checkout to 3.3.0 (#145)
+- Bump dev Python version to 3.11.2 (#151)
+- (**deps-dev**) Bump pytest from 7.2.0 to 7.2.1 (#146)
+- (**deps-dev**) Bump sphinx-autodoc-typehints from 1.19.5 to 1.22 (#147)
+- (**deps-dev**) Bump sphinxext-opengraph from 0.7.4 to 0.7.5 (#148)
+- (**dev-deps**) Update mypy from 0.991 to 1.0.1 (#153)
+- Fix another typo in docstring (#152)
+- Monthly maintenance (Apr 2023) (#163)
+- (**deps**) Bump actions/checkout from 3.3.0 to 3.5.0 (#161)
+- Monthly maintenance (Nov 2023) (#187)
+- Update some deps to latest Python 3.7 compatible versions (#188)
+
 2.2.0 (2022-10-26)
 ==================
 
