@@ -1,11 +1,11 @@
 default_language_version:
-  python: &python_version "python3.11"
+  python: &python_version "python3.12"
 exclude: ^(archive|assets|migrations)/.*|.*/(migrations|test-data|vendor)/.*|.*\.svg$
 minimum_pre_commit_version: "1.17.0"
 
 repos:
   - repo: "https://github.com/commitizen-tools/commitizen"
-    rev: "3.12.0"
+    rev: "v3.14.1"
     hooks:
       - id: "commitizen"
         # By default commitizen using `python3` language version, so
@@ -20,14 +20,14 @@ repos:
         name: "Format code (no-optional)"
 
   - repo: "https://github.com/PyCQA/isort"
-    rev: "5.12.0"
+    rev: "5.13.2"
     hooks:
       - id: "isort"
         name: "Format code (isort)"
         exclude: ^docs/.*$
 
-  - repo: "https://github.com/psf/black"
-    rev: "23.11.0"
+  - repo: "https://github.com/psf/black-pre-commit-mirror"
+    rev: "24.1.1"
     hooks:
       - id: "black"
         name: "Format code (black)"
@@ -40,7 +40,7 @@ repos:
         name: "Format docs (blacken-docs)"
         args: ["-l", "64"]
         additional_dependencies:
-          - "black==23.3.0"
+          - "black==23.7.0"
 
   - repo: "https://github.com/pre-commit/pre-commit-hooks"
     rev: "v4.5.0"
@@ -61,12 +61,12 @@ repos:
       - id: "rst-inline-touching-normal"
 
   - repo: "https://github.com/PyCQA/flake8"
-    rev: "6.1.0"
+    rev: "7.0.0"
     hooks:
       - id: "flake8"
         name: "Lint code (flake8)"
         additional_dependencies: &flake8_additional_dependencies
-          - "flake8-bugbear==23.9.16"
+          - "flake8-bugbear==24.2.6"
           - "flake8-builtins==2.2.0"
           - "flake8-comprehensions==3.14.0"
           - "flake8-implicit-str-concat==0.4.0"
@@ -77,7 +77,7 @@ repos:
           - "flake8-string-format==0.3.0"
           - "flake8-tidy-imports==4.10.0"
           - "flake8-variables-names==0.0.6"
-          - "flake8==6.1.0"
+          - "flake8==7.0.0"
           - "pep8-naming==0.13.3"
         exclude: ^docs/.*$
 
