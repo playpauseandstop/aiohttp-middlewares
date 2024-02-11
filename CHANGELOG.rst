@@ -1,14 +1,3 @@
-2.3.0 (2024-02-11)
-==================
-
-**Features:**
-
-- Bump Python dev version to 3.12.2 (and drop Python 3.7) (#195)
-
-**Other:**
-
-- [#196] Configure Trusted Publisher for the repository (#197)
-
 2.2.1 (2023-11-23)
 ==================
 
