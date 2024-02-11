@@ -8,8 +8,6 @@
 **Other:**
 
 - [#196] Configure Trusted Publisher for the repository (#197)
-- 2.3.0 Release (#198)
-- "chore: 2.3.0 Release (#198)" (#199)
 - [#196] Grant permissions to Package reusable wofklow in CI config (#200)
 
 2.2.1 (2023-11-23)
