@@ -63,7 +63,7 @@ warn_unused_ignores = true
 
 [tool.poetry]
 name = "aiohttp-middlewares"
-version = "2.2.1"
+version = "2.3.0"
 description = "Collection of useful middlewares for aiohttp applications."
 authors = ["Igor Davydenko <iam@igordavydenko.com>"]
 license = "BSD-3-Clause"
