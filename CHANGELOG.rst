@@ -1,3 +1,11 @@
+2.3.1 (2024-02-11)
+==================
+
+**Other:**
+
+- "chore: 2.3.0 Release (#198)" (#199)
+- [#196] Grant permissions to Package reusable wofklow in CI config (#200)
+
 2.2.1 (2023-11-23)
 ==================
 
