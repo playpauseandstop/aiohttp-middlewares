@@ -30,7 +30,7 @@ __version__ = "2.2.1"
 
 
 # Make flake8 happy
-(
+(  # noqa: B018
     cors_middleware,
     default_error_handler,
     error_context,

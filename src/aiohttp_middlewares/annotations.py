@@ -31,7 +31,7 @@ except AttributeError:
     Middleware = importlib.import_module("aiohttp.typedefs").Middleware
 
 # Make flake8 happy
-(Middleware,)
+(Middleware,)  # noqa: B018
 
 DictStrAny = Dict[str, Any]
 DictStrStr = Dict[str, str]
