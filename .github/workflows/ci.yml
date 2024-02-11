@@ -82,6 +82,9 @@ jobs:
   package:
     needs: ["test"]
 
+    permissions:
+      id-token: "write"
+
     uses: "./.github/workflows/ci_package.yml"
 
   release:
