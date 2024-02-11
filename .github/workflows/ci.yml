@@ -83,9 +83,6 @@ jobs:
     needs: ["test"]
 
     uses: "./.github/workflows/ci_package.yml"
-    secrets:
-      pypi-user: "${{ secrets.PYPI_USERNAME }}"
-      pypi-password: "${{ secrets.PYPI_PASSWORD }}"
 
   release:
     needs: ["package"]
