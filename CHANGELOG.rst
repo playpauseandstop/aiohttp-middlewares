@@ -1,3 +1,20 @@
+2.4.0 (2024-08-14)
+==================
+
+**Features:**
+
+- Ensure Python 3.13 support (#239)
+
+**Other:**
+
+- Reflect changes to supported Python versions in README (#204)
+- Monthly maintenance (Aug 2024) (#230)
+- (**deps**) Bump actions/checkout in the ci-dependencies group (#231)
+- (**deps**) Bump aiohttp from 3.9.3 to 3.10.3 (#233)
+- (**deps**) Bump idna from 3.6 to 3.7 (#220)
+- Update dev dependencies to latest versions (#240)
+- (**deps-dev**) Bump the dev-dependencies group across 1 directory with 2 updates (#241)
+
 2.3.0 (2024-02-11)
 ==================
 
