@@ -9,15 +9,6 @@ on:
         required: false
         default: "5.1.1"
 
-    secrets:
-      pypi-user:
-        description: "PyPI username to use."
-        required: true
-
-      pypi-password:
-        description: "PyPI password (token) to use."
-        required: true
-
 jobs:
   package:
     name: "Build & Deploy Package"
@@ -44,6 +35,3 @@ jobs:
       - name: "Publish package"
         if: "${{ startsWith(github.ref, 'refs/tags/') }}"
         uses: "pypa/gh-action-pypi-publish@v1.9.0"
-        with:
-          user: "${{ secrets.pypi-user }}"
-          password: "${{ secrets.pypi-password }}"
