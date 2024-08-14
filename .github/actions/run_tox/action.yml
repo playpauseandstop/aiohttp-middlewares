@@ -13,7 +13,7 @@ inputs:
   tox-version:
     description: "Tox version to use"
     required: false
-    default: "4.12.1"
+    default: "4.18.0"
 
   tox-gh-actions-version:
     description: "Tox GitHub Actions plugin version to use"
@@ -41,7 +41,7 @@ runs:
       shell: "bash"
 
     - name: "Cache tox"
-      uses: "actions/cache@v4.0.0"
+      uses: "actions/cache@v4.0.2"
       with:
         path: ".tox/"
         key: "tox-${{ inputs.python-version }}"
