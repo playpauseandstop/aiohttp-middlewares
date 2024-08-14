@@ -137,7 +137,7 @@ async def default_error_handler(request: web.Request) -> web.Response:
     .. versionadded:: 1.0.0
     """
     with error_context(request) as context:
-        logger.error(context.message, exc_info=True)
+        logger.error(context.message, exc_info=True)  # noqa: LOG014
         return web.json_response(context.data, status=context.status)
 
 
