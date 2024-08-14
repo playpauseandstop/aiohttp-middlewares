@@ -1,3 +1,6 @@
+default_install_hook_types:
+  - "commit-msg"
+  - "pre-commit"
 default_language_version:
   python: &python_version "python3.12"
 exclude: ^(archive|assets|migrations)/.*|.*/(migrations|test-data|vendor)/.*|.*\.svg$
@@ -5,12 +8,9 @@ minimum_pre_commit_version: "1.17.0"
 
 repos:
   - repo: "https://github.com/commitizen-tools/commitizen"
-    rev: "v3.14.1"
+    rev: "v3.29.0"
     hooks:
       - id: "commitizen"
-        # By default commitizen using `python3` language version, so
-        # needed to provide concrete version here as well
-        language_version: *python_version
         stages: ["commit-msg"]
 
   - repo: "https://github.com/Kludex/no-optional"
@@ -27,23 +27,23 @@ repos:
         exclude: ^docs/.*$
 
   - repo: "https://github.com/psf/black-pre-commit-mirror"
-    rev: "24.1.1"
+    rev: "24.8.0"
     hooks:
       - id: "black"
         name: "Format code (black)"
         exclude: ^docs/.*$
 
   - repo: "https://github.com/asottile/blacken-docs"
-    rev: "1.16.0"
+    rev: "1.18.0"
     hooks:
       - id: "blacken-docs"
         name: "Format docs (blacken-docs)"
         args: ["-l", "64"]
         additional_dependencies:
-          - "black==23.7.0"
+          - "black==24.8.0"
 
   - repo: "https://github.com/pre-commit/pre-commit-hooks"
-    rev: "v4.5.0"
+    rev: "v4.6.0"
     hooks:
       - id: "end-of-file-fixer"
       - id: "trailing-whitespace"
@@ -61,24 +61,25 @@ repos:
       - id: "rst-inline-touching-normal"
 
   - repo: "https://github.com/PyCQA/flake8"
-    rev: "7.0.0"
+    rev: "7.1.1"
     hooks:
       - id: "flake8"
         name: "Lint code (flake8)"
         additional_dependencies: &flake8_additional_dependencies
-          - "flake8-bugbear==24.2.6"
-          - "flake8-builtins==2.2.0"
-          - "flake8-comprehensions==3.14.0"
+          - "flake8-bugbear==24.4.26"
+          - "flake8-builtins==2.5.0"
+          - "flake8-comprehensions==3.15.0"
           - "flake8-implicit-str-concat==0.4.0"
           - "flake8-isort==6.1.1"
+          - "flake8-logging==1.6.0"
           - "flake8-mutable==1.2.0"
           - "flake8-pie==0.16.0"
-          - "flake8-quotes==3.3.2"
+          - "flake8-quotes==3.4.0"
           - "flake8-string-format==0.3.0"
           - "flake8-tidy-imports==4.10.0"
           - "flake8-variables-names==0.0.6"
-          - "flake8==7.0.0"
-          - "pep8-naming==0.13.3"
+          - "flake8==7.1.1"
+          - "pep8-naming==0.14.1"
         exclude: ^docs/.*$
 
   - repo: "https://github.com/asottile/yesqa"
@@ -100,7 +101,7 @@ repos:
         exclude: ^(.*/)?(docs|migrations|tests)/.*$
 
   - repo: "https://github.com/shellcheck-py/shellcheck-py"
-    rev: "v0.9.0.6"
+    rev: "v0.10.0.1"
     hooks:
       - id: "shellcheck"
         name: "Lint scripts (shellcheck)"
