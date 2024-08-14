@@ -125,16 +125,17 @@ asyncio_mode = "auto"
 [tool.tox]
 legacy_tox_ini = """
 [tox]
-envlist = py37,py38,py39,py310,py310-minimum-requirements,py311
+envlist = py38,py39,py310,py310-minimum-requirements,py311,py312,py313
 skipsdist = True
 
 [gh-actions]
 python =
-  3.7: py37
   3.8: py38
   3.9: py39
   3.10: py310
   3.11: py311
+  3.12: py312
+  3.13: py313
 
 [testenv]
 allowlist_externals = poetry
@@ -146,6 +147,7 @@ commands_pre =
 commands =
   python3 -m pytest
 
+# Python 3.10 is last version with aiohttp, async-timeout, and yarl wheels
 [testenv:py310-minimum-requirements]
 commands_pre =
   poetry install --only main,test
