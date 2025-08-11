@@ -40,9 +40,13 @@ jobs:
       - name: "Install package"
         run: "poetry install --only main"
 
-      - name: "Debug poetry on Windows"
-        if: "${{ matrix.os == 'windows-2025' }}"
-        run: "poetry env list"
+      - name: "Debug poetry"
+        run: |
+          poetry env list
+          poetry show
+          poetry run python3 -c 'import sys; print(sys.exec_prefix)'
+          poetry run python3 -c 'import sys; print(sys.base_exec_prefix)'
+          poetry run python3 -c 'import sys; print(sys.path)'
 
       - name: "Show available modules"
         run: |
