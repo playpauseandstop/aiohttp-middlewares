@@ -42,6 +42,7 @@ jobs:
 
       - name: "Debug poetry"
         run: |
+          $(poetry env activate)
           poetry env list
           poetry show
           poetry run python3 -c 'import sys; print(sys.exec_prefix)'
@@ -50,6 +51,7 @@ jobs:
 
       - name: "Show available modules"
         run: |
+          $(poetry env activate)
           poetry run python3 -c 'help("modules")'
 
       - name: "Import package"
