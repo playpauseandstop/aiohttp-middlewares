@@ -57,7 +57,6 @@ runs:
 
     - name: "Send coverage to Coveralls"
       if: "${{ inputs.use-coveralls == 'true' }}"
-      env:
-        GITHUB_TOKEN: "${{ inputs.coveralls-token }}"
-      run: "poetry run python3 -m coveralls --service=github"
-      shell: "bash"
+      uses: "coverallsapp/github-action@v2.3.6"
+      with:
+        github-token: "${{ inputs.coveralls-token }}"
