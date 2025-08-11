@@ -49,6 +49,8 @@ runs:
     - name: "Run tox"
       run: "tox"
       shell: "bash"
+      env:
+        PYTEST_ADDOPTS: "--cov-report xml:coverage.xml"
 
     - name: "Send coverage to Coveralls"
       if: "${{ inputs.use-coveralls == 'true' }}"
