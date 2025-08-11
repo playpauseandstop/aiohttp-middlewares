@@ -66,4 +66,3 @@ runs:
       with:
         github-token: "${{ inputs.coveralls-token }}"
         format: "cobertura"
-        debug: true
