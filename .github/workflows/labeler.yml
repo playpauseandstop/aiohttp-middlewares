@@ -2,7 +2,7 @@ defaults:
   run:
     shell: "bash"
 
-name: "Pull Request Labeler"
+name: "(Reusable) Pull Request Labeler"
 
 on:
   - "pull_request_target"
