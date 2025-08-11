@@ -40,6 +40,14 @@ jobs:
       - name: "Install package"
         run: "poetry install --only main"
 
+      - name: "Install root package on Windows"
+        if: "${{ matrix.os == 'windows-2025' }}"
+        run: "poetry install --only-root"
+
+      - name: "Show available modules"
+        run: |
+          poetry run python3 -c 'help("modules")'
+
       - name: "Import package"
         run: "poetry run python3 -c 'import aiohttp_middlewares'"
 
