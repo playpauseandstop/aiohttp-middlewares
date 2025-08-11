@@ -50,13 +50,10 @@ runs:
       run: "tox"
       shell: "bash"
 
-    - name: "Install project"
-      if: "${{ inputs.use-coveralls == 'true' }}"
-      run: "poetry install --only test"
-      shell: "bash"
-
     - name: "Send coverage to Coveralls"
       if: "${{ inputs.use-coveralls == 'true' }}"
       uses: "coverallsapp/github-action@v2.3.6"
       with:
         github-token: "${{ inputs.coveralls-token }}"
+        format: "python"
+        debug: true
