@@ -6,8 +6,6 @@ updates:
       interval: "monthly"
       time: "03:00"
     open-pull-requests-limit: 25
-    reviewers:
-      - "playpauseandstop"
     assignees:
       - "playpauseandstop"
     labels:
@@ -20,13 +18,12 @@ updates:
         dependency-type: "development"
 
   - package-ecosystem: "github-actions"
-    directory: "/"
+    directories:
+      - "/.github/**/*"
     schedule:
       interval: "monthly"
       time: "05:00"
     open-pull-requests-limit: 10
-    reviewers:
-      - "playpauseandstop"
     assignees:
       - "playpauseandstop"
     labels:

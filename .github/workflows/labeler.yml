@@ -1,0 +1,21 @@
+defaults:
+  run:
+    shell: "bash"
+
+name: "(Reusable) Pull Request Labeler"
+
+on:
+  - "pull_request_target"
+
+jobs:
+  labeler:
+    name: "Pull Request Labeler"
+
+    permissions:
+      contents: "read"
+      pull-requests: "write"
+
+    runs-on: "ubuntu-24.04"
+
+    steps:
+      - uses: "actions/labeler@v5.0.0"

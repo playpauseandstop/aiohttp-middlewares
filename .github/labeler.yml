@@ -1,0 +1,41 @@
+build:
+  - changed-files:
+    - any-glob-to-any-file:
+      - "infrastructure/**/*"
+      - "*.mk"
+      - "Makefile"
+      - "poetry.lock"
+      - "poetry.toml"
+      - "pyproject.toml"
+      - ".python-version"
+
+ci:
+  - changed-files:
+    - any-glob-to-any-file:
+      - ".github/**/*"
+
+dependencies:
+  - changed-files:
+    - any-glob-to-any-file:
+      - "poetry.lock"
+      - ".python-version"
+
+docs:
+  - changed-files:
+    - any-glob-to-any-file:
+      - "docs/**/*"
+      - "CHANGELOG*"
+      - "README*"
+
+style:
+  - changed-files:
+    - any-glob-to-any-file:
+      - ".editorconfig"
+      - ".flake8"
+      - ".pre-commit-config.yaml"
+
+test:
+  - changed-files:
+    - any-glob-to-any-file:
+      - "tests/**/*"
+      - ".env.test"

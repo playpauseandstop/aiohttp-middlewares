@@ -16,7 +16,7 @@ jobs:
     if: "${{ startsWith(github.head_ref, 'chore/release-') && github.event.pull_request.merged == true }}"
     name: "Auto Create Release Tag"
 
-    runs-on: "ubuntu-latest"
+    runs-on: "ubuntu-24.04"
 
     steps:
       - id: "token"
@@ -25,7 +25,7 @@ jobs:
           app_id: "${{ secrets.BADABUMP_APP_ID }}"
           private_key: "${{ secrets.BADABUMP_APP_PRIVATE_KEY }}"
 
-      - uses: "actions/checkout@v4.1.7"
+      - uses: "actions/checkout@v5.0.0"
         with:
           ref: "main"
           token: "${{ steps.token.outputs.token }}"

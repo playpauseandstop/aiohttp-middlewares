@@ -26,11 +26,12 @@ clean-egg-info:
 
 .PHONY: clean-python
 clean-python:
-	find . \( -name __pycache__ -o -type d -empty -not -path '$(GIT_DIR)/*' \) -exec rm -rf {} + 2> /dev/null
+	-find . \( -name __pycache__ -o -type d -empty -not -path '$(GIT_DIR)/*' \) -exec rm -rf {} + 2> /dev/null
+	-rm -rf $(PYTHON_DIST_DIR)/
 
 .PHONY: distclean-python
-distclean-python: clean-egg-info
-	-rm -rf .coverage .install-python $(VENV_DIR)/ $(PYTHON_DIST_DIR)/
+distclean-python: clean-egg-info clean-python
+	-rm -rf .coverage .install-python $(VENV_DIR)/
 
 .PHONY: ensure-venv
 ensure-venv: .python-version

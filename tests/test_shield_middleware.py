@@ -87,7 +87,8 @@ async def test_shield_request_by_url(aiohttp_client, url, method):
     "method, value",
     [("DELETE", False), ("GET", False), ("POST", True), ("PUT", False)],
 )
-async def test_shield_middleware_funcitonal(event_loop, method, value):
+async def test_shield_middleware_funcitonal(event_loop_policy, method, value):
+    event_loop = event_loop_policy.get_event_loop()
     flag = False
     client_ready = asyncio.Event()
     handler_ready = asyncio.Event()

@@ -2,13 +2,13 @@ default_install_hook_types:
   - "commit-msg"
   - "pre-commit"
 default_language_version:
-  python: &python_version "python3.12"
+  python: &python_version "python3.13"
 exclude: ^(archive|assets|migrations)/.*|.*/(migrations|test-data|vendor)/.*|.*\.svg$
 minimum_pre_commit_version: "1.17.0"
 
 repos:
   - repo: "https://github.com/commitizen-tools/commitizen"
-    rev: "v3.29.0"
+    rev: "v4.8.3"
     hooks:
       - id: "commitizen"
         stages: ["commit-msg"]
@@ -20,30 +20,30 @@ repos:
         name: "Format code (no-optional)"
 
   - repo: "https://github.com/PyCQA/isort"
-    rev: "5.13.2"
+    rev: "6.0.1"
     hooks:
       - id: "isort"
         name: "Format code (isort)"
         exclude: ^docs/.*$
 
   - repo: "https://github.com/psf/black-pre-commit-mirror"
-    rev: "24.8.0"
+    rev: "25.1.0"
     hooks:
       - id: "black"
         name: "Format code (black)"
         exclude: ^docs/.*$
 
   - repo: "https://github.com/asottile/blacken-docs"
-    rev: "1.18.0"
+    rev: "1.19.1"
     hooks:
       - id: "blacken-docs"
         name: "Format docs (blacken-docs)"
         args: ["-l", "64"]
         additional_dependencies:
-          - "black==24.8.0"
+          - "black==24.10.0"
 
   - repo: "https://github.com/pre-commit/pre-commit-hooks"
-    rev: "v4.6.0"
+    rev: "v5.0.0"
     hooks:
       - id: "end-of-file-fixer"
       - id: "trailing-whitespace"
@@ -61,25 +61,25 @@ repos:
       - id: "rst-inline-touching-normal"
 
   - repo: "https://github.com/PyCQA/flake8"
-    rev: "7.1.1"
+    rev: "7.3.0"
     hooks:
       - id: "flake8"
         name: "Lint code (flake8)"
         additional_dependencies: &flake8_additional_dependencies
-          - "flake8-bugbear==24.4.26"
+          - "flake8-bugbear==24.12.12"
           - "flake8-builtins==2.5.0"
-          - "flake8-comprehensions==3.15.0"
-          - "flake8-implicit-str-concat==0.4.0"
-          - "flake8-isort==6.1.1"
-          - "flake8-logging==1.6.0"
+          - "flake8-comprehensions==3.16.0"
+          - "flake8-implicit-str-concat==0.5.0"
+          - "flake8-isort==6.1.2"
+          - "flake8-logging==1.7.0"
           - "flake8-mutable==1.2.0"
           - "flake8-pie==0.16.0"
           - "flake8-quotes==3.4.0"
           - "flake8-string-format==0.3.0"
-          - "flake8-tidy-imports==4.10.0"
+          - "flake8-tidy-imports==4.11.0"
           - "flake8-variables-names==0.0.6"
-          - "flake8==7.1.1"
-          - "pep8-naming==0.14.1"
+          - "flake8==7.3.0"
+          - "pep8-naming==0.15.1"
         exclude: ^docs/.*$
 
   - repo: "https://github.com/asottile/yesqa"
