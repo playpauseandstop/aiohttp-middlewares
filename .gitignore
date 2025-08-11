@@ -137,10 +137,23 @@ dmypy.json
 # pytype static type analyzer
 .pytype/
 
+# Cython debug symbols
+cython_debug/
+
+# PyCharm
+#  JetBrains specific template is maintained in a separate JetBrains.gitignore that can
+#  be found at https://github.com/github/gitignore/blob/main/Global/JetBrains.gitignore
+#  and can be added to the global gitignore or merged into this file.  For a more nuclear
+#  option (not recommended) you can uncomment the following to ignore the entire idea folder.
+#.idea/
+
 # End of https://www.toptal.com/developers/gitignore/api/python
 
 # Profiler files
 *.prof
+
+# Sublime Text workspace files
+*.sublime-workspace
 
 # macOS Finder files
 .*DS_Store*
@@ -151,8 +164,11 @@ dmypy.json
 # Makefile install targets
 .install*
 
+# Poetry plugins
+.poetry/
+
 # AWS CDK files
-/cdk.out
+/cdk.out/
 
 # Shared Data files
 data/shared/

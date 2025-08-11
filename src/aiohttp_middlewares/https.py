@@ -38,7 +38,7 @@ logger = logging.getLogger(__name__)
 
 
 def https_middleware(
-    match_headers: Union[DictStrStr, None] = None
+    match_headers: Union[DictStrStr, None] = None,
 ) -> Middleware:
     """
     Change scheme for current request when aiohttp application deployed behind

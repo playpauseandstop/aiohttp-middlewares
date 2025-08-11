@@ -20,10 +20,10 @@ jobs:
     if: "${{ github.actor == 'playpauseandstop' }}"
     name: "Create Release PR"
 
-    runs-on: "ubuntu-latest"
+    runs-on: "ubuntu-24.04"
 
     steps:
-      - uses: "actions/checkout@v4.1.7"
+      - uses: "actions/checkout@v4.2.2"
         with:
           ref: "main"
 
@@ -47,7 +47,7 @@ jobs:
           private_key: "${{ secrets.BADABUMP_APP_PRIVATE_KEY }}"
 
       - name: "Create pull request with changed files"
-        uses: "peter-evans/create-pull-request@v6.1.0"
+        uses: "peter-evans/create-pull-request@v7.0.8"
         with:
           token: "${{ steps.token.outputs.token }}"
           commit-message: |

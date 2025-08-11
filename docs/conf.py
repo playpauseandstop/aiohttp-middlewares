@@ -99,9 +99,9 @@ texinfo_documents = [
 ]
 
 intersphinx_mapping = {
-    "https://docs.python.org/3/": None,
-    "https://docs.aiohttp.org/en/stable/": None,
-    "https://yarl.aio-libs.org/en/stable/": None,
+    "python": ("https://docs.python.org/3/", None),
+    "aiohttp": ("https://docs.aiohttp.org/en/stable/", None),
+    "yarl": ("https://yarl.aio-libs.org/en/stable/", None),
 }
 
 ogp_site_url = "https://aiohttp-middlewares.readthedocs.io"
