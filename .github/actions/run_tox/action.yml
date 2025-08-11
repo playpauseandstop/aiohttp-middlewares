@@ -65,5 +65,5 @@ runs:
       uses: "coverallsapp/github-action@v2.3.6"
       with:
         github-token: "${{ inputs.coveralls-token }}"
-        format: "python"
+        format: "cobertura"
         debug: true
