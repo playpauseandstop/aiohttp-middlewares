@@ -92,7 +92,7 @@ classifiers = [
 [tool.poetry.dependencies]
 python = "^3.9"
 aiohttp = "^3.11.0"
-async-timeout = "^4.0.2"
+async-timeout = ">=4.0.2,<6.0.0"
 yarl = "^1.17.0"
 
 [tool.poetry.group.dev.dependencies]
