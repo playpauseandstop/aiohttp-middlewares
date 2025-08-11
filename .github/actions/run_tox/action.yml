@@ -57,7 +57,7 @@ runs:
 
     - name: "Convert .coverage to XML format"
       if: "${{ inputs.use-coveralls == 'true' }}"
-      run: "poetry run coverage xml --format=cobertura"
+      run: "poetry run coverage xml"
       shell: "bash"
 
     - name: "Send coverage to Coveralls"
