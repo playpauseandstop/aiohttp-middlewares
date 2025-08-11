@@ -40,9 +40,9 @@ jobs:
       - name: "Install package"
         run: "poetry install --only main"
 
-      - name: "Install root package on Windows"
+      - name: "Debug poetry on Windows"
         if: "${{ matrix.os == 'windows-2025' }}"
-        run: "poetry install --only-root"
+        run: "poetry env list"
 
       - name: "Show available modules"
         run: |
