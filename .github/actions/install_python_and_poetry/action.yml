@@ -20,6 +20,11 @@ inputs:
     required: false
     default: "2.1.4"
 
+  shell:
+    description: "Shell to use"
+    required: false
+    default: "bash"
+
 outputs:
   python-path:
     description: "Absolute path to Python executable"
@@ -45,7 +50,7 @@ runs:
         python-version-file: "${{ inputs.python-version-file }}"
 
     - name: "Install poetry"
-      shell: "bash"
+      shell: "${{ inputs.shell }}"
       run: "pipx install --python='${{ steps.python.outputs.python-path }}' poetry==${{ inputs.poetry-version }}"
 
     - name: "Cache venv"

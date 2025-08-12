@@ -25,6 +25,9 @@ jobs:
     strategy:
       matrix:
         os: ["ubuntu-24.04", "windows-2025", "macos-13", "macos-15"]
+        include:
+          - os: "windows-2025"
+            shell: "pwsh"
 
     runs-on: "${{ matrix.os }}"
 
@@ -36,28 +39,15 @@ jobs:
         with:
           cache-key-suffix: "-main"
           python-version-file: ".python-version"
+          shell: "${{ matrix.shell }}"
 
       - name: "Install package"
         run: "poetry install --only main"
-
-      - name: "Debug poetry"
-        run: |
-          poetry env list
-          poetry show
-          poetry run python3 -c 'import sys; print(sys.exec_prefix)'
-          poetry run python3 -c 'import sys; print(sys.base_exec_prefix)'
-          poetry run python3 -c 'import sys; print(sys.path)'
-          ./.venv/bin/python3 -c 'import sys; print(sys.exec_prefix)'
-          ./.venv/bin/python3 -c 'import sys; print(sys.base_exec_prefix)'
-          ./.venv/bin/python3 -c 'import sys; print(sys.path)'
-
-      - name: "Show available modules"
-        run: |
-          poetry run python3 -c 'help("modules")'
-          ./.venv/bin/python3 -c 'help("modules")'
+        shell: "${{ matrix.shell }}"
 
       - name: "Import package"
         run: "poetry run python3 -c 'import aiohttp_middlewares'"
+        shell: "${{ matrix.shell }}"
 
   docs:
     uses: "./.github/workflows/ci_verify_docs_build.yml"
