@@ -29,6 +29,10 @@ jobs:
           - os: "windows-2025"
             shell: "pwsh"
 
+    defaults:
+      run:
+        shell: "${{ matrix.shell || 'bash' }}"
+
     runs-on: "${{ matrix.os }}"
 
     steps:
@@ -43,11 +47,9 @@ jobs:
 
       - name: "Install package"
         run: "poetry install --only main"
-        shell: "${{ matrix.shell }}"
 
       - name: "Import package"
         run: "poetry run python3 -c 'import aiohttp_middlewares'"
-        shell: "${{ matrix.shell }}"
 
   docs:
     uses: "./.github/workflows/ci_verify_docs_build.yml"
