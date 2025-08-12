@@ -24,7 +24,7 @@ jobs:
 
     strategy:
       matrix:
-        os: ["ubuntu-latest", "macos-latest"]
+        os: ["ubuntu-24.04", "windows-2025", "macos-13", "macos-15"]
 
     runs-on: "${{ matrix.os }}"
 
@@ -41,7 +41,7 @@ jobs:
         run: "poetry install --only main"
 
       - name: "Import package"
-        run: "poetry run python3 -c 'import aiohttp_middlewares'"
+        run: "poetry run python -c 'import aiohttp_middlewares'"
 
   docs:
     uses: "./.github/workflows/ci_verify_docs_build.yml"
@@ -56,7 +56,7 @@ jobs:
 
     name: "Python ${{ matrix.python-version }}"
 
-    runs-on: "ubuntu-latest"
+    runs-on: "ubuntu-24.04"
 
     steps:
       - uses: "actions/checkout@v5.0.0"
