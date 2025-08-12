@@ -42,17 +42,19 @@ jobs:
 
       - name: "Debug poetry"
         run: |
-          $(poetry env activate)
           poetry env list
           poetry show
           poetry run python3 -c 'import sys; print(sys.exec_prefix)'
           poetry run python3 -c 'import sys; print(sys.base_exec_prefix)'
           poetry run python3 -c 'import sys; print(sys.path)'
+          ./.venv/bin/python3 -c 'import sys; print(sys.exec_prefix)'
+          ./.venv/bin/python3 -c 'import sys; print(sys.base_exec_prefix)'
+          ./.venv/bin/python3 -c 'import sys; print(sys.path)'
 
       - name: "Show available modules"
         run: |
-          $(poetry env activate)
           poetry run python3 -c 'help("modules")'
+          ./.venv/bin/python3 -c 'help("modules")'
 
       - name: "Import package"
         run: "poetry run python3 -c 'import aiohttp_middlewares'"
