@@ -46,10 +46,7 @@ jobs:
 
       - if: "${{ matrix.os == 'windows-2025' }}"
         name: "Import package on Windows"
-        run: |
-          source .venv/Scripts/activate
-          poetry run python3 -c 'help("modules")'
-          poetry run python3 -c 'import aiohttp_middlewares'
+        run: ".venv/Scripts/python3 -c 'import aiohttp_middlewares'"
 
   docs:
     uses: "./.github/workflows/ci_verify_docs_build.yml"
