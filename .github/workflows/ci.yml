@@ -40,13 +40,8 @@ jobs:
       - name: "Install package"
         run: "poetry install --only main"
 
-      - if: "${{ matrix.os != 'windows-2025' }}"
-        name: "Import package"
-        run: "poetry run python3 -c 'import aiohttp_middlewares'"
-
-      - if: "${{ matrix.os == 'windows-2025' }}"
-        name: "Import package on Windows"
-        run: ".venv/Scripts/python3 -c 'import aiohttp_middlewares'"
+      - name: "Import package"
+        run: "poetry run python -c 'import aiohttp_middlewares'"
 
   docs:
     uses: "./.github/workflows/ci_verify_docs_build.yml"
