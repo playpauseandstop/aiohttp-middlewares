@@ -18,4 +18,4 @@ jobs:
     runs-on: "ubuntu-24.04"
 
     steps:
-      - uses: "actions/labeler@v5.0.0"
+      - uses: "actions/labeler@v6.0.1"
