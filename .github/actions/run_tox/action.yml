@@ -41,7 +41,7 @@ runs:
       shell: "bash"
 
     - name: "Cache tox"
-      uses: "actions/cache@v4.2.4"
+      uses: "actions/cache@v4.3.0"
       with:
         path: ".tox/"
         key: "tox-${{ inputs.python-version }}"
@@ -62,7 +62,7 @@ runs:
 
     - name: "Send coverage to Coveralls"
       if: "${{ inputs.use-coveralls == 'true' }}"
-      uses: "coverallsapp/github-action@v2.3.6"
+      uses: "coverallsapp/github-action@v2.3.7"
       with:
         github-token: "${{ inputs.coveralls-token }}"
         format: "cobertura"
