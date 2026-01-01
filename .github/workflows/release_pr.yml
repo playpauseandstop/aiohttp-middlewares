@@ -23,7 +23,7 @@ jobs:
     runs-on: "ubuntu-24.04"
 
     steps:
-      - uses: "actions/checkout@v5.0.0"
+      - uses: "actions/checkout@v6.0.1"
         with:
           ref: "main"
 
@@ -47,7 +47,7 @@ jobs:
           private_key: "${{ secrets.BADABUMP_APP_PRIVATE_KEY }}"
 
       - name: "Create pull request with changed files"
-        uses: "peter-evans/create-pull-request@v7.0.8"
+        uses: "peter-evans/create-pull-request@v8.0.0"
         with:
           token: "${{ steps.token.outputs.token }}"
           commit-message: |
