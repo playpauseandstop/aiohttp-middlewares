@@ -59,7 +59,7 @@ docs = [
   "sphinx-autobuild>=2024.10.3,<2025.0.0",
   "sphinx-autodoc-typehints>=3.0.1,<4.0.0",
   "sphinx-copybutton>=0.5.2,<0.6.0",
-  "sphinxext-opengraph>=0.7.5,<0.8.0",
+  "sphinxext-opengraph>=0.7.5,<0.14.0",
 ]
 
 # uv configuration
