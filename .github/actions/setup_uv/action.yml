@@ -1,0 +1,34 @@
+name: "Setup uv"
+description: "Tiny wrapper over astral-sh/setup-uv action to install necessary uv version with expected options."
+
+inputs:
+  uv-version:
+    description: "uv version to install"
+    required: false
+    default: "0.12.5"  # default-uv-version
+
+  python-version:
+    description: "Python version to install (if omit the default from .python-version will be used)"
+    required: false
+    default: ""
+
+outputs:
+  python-version:
+    description: "Installed Python version"
+    value: "${{ steps.uv.outputs.python-version }}"
+
+  uv-version:
+    description: "Installed uv version"
+    value: "${{ steps.uv.outputs.uv-version }}"
+
+runs:
+  using: "composite"
+
+  steps:
+    - id: "uv"
+      name: "Setup uv"
+      uses: "astral-sh/setup-uv@v10.0.1"
+      with:
+        version: "${{ inputs.uv-version }}"
+        python-version: "${{ inputs.python-version }}"
+        enable-cache: true

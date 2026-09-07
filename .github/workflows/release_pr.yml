@@ -1,8 +1,10 @@
 defaults:
   run:
     shell: "bash"
+permissions:
+  contents: "read"
 
-name: "Create Release PR"
+name: "[MANUAL] Create Release PR"
 
 on:
   workflow_dispatch:
@@ -23,31 +25,35 @@ jobs:
     runs-on: "ubuntu-24.04"
 
     steps:
-      - uses: "actions/checkout@v5.0.0"
+      - uses: "actions/checkout@v7.0.1"
         with:
-          ref: "main"
+          ref: "${{ github.event.repository.default_branch }}"
+          persist-credentials: false
+          fetch-depth: 0
+          fetch-tags: true
 
-      - name: "Fetch git tags"
-        run: |
-          set -euo pipefail
-
-          git fetch --depth=1 origin +refs/tags/*:refs/tags/* || :
-          git fetch --prune --unshallow
-
-      - uses: "./.github/actions/install_badabump"
+      - id: "badabump-cli"
+        uses: "./.github/actions/setup_badabump/"
 
       - id: "badabump"
         name: "Run badabump"
-        run: "badabump --ci ${{ github.event.inputs.args }}"
+        env:
+          BADABUMP: "${{ steps.badabump-cli.outputs.badabump }}"
+          BADABUMP_ARGS: "${{ github.event.inputs.args }}"
+        run: |
+          # shellcheck disable=SC2086
+          ${BADABUMP} --ci ${BADABUMP_ARGS}
 
       - id: "token"
-        uses: "tibdex/github-app-token@v2.1.0"
+        uses: "actions/create-github-app-token@v3.2.0"
         with:
-          app_id: "${{ secrets.BADABUMP_APP_ID }}"
-          private_key: "${{ secrets.BADABUMP_APP_PRIVATE_KEY }}"
+          app-id: "${{ secrets.BADABUMP_APP_ID }}"
+          private-key: "${{ secrets.BADABUMP_APP_PRIVATE_KEY }}"
+          permission-contents: "write"
+          permission-pull-requests: "write"
 
       - name: "Create pull request with changed files"
-        uses: "peter-evans/create-pull-request@v7.0.8"
+        uses: "peter-evans/create-pull-request@v8.1.1"
         with:
           token: "${{ steps.token.outputs.token }}"
           commit-message: |

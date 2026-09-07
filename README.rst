@@ -2,41 +2,48 @@
 aiohttp-middlewares
 ===================
 
-.. image:: https://github.com/playpauseandstop/aiohttp-middlewares/actions/workflows/ci.yml/badge.svg
-    :target: https://github.com/playpauseandstop/aiohttp-middlewares/actions/workflows/ci.yml
-    :alt: CI Workflow
+|Latest version| |Python versions| |License| |Documentation|
 
-.. image:: https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit&logoColor=white
-    :target: https://github.com/pre-commit/pre-commit
-    :alt: pre-commit
-
-.. image:: https://img.shields.io/badge/code%20style-black-000000.svg
-    :target: https://github.com/psf/black
-    :alt: black
-
-.. image:: https://img.shields.io/pypi/v/aiohttp-middlewares.svg
+.. |Latest version| image:: https://img.shields.io/pypi/v/aiohttp-middlewares.svg
     :target: https://pypi.org/project/aiohttp-middlewares/
-    :alt: Latest Version
-
-.. image:: https://img.shields.io/pypi/pyversions/aiohttp-middlewares.svg
+    :alt: Latest version
+.. |Python versions| image:: https://img.shields.io/pypi/pyversions/aiohttp-middlewares.svg
     :target: https://pypi.org/project/aiohttp-middlewares/
     :alt: Python versions
-
-.. image:: https://img.shields.io/pypi/l/aiohttp-middlewares.svg
+.. |License| image:: https://img.shields.io/pypi/l/aiohttp-middlewares.svg
     :target: https://github.com/playpauseandstop/aiohttp-middlewares/blob/main/LICENSE
     :alt: BSD License
-
-.. image:: https://coveralls.io/repos/playpauseandstop/aiohttp-middlewares/badge.svg?branch=main&service=github
-    :target: https://coveralls.io/github/playpauseandstop/aiohttp-middlewares
-    :alt: Coverage
-
-.. image:: https://readthedocs.org/projects/aiohttp-middlewares/badge/?version=latest
+.. |Documentation| image:: https://readthedocs.org/projects/aiohttp-middlewares/badge/?version=latest
     :target: http://aiohttp-middlewares.readthedocs.org/en/latest/
     :alt: Documentation
 
+|CI| |pre-commit| |black| |isort| |mypy| |zizmor| |Coverage|
+
+.. |CI| image:: https://github.com/playpauseandstop/aiohttp-middlewares/actions/workflows/ci.yml/badge.svg
+    :target: https://github.com/playpauseandstop/aiohttp-middlewares/actions/workflows/ci.yml
+    :alt: CI Workflow
+.. |pre-commit| image:: https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit&logoColor=white
+    :target: https://github.com/pre-commit/pre-commit
+    :alt: pre-commit
+.. |black| image:: https://img.shields.io/badge/code%20style-black-000000.svg
+    :target: https://github.com/psf/black
+    :alt: black
+.. |isort| image:: https://img.shields.io/badge/%20imports-isort-%231674b1?style=flat&labelColor=ef8336
+    :target: https://pycqa.github.io/isort/
+    :alt: Imports: isort
+.. |mypy| image:: https://www.mypy-lang.org/static/mypy_badge.svg
+    :target: https://mypy-lang.org/
+    :alt: Checked with mypy
+.. |zizmor| image:: https://img.shields.io/badge/%F0%9F%8C%88-zizmor-white?labelColor=white
+    :target: https://zizmor.sh/
+    :alt: zizmor
+.. |Coverage| image:: https://coveralls.io/repos/playpauseandstop/aiohttp-middlewares/badge.svg?branch=main&service=github
+    :target: https://coveralls.io/github/playpauseandstop/aiohttp-middlewares
+    :alt: Coverage
+
 Collection of useful middlewares for `aiohttp.web`_ applications.
 
-- Works on `Python`_ 3.9+
+- Works on `Python`_ 3.10+
 - Works with `aiohttp.web`_ 3.11.0+
 - BSD licensed
 - Latest documentation `on Read The Docs
@@ -68,7 +75,6 @@ handle errors for ``aiohttp.web`` application you need to,
         cors_middleware,
         error_middleware,
     )
-
 
     app = web.Application(
         middlewares=(

@@ -1,0 +1,28 @@
+name: "Setup badabump CLI"
+description: "Setup uv and provide commands to run badabump & badabump CI."
+
+inputs:
+  badabump-version:
+    description: "badabump version to use"
+    required: false
+    default: "26.1.0"
+
+outputs:
+  badabump:
+    description: "badabump command"
+    value: "uvx badabump==${{ inputs.badabump-version }}"
+
+  badabump-ci:
+    description: "badabump-ci command"
+    value: "uvx --from badabump==${{ inputs.badabump-version }} badabump-ci"
+
+  badabump-version:
+    description: "badabump version"
+    value: "${{ inputs.badabump-version }}"
+
+runs:
+  using: "composite"
+
+  steps:
+    - name: "Setup uv"
+      uses: "./.github/actions/setup_uv/"

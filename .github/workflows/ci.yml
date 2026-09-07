@@ -1,8 +1,10 @@
 defaults:
   run:
     shell: "bash"
+permissions:
+  contents: "read"
 
-name: "CI"
+name: "[AUTO] CI"
 
 on:
   push:
@@ -24,59 +26,80 @@ jobs:
 
     strategy:
       matrix:
-        os: ["ubuntu-24.04", "windows-2025", "macos-13", "macos-15"]
+        os: ["ubuntu-24.04", "macos-26", "windows-2025"]
+
+        # https://raw.githubusercontent.com/actions/python-versions/main/versions-manifest.json
+        # does not have versions after 3.10.11 available for macOS or Windows :cry:
+        include:
+          - os: "ubuntu-24.04"
+            python-version: ""
+
+          - os: "macos-26"
+            python-version: "3.10.11"
+
+          - os: "windows-2025"
+            python-version: "3.10.11"
+            make-install-args: "PYTHON_BIN=.venv/Scripts/python.exe"
 
     runs-on: "${{ matrix.os }}"
+    env:
+      UV_NO_DEFAULT_GROUPS: "true"
 
     steps:
-      - uses: "actions/checkout@v5.0.0"
-
-      - id: "python_and_poetry"
-        uses: "./.github/actions/install_python_and_poetry"
+      - uses: "actions/checkout@v7.0.1"
         with:
-          cache-key-suffix: "-main"
-          python-version-file: ".python-version"
+          persist-credentials: false
+
+      - uses: "./.github/actions/setup_uv"
+        with:
+          python-version: "${{ matrix.python-version }}"
 
       - name: "Install package"
-        run: "poetry install --only main"
+        env:
+          MAKE_INSTALL_ARGS: "${{ matrix.make-install-args }}"
+        run: |
+          # shellcheck disable=SC2086
+          make install ${MAKE_INSTALL_ARGS}
 
       - name: "Import package"
-        run: "poetry run python -c 'import aiohttp_middlewares'"
+        run: "uv run python -c 'import aiohttp_middlewares'"
 
   docs:
     uses: "./.github/workflows/ci_verify_docs_build.yml"
 
   test:
+    name: "Python ${{ matrix.python-version }}"
+
     strategy:
       matrix:
-        python-version: ["3.9", "3.10", "3.11", "3.12", "3.13"]
+        python-version: ["3.10", "3.11", "3.12", "3.13", "3.14"]
         include:
-          - python-version: "3.13"
+          - python-version: "3.10"
             dev: "true"
-
-    name: "Python ${{ matrix.python-version }}"
 
     runs-on: "ubuntu-24.04"
 
     steps:
-      - uses: "actions/checkout@v5.0.0"
-
-      - id: "python_and_poetry"
-        uses: "./.github/actions/install_python_and_poetry"
+      - uses: "actions/checkout@v7.0.1"
         with:
-          cache-key-suffix: "-dev-test"
+          persist-credentials: false
+
+      - id: "uv"
+        uses: "./.github/actions/setup_uv"
+        with:
           python-version: "${{ matrix.python-version }}"
 
       - if: "${{ matrix.dev == 'true' }}"
         uses: "./.github/actions/run_pre_commit"
         with:
-          python-version: "${{ steps.python_and_poetry.outputs.python-version }}"
+          python-version: "${{ steps.uv.outputs.python-version }}"
+          install-cmd: "make install"
 
       - uses: "./.github/actions/run_tox"
         with:
-          python-path: "${{ steps.python_and_poetry.outputs.python-path }}"
-          python-version: "${{ steps.python_and_poetry.outputs.python-version }}"
+          python-version: "${{ steps.uv.outputs.python-version }}"
           use-coveralls: "${{ matrix.dev }}"
+          install-cmd: "make install"
           coveralls-token: "${{ secrets.GITHUB_TOKEN }}"
 
   package:
@@ -88,6 +111,9 @@ jobs:
     uses: "./.github/workflows/ci_package.yml"
 
   release:
+    permissions:
+      contents: "write"
+
     needs: ["package"]
     if: "${{ startsWith(github.ref, 'refs/tags/') }}"
 

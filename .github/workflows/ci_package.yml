@@ -1,4 +1,8 @@
-name: "(Reusable) Build & Deploy Package"
+defaults:
+  run:
+    shell: "bash"
+
+name: "[REUSABLE] Build & Deploy Package"
 
 on:
   workflow_call:
@@ -7,7 +11,7 @@ on:
         description: "Twine version to use."
         type: "string"
         required: false
-        default: "6.1.0"
+        default: "7.0.0"
 
 jobs:
   package:
@@ -16,24 +20,22 @@ jobs:
     runs-on: "ubuntu-24.04"
 
     steps:
-      - uses: "actions/checkout@v5.0.0"
-
-      - id: "python_and_poetry"
-        uses: "./.github/actions/install_python_and_poetry"
+      - uses: "actions/checkout@v7.0.1"
         with:
-          python-version-file: ".python-version"
+          persist-credentials: false
+
+      - uses: "./.github/actions/setup_uv"
 
       - name: "Build package"
-        run: "poetry build"
-
-      - name: "Install twine"
-        run: "pipx install --python='${{ steps.python_and_poetry.outputs.python-path }}' twine==${{ inputs.twine-version }}"
+        run: "uv build"
 
       - name: "Check package"
-        run: "twine check dist/*"
+        env:
+          TWINE_VERSION: "${{ inputs.twine-version }}"
+        run: 'uvx -p "$(cat ".python-version")" twine=="${TWINE_VERSION}" check dist/*'
 
       - name: "Publish package"
         if: "${{ startsWith(github.ref, 'refs/tags/') }}"
-        uses: "pypa/gh-action-pypi-publish@v1.12.4"
+        uses: "pypa/gh-action-pypi-publish@v1.14.2"
         with:
           attestations: false  # Disable attestations until publishing to PyPI from reusable workflow will be fixed

@@ -4,8 +4,16 @@ classmethod-decorators =
     classmethod
     validator
 extend-ignore =
+    B042
+    E203
     E501
+    E701
     PIE786
+extend-select =
+    B950
+    TC
+    TC1
 inline-quotes = double
 max-complexity = 15
 multiline-quotes = double
+type-checking-strict = true

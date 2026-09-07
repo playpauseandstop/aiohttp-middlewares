@@ -7,44 +7,38 @@ Type annotation shortcuts for ``aiohttp_middlewares`` library.
 
 """
 
-import importlib
-from typing import (
-    Any,
-    Awaitable,
-    Callable,
-    Collection,
-    Dict,
-    Pattern,
-    Type,
-    Union,
+import re  # noqa: TC003
+from collections.abc import Collection
+from typing import Any, TypeAlias
+
+from aiohttp.typedefs import Handler, Middleware
+from yarl import URL  # noqa: TC002
+
+__all__ = (
+    # 1st party imports
+    "DictStrAny",
+    "DictStrStr",
+    "ExceptionType",
+    "IntCollection",
+    "StrCollection",
+    "Url",
+    "UrlCollection",
+    "UrlDict",
+    "Urls",
+    # 3rd party imports
+    "Handler",
+    "Middleware",
 )
 
-from aiohttp import web
-from yarl import URL
+DictStrAny: TypeAlias = dict[str, Any]
+DictStrStr: TypeAlias = dict[str, str]
 
-
-try:
-    # (<3.9.0) Try to import Middleware from aiohttp.web_middlewares
-    Middleware = importlib.import_module("aiohttp.web_middlewares")._Middleware
-except AttributeError:
-    # (>=3.9.0) If that fails, import Middleware from aiohttp.typedefs
-    Middleware = importlib.import_module("aiohttp.typedefs").Middleware
-
-# Make flake8 happy
-(Middleware,)  # noqa: B018
-
-DictStrAny = Dict[str, Any]
-DictStrStr = Dict[str, str]
-
-ExceptionType = Type[Exception]
-# FIXME: Drop Handler type definition after `aiohttp-middlewares` will require
-# only `aiohttp>=3.8.0`
-Handler = Callable[[web.Request], Awaitable[web.StreamResponse]]
+ExceptionType: TypeAlias = type[Exception]
 
 IntCollection = Collection[int]
 StrCollection = Collection[str]
 
-Url = Union[str, Pattern[str], URL]
-UrlCollection = Collection[Url]
-UrlDict = Dict[Url, StrCollection]
-Urls = Union[UrlCollection, UrlDict]
+Url: TypeAlias = str | re.Pattern[str] | URL
+UrlCollection: TypeAlias = Collection[Url]
+UrlDict = dict[Url, StrCollection]
+Urls = UrlCollection | UrlDict

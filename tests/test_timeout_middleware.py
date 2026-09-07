@@ -5,7 +5,6 @@ from aiohttp import web
 
 from aiohttp_middlewares import timeout_middleware
 
-
 HALF_A_SECOND = 0.5
 SECOND = 1
 

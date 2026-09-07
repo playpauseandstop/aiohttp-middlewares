@@ -113,20 +113,23 @@ Usage
 
 """
 
+from __future__ import annotations
+
 import logging
 import re
-from typing import Pattern, Tuple, Union
+from typing import TYPE_CHECKING
 
 from aiohttp import web
 
-from aiohttp_middlewares.annotations import (
-    Handler,
-    Middleware,
-    StrCollection,
-    UrlCollection,
-)
 from aiohttp_middlewares.utils import match_path
 
+if TYPE_CHECKING:
+    from aiohttp_middlewares.annotations import (
+        Handler,
+        Middleware,
+        StrCollection,
+        UrlCollection,
+    )
 
 ACCESS_CONTROL = "Access-Control"
 ACCESS_CONTROL_ALLOW = f"{ACCESS_CONTROL}-Allow"
@@ -150,7 +153,7 @@ DEFAULT_ALLOW_HEADERS = (
     "x-requested-with",
 )
 DEFAULT_ALLOW_METHODS = ("DELETE", "GET", "OPTIONS", "PATCH", "POST", "PUT")
-DEFAULT_URLS: Tuple[Pattern[str]] = (re.compile(r".*"),)
+DEFAULT_URLS: tuple[re.Pattern[str]] = (re.compile(r".*"),)
 
 logger = logging.getLogger(__name__)
 
@@ -158,13 +161,13 @@ logger = logging.getLogger(__name__)
 def cors_middleware(
     *,
     allow_all: bool = False,
-    origins: Union[UrlCollection, None] = None,
-    urls: Union[UrlCollection, None] = None,
-    expose_headers: Union[StrCollection, None] = None,
+    origins: UrlCollection | None = None,
+    urls: UrlCollection | None = None,
+    expose_headers: StrCollection | None = None,
     allow_headers: StrCollection = DEFAULT_ALLOW_HEADERS,
     allow_methods: StrCollection = DEFAULT_ALLOW_METHODS,
     allow_credentials: bool = False,
-    max_age: Union[int, None] = None,
+    max_age: int | None = None,
 ) -> Middleware:
     """Middleware to provide CORS headers for aiohttp applications.
 
