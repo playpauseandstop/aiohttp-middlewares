@@ -19,7 +19,6 @@ from aiohttp_middlewares.cors import (
     DEFAULT_ALLOW_METHODS,
 )
 
-
 API_REGEX = re.compile(r"^\/api")
 TEST_DENIED_ORIGIN = "https://www.google.com"
 TEST_ORIGIN = "http://localhost:3000"

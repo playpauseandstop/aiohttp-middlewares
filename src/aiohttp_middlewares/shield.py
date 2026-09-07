@@ -51,29 +51,32 @@ Usage
 
 """
 
+from __future__ import annotations
+
 import asyncio
 import logging
-from typing import Union
+from typing import TYPE_CHECKING
 
 from aiohttp import web
 
-from aiohttp_middlewares.annotations import (
-    Handler,
-    Middleware,
-    StrCollection,
-    Urls,
-)
 from aiohttp_middlewares.utils import match_request
 
+if TYPE_CHECKING:
+    from aiohttp_middlewares.annotations import (
+        Handler,
+        Middleware,
+        StrCollection,
+        Urls,
+    )
 
 logger = logging.getLogger(__name__)
 
 
 def shield_middleware(
     *,
-    methods: Union[StrCollection, None] = None,
-    urls: Union[Urls, None] = None,
-    ignore: Union[Urls, None] = None,
+    methods: StrCollection | None = None,
+    urls: Urls | None = None,
+    ignore: Urls | None = None,
 ) -> Middleware:
     """
     Ensure that handler execution would not break on

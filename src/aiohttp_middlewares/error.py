@@ -83,28 +83,35 @@ Usage
 
 """
 
+from __future__ import annotations
+
 import logging
 from contextlib import contextmanager
 from functools import partial
-from typing import Dict, Iterator, Tuple, Union
+from typing import TYPE_CHECKING, TypeAlias
 
 import attr
 from aiohttp import web
 
-from aiohttp_middlewares.annotations import (
-    DictStrAny,
-    ExceptionType,
-    Handler,
-    Middleware,
-    Url,
-)
 from aiohttp_middlewares.utils import match_path
+
+if TYPE_CHECKING:
+    from collections.abc import Iterator
+
+    from aiohttp_middlewares.annotations import (
+        DictStrAny,
+        ExceptionType,
+        Handler,
+        Middleware,
+        Url,
+    )
+
+    Config: TypeAlias = dict[Url, Handler]
 
 
 DEFAULT_EXCEPTION = Exception("Unhandled aiohttp-middlewares exception.")
 REQUEST_ERROR_KEY = "error"
 
-Config = Dict[Url, Handler]
 logger = logging.getLogger(__name__)
 
 
@@ -164,10 +171,8 @@ def error_context(request: web.Request) -> Iterator[ErrorContext]:
 def error_middleware(
     *,
     default_handler: Handler = default_error_handler,
-    config: Union[Config, None] = None,
-    ignore_exceptions: Union[
-        ExceptionType, Tuple[ExceptionType, ...], None
-    ] = None,
+    config: Config | None = None,
+    ignore_exceptions: ExceptionType | tuple[ExceptionType, ...] | None = None,
 ) -> Middleware:
     """Middleware to handle exceptions in aiohttp applications.
 
@@ -224,8 +229,8 @@ def get_error_from_request(request: web.Request) -> Exception:
 
 
 def get_error_handler(
-    request: web.Request, config: Union[Config, None]
-) -> Union[Handler, None]:
+    request: web.Request, config: Config | None
+) -> Handler | None:
     """Find error handler matching current request path if any."""
     if not config:
         return None
@@ -243,10 +248,8 @@ async def get_error_response(
     err: Exception,
     *,
     default_handler: Handler = default_error_handler,
-    config: Union[Config, None] = None,
-    ignore_exceptions: Union[
-        ExceptionType, Tuple[ExceptionType, ...], None
-    ] = None,
+    config: Config | None = None,
+    ignore_exceptions: ExceptionType | tuple[ExceptionType, ...] | None = None,
 ) -> web.StreamResponse:
     """Actual coroutine to get response for given request & error.
 

@@ -2,18 +2,15 @@
 PROJECT = aiohttp_middlewares
 DOCS_DIR = docs
 
-# Project vars
-POETRY ?= poetry
-PIP_COMPILE ?= pip-compile
-PRE_COMMIT ?= pre-commit
-PYTHON ?= $(POETRY) run python
-TOX ?= tox
-
 # Docs vars
 DOCS_HOST ?= localhost
 DOCS_PORT ?= 8241
 
 include python.mk
+
+TOX_VERSION ?= 4.61.2
+TOX_UV_VERSION ?= 1.36.0
+TOX = $(UVX) --with="tox-uv==$(TOX_UV_VERSION)" tox==$(TOX_VERSION)
 
 all: install
 
@@ -25,16 +22,13 @@ distclean: clean distclean-python
 
 .PHONY: docs
 docs: install
-	$(PYTHON) -m sphinx_autobuild --host $(DOCS_HOST) --port $(DOCS_PORT) -b html $(DOCS_DIR)/ $(DOCS_DIR)/_build/
+	$(UV_RUN) -m sphinx_autobuild --host $(DOCS_HOST) --port $(DOCS_PORT) -b html $(DOCS_DIR)/ $(DOCS_DIR)/_build/
 
 .PHONY: install
 install: install-python
 
 .PHONY: lint
 lint: lint-python
-
-.PHONY: lint-and-test
-lint-and-test: lint test
 
 .PHONY: list-outdated
 list-outdated: list-outdated-python

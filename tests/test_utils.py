@@ -6,7 +6,6 @@ from yarl import URL
 from aiohttp_middlewares import match_path
 from aiohttp_middlewares.utils import match_request
 
-
 URLS_COLLECTION = {
     "/slow-url",
     URL("/very-slow-url"),

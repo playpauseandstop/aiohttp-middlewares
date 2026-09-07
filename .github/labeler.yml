@@ -1,41 +1,71 @@
 build:
-  - changed-files:
-    - any-glob-to-any-file:
-      - "infrastructure/**/*"
-      - "*.mk"
-      - "Makefile"
-      - "poetry.lock"
-      - "poetry.toml"
-      - "pyproject.toml"
-      - ".python-version"
+  - any:
+    - changed-files:
+      - any-glob-to-any-file:
+        - "*.mk"
+        - ".python-version"
+        - "infrastructure/**/*"
+        - "Makefile"
+        - "pyproject.toml"
+        - "uv.lock"
+    - head-branch:
+      - '^build'
+
+chore:
+  - head-branch:
+    - '^chore'
 
 ci:
-  - changed-files:
-    - any-glob-to-any-file:
-      - ".github/**/*"
+  - any:
+    - changed-files:
+      - any-glob-to-any-file:
+        - ".github/**/*"
+    - head-branch:
+      - '^ci'
 
 dependencies:
   - changed-files:
     - any-glob-to-any-file:
-      - "poetry.lock"
       - ".python-version"
+      - "uv.lock"
 
 docs:
-  - changed-files:
-    - any-glob-to-any-file:
-      - "docs/**/*"
-      - "CHANGELOG*"
-      - "README*"
+  - any:
+    - changed-files:
+      - any-glob-to-any-file:
+        - "CHANGELOG*"
+        - "docs/**/*"
+        - "README*"
+    - head-branch:
+      - '^docs'
+
+feat:
+  - head-branch:
+    - '^feat'
+
+fix:
+  - head-branch:
+    - '^fix'
+
+refactor:
+  - head-branch:
+    - '^refactor'
 
 style:
-  - changed-files:
-    - any-glob-to-any-file:
-      - ".editorconfig"
-      - ".flake8"
-      - ".pre-commit-config.yaml"
+  - any:
+    - changed-files:
+      - any-glob-to-any-file:
+        - ".editorconfig"
+        - ".flake8"
+        - ".pre-commit-config.yaml"
+    - head-branch:
+      - '^style'
 
 test:
-  - changed-files:
-    - any-glob-to-any-file:
-      - "tests/**/*"
-      - ".env.test"
+  - any:
+    - changed-files:
+      - any-glob-to-any-file:
+        - ".env.test"
+        - "tests/**/*"
+    - head-branch:
+      - '^test'

@@ -5,11 +5,18 @@ aiohttp_middlewares.utils
 
 Various utility functions for ``aiohttp_middlewares`` library.
 
+TODO: Rename to ``matchers``.
+
 """
+
+from __future__ import annotations
+
+from typing import TYPE_CHECKING
 
 from yarl import URL
 
-from aiohttp_middlewares.annotations import Url, Urls
+if TYPE_CHECKING:
+    from aiohttp_middlewares.annotations import Url, Urls
 
 
 def match_path(item: Url, path: str) -> bool:

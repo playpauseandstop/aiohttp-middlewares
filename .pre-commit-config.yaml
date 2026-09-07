@@ -1,17 +1,30 @@
-default_install_hook_types:
-  - "commit-msg"
-  - "pre-commit"
 default_language_version:
-  python: &python_version "python3.13"
+  python: &python_version "python3.10"
 exclude: ^(archive|assets|migrations)/.*|.*/(migrations|test-data|vendor)/.*|.*\.svg$
 minimum_pre_commit_version: "1.17.0"
-
 repos:
   - repo: "https://github.com/commitizen-tools/commitizen"
-    rev: "v4.8.3"
+    rev: "v4.18.0"
     hooks:
       - id: "commitizen"
+        # By default commitizen using `python3` language version, so
+        # needed to provide concrete version here as well
+        language_version: *python_version
         stages: ["commit-msg"]
+
+  - repo: "https://github.com/astral-sh/uv-pre-commit"
+    rev: "0.12.5"
+    hooks:
+      - id: "uv-lock"
+        name: "Check uv.lock"
+
+  - repo: "https://github.com/tox-dev/pyproject-fmt"
+    rev: "v2.28.0"
+    hooks:
+      - id: "pyproject-fmt"
+        name: "Format pyproject.toml"
+        additional_dependencies:
+          - "tomli==2.4.1"
 
   - repo: "https://github.com/Kludex/no-optional"
     rev: "0.4.0"
@@ -20,30 +33,31 @@ repos:
         name: "Format code (no-optional)"
 
   - repo: "https://github.com/PyCQA/isort"
-    rev: "6.0.1"
+    rev: "8.0.1"
     hooks:
       - id: "isort"
         name: "Format code (isort)"
         exclude: ^docs/.*$
 
   - repo: "https://github.com/psf/black-pre-commit-mirror"
-    rev: "25.1.0"
+    rev: "26.5.1"
     hooks:
       - id: "black"
         name: "Format code (black)"
         exclude: ^docs/.*$
+        language_version: *python_version
 
   - repo: "https://github.com/asottile/blacken-docs"
-    rev: "1.19.1"
+    rev: "1.20.0"
     hooks:
       - id: "blacken-docs"
         name: "Format docs (blacken-docs)"
         args: ["-l", "64"]
         additional_dependencies:
-          - "black==24.10.0"
+          - "black==26.5.1"
 
   - repo: "https://github.com/pre-commit/pre-commit-hooks"
-    rev: "v5.0.0"
+    rev: "v6.0.0"
     hooks:
       - id: "end-of-file-fixer"
       - id: "trailing-whitespace"
@@ -66,17 +80,17 @@ repos:
       - id: "flake8"
         name: "Lint code (flake8)"
         additional_dependencies: &flake8_additional_dependencies
-          - "flake8-bugbear==24.12.12"
-          - "flake8-builtins==2.5.0"
-          - "flake8-comprehensions==3.16.0"
-          - "flake8-implicit-str-concat==0.5.0"
-          - "flake8-isort==6.1.2"
-          - "flake8-logging==1.7.0"
+          - "flake8-bugbear==25.11.29"
+          - "flake8-builtins==3.1.0"
+          - "flake8-comprehensions==3.17.0"
+          - "flake8-implicit-str-concat==0.7.0"
+          - "flake8-isort==7.0.0"
+          - "flake8-logging==1.8.0"
           - "flake8-mutable==1.2.0"
-          - "flake8-pie==0.16.0"
+          - "flake8-pep585==0.1.7"
           - "flake8-quotes==3.4.0"
-          - "flake8-string-format==0.3.0"
-          - "flake8-tidy-imports==4.11.0"
+          - "flake8-tidy-imports==4.12.0"
+          - "flake8-type-checking==3.2.0"
           - "flake8-variables-names==0.0.6"
           - "flake8==7.3.0"
           - "pep8-naming==0.15.1"
@@ -101,7 +115,22 @@ repos:
         exclude: ^(.*/)?(docs|migrations|tests)/.*$
 
   - repo: "https://github.com/shellcheck-py/shellcheck-py"
-    rev: "v0.10.0.1"
+    rev: "v0.11.0.1"
     hooks:
       - id: "shellcheck"
         name: "Lint scripts (shellcheck)"
+
+  - repo: "https://github.com/Mateusz-Grzelinski/actionlint-py"
+    rev: "v1.7.12.24"
+    hooks:
+      - id: "actionlint"
+        name: "Lint workflows (actionlint)"
+        additional_dependencies:
+          - "shellcheck-py==0.11.0.1"
+
+  - repo: "https://github.com/zizmorcore/zizmor-pre-commit"
+    rev: "v1.29.0"
+    hooks:
+      - id: "zizmor"
+        name: "Lint workflows (zizmor)"
+        args: ["--no-progress", "--fix"]

@@ -47,21 +47,25 @@ Usage
 
 """
 
+from __future__ import annotations
+
 import logging
-from typing import Union
+from typing import TYPE_CHECKING
 
 from aiohttp import web
 from async_timeout import timeout
 
-from aiohttp_middlewares.annotations import Handler, Middleware, Urls
 from aiohttp_middlewares.utils import match_request
+
+if TYPE_CHECKING:
+    from aiohttp_middlewares.annotations import Handler, Middleware, Urls
 
 
 logger = logging.getLogger(__name__)
 
 
 def timeout_middleware(
-    seconds: Union[int, float], *, ignore: Union[Urls, None] = None
+    seconds: int | float, *, ignore: Urls | None = None
 ) -> Middleware:
     """Ensure that request handling does not exceed X seconds.
 

@@ -24,22 +24,22 @@ Usage
 
 """
 
+from __future__ import annotations
+
 import logging
-from typing import Union
+from typing import TYPE_CHECKING
 
 from aiohttp import web
 
-from aiohttp_middlewares.annotations import DictStrStr, Handler, Middleware
+if TYPE_CHECKING:
+    from aiohttp_middlewares.annotations import DictStrStr, Handler, Middleware
 
-
-DEFAULT_MATCH_HEADERS = {"X-Forwarded-Proto": "https"}
+DEFAULT_MATCH_HEADERS: DictStrStr = {"X-Forwarded-Proto": "https"}
 
 logger = logging.getLogger(__name__)
 
 
-def https_middleware(
-    match_headers: Union[DictStrStr, None] = None,
-) -> Middleware:
+def https_middleware(match_headers: DictStrStr | None = None) -> Middleware:
     """
     Change scheme for current request when aiohttp application deployed behind
     reverse proxy with HTTPS enabled.

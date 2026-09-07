@@ -1,20 +1,28 @@
 name: "Run pre-commit Hooks"
-description: "Composite action to install project, setup mypy cache and run pre-commit hooks."
+description: "Composite action to install project (if necessary), setup mypy cache and run pre-commit hooks."
 
 inputs:
   python-version:
     description: "Python version to use"
     required: true
 
+  install-cmd:
+    description: "Install command to execute"
+    required: false
+    default: ""
+
 runs:
   using: "composite"
   steps:
-    - name: "Install package"
-      run: "poetry install --only main,dev"
+    - name: "Install project"
+      if: "${{ inputs.install-cmd }}"
+      env:
+        INSTALL_CMD: "${{ inputs.install-cmd }}"
+      run: "${INSTALL_CMD}"
       shell: "bash"
 
     - name: "Cache mypy"
-      uses: "actions/cache@v4.2.4"
+      uses: "actions/cache@v6.1.0"
       with:
         path: "./.mypy_cache/"
         key: "mypy-${{ runner.os }}-${{ inputs.python-version }}"

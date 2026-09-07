@@ -6,13 +6,13 @@ build:
     python: "3.10"
   jobs:
     post_create_environment:
-      # Install poetry
-      - "curl -sSL https://install.python-poetry.org | python3 -"
+      # Install uv
+      - "curl -LsSf https://astral.sh/uv/install.sh | sh"
     post_install:
       # Generate requirements.txt file
-      - "${HOME}/.local/bin/poetry export -f requirements.txt --without-hashes --only main,docs -o ${READTHEDOCS_VERSION}.txt"
+      - "${HOME}/.local/bin/uv export --format requirements.txt --frozen --no-hashes --no-default-groups --group=docs --no-emit-project -o ${READTHEDOCS_VERSION}.txt"
       # Install project and docs dependencies from generated requirements file
-      - "python3 -m pip install -r ${READTHEDOCS_VERSION}.txt"
+      - "python -m pip install -r ${READTHEDOCS_VERSION}.txt"
 
 sphinx:
   configuration: "./docs/conf.py"
