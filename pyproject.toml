@@ -66,7 +66,7 @@ docs = [
 # https://docs.astral.sh/uv/concepts/configuration-files/
 [tool.uv]
 required-version = ">=0.11.8"
-default-groups = [ "dev", "test" ]
+default-groups = [ "dev", "test", "docs" ]
 add-bounds = "major"
 
 # black configuration

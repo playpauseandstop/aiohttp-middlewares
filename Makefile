@@ -12,8 +12,13 @@ TOX_VERSION ?= 4.61.2
 TOX_UV_VERSION ?= 1.36.0
 TOX = $(UVX) --with="tox-uv==$(TOX_UV_VERSION)" tox==$(TOX_VERSION)
 
+# Non-phony targets
 all: install
 
+.env:
+	touch "$@"
+
+# Phony targets
 .PHONY: clean
 clean: clean-python
 
@@ -21,7 +26,7 @@ clean: clean-python
 distclean: clean distclean-python
 
 .PHONY: docs
-docs: install
+docs: install .env .env.local
 	$(UV_RUN) -m sphinx_autobuild --host $(DOCS_HOST) --port $(DOCS_PORT) -b html $(DOCS_DIR)/ $(DOCS_DIR)/_build/
 
 .PHONY: install
