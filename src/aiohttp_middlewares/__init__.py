@@ -25,7 +25,7 @@ from aiohttp_middlewares.utils import match_path
 
 __author__ = "Igor Davydenko"
 __license__ = "BSD-3-Clause"
-__version__ = "2.4.0"
+__version__ = "3.0.0"
 
 
 # Make flake8 happy
