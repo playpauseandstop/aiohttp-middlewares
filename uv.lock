@@ -172,7 +172,7 @@ version = "2.4.0"
 source = { editable = "." }
 dependencies = [
     { name = "aiohttp" },
-    { name = "async-timeout" },
+    { name = "async-timeout", marker = "python_full_version < '3.11'" },
     { name = "yarl" },
 ]
 
@@ -201,7 +201,7 @@ test = [
 [package.metadata]
 requires-dist = [
     { name = "aiohttp", specifier = ">=3.11.0,<4.0.0" },
-    { name = "async-timeout", specifier = ">=4.0.2,<6.0.0" },
+    { name = "async-timeout", marker = "python_full_version < '3.11'", specifier = ">=4.0.2,<6.0.0" },
     { name = "yarl", specifier = ">=1.17.0,<2.0.0" },
 ]
 
