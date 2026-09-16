@@ -1,10 +1,13 @@
 3.0.0 (2026-09-16)
 ==================
 
+First release in two years which **drops Python 3.8 and 3.9 support**. Also ``aiohttp-middlewares``
+no longer to require installing **deprecated** ``async-timeout`` library on Python >= 3.11.
+
 **Features:**
 
 - **BREAKING CHANGE:** Drop Python 3.8 support + require aiohttp ^= 3.11.0 & yarl ^= 1.17.0 (#254)
-- **BREAKING CHANGE:** Ensure Python 3.14 support (and drop Python 3.8 and 3.9) (#276)
+- **BREAKING CHANGE:** Ensure Python 3.14 support (and drop Python 3.9) (#276)
 - [#280] **BREAKING CHANGE:** Do not require async-timeout on Python >= 3.11 (#281)
 - Ensure Python 3.15 support (#283)
 
