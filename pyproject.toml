@@ -8,7 +8,7 @@ requires = [ "uv-build>=0.11.8,<0.13.0" ]
 # https://packaging.python.org/en/latest/specifications/pyproject-toml/#declaring-project-metadata-the-project-table
 [project]
 name = "aiohttp-middlewares"
-version = "2.4.0"
+version = "3.0.0"
 description = "Collection of useful middlewares for aiohttp applications."
 readme = "README.rst"
 keywords = [ "aiohttp", "aiohttp-middlewares", "aiohttp-server", "middlewares" ]

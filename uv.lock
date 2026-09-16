@@ -168,7 +168,7 @@ wheels = [
 
 [[package]]
 name = "aiohttp-middlewares"
-version = "2.4.0"
+version = "3.0.0"
 source = { editable = "." }
 dependencies = [
     { name = "aiohttp" },
