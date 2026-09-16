@@ -75,6 +75,10 @@ list-outdated-python: install-python list-outdated-python-only
 list-outdated-python-only:
 	$(UV) pip list --outdated $(ARGS)
 
+.PHONY: pre-commit
+pre-commit:
+	$(PRE_COMMIT) $(ARGS)
+
 .PHONY: python-version
 python-version:
 	@echo "Expected: Python $(PYTHON_VERSION)"

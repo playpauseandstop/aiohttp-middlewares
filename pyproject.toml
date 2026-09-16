@@ -26,10 +26,17 @@ classifiers = [
   "Intended Audience :: Developers",
   "License :: OSI Approved :: BSD License",
   "Operating System :: OS Independent",
+  "Programming Language :: Python :: 3 :: Only",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: 3.13",
+  "Programming Language :: Python :: 3.14",
+  "Programming Language :: Python :: 3.15",
   "Topic :: Internet :: WWW/HTTP",
   "Topic :: Internet :: WWW/HTTP :: WSGI :: Middleware",
   "Topic :: Utilities",
-  "Typing :: Typed"
+  "Typing :: Typed",
 ]
 dependencies = [
   "aiohttp>=3.11.0,<4.0.0",
@@ -89,7 +96,6 @@ virtual_env = ".venv/"
 # https://pyproject-fmt.readthedocs.io/en/latest/configuration.html
 [tool.pyproject-fmt]
 keep_full_version = true
-generate_python_version_classifiers = false
 table_format = "long"
 collapse_tables = [ "project.authors" ]
 
@@ -117,20 +123,22 @@ asyncio_mode = "auto"
 # coverage configuration
 # https://coverage.readthedocs.io/en/latest/config.html#toml-syntax
 [tool.coverage.run]
-branch = true
 source = [ "aiohttp_middlewares" ]
+branch = true
 [tool.coverage.paths]
 source = [ "src/" ]
 [tool.coverage.report]
-exclude_also = [
-  "if TYPE_CHECKING:",
-  "@overload",
-]
-omit = [
-  "src/*/__main__.py",
-  "src/*/annotations.py",
-]
 fail_under = 95
+omit = [
+  "src/**/__main__.py",
+  "src/**/annotations.py",
+]
+exclude_also = [
+  "@abstractmethod",
+  "@overload",
+  'if sys\.version',
+  "if TYPE_CHECKING:",
+]
 skip_covered = true
 show_missing = true
 
@@ -140,7 +148,7 @@ show_missing = true
 legacy_tox_ini = """
 
 [tox]
-envlist = py310,py310-minimum-requirements,py311,py312,py313,py314
+envlist = py310,py310-minimum-requirements,py311,py312,py313,py314,py315
 
 [gh-actions]
 python =
@@ -149,6 +157,7 @@ python =
   3.12: py312
   3.13: py313
   3.14: py314
+  3.15: py315
 
 [testenv]
 passenv =
